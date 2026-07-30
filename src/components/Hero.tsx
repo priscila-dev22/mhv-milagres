@@ -5,7 +5,7 @@ import {
 } from "../hooks/useBackgroundVideo";
 
 /** Cache-bust: bump `v` in production when replacing hero / hero.mobile mp4 */
-const HERO_VIDEO_CACHE_BUST = import.meta.env.DEV ? String(Date.now()) : "2";
+const HERO_VIDEO_CACHE_BUST = import.meta.env.DEV ? String(Date.now()) : "3";
 const HERO_VIDEO_DESKTOP = `/media/videos/hero.mp4?v=${HERO_VIDEO_CACHE_BUST}`;
 const HERO_VIDEO_MOBILE = `/media/videos/hero.mobile.mp4?v=${HERO_VIDEO_CACHE_BUST}`;
 
