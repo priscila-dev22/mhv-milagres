@@ -1,8 +1,6 @@
 import type { ReactNode } from "react";
 import { useReveal } from "../hooks/useReveal";
 
-const JETSKI_IMAGE = "/media/jetski-bg.jpg";
-
 const JETSKI_WHATSAPP_NUMBER: string = "5582993623883";
 
 const JETSKI_INSTAGRAM_URL: string = "https://www.instagram.com/pri.ribe/";
@@ -60,23 +58,8 @@ export function JetSki() {
       className={`jetski-section scroll-mt-[4.5rem] overflow-hidden bg-sand pb-[clamp(4rem,9vh,6.5rem)] pt-[clamp(4rem,9vh,6.5rem)] ${visible ? "jetski-section-visible" : ""}`}
     >
       <div className="section-shell">
-        <div className="flex flex-col gap-[clamp(2.5rem,6vh,3.5rem)] lg:flex-row lg:items-start lg:gap-14 xl:gap-20">
-          <figure className="jetski-media jetski-media-reveal mx-auto w-full max-w-[min(100%,22rem)] shrink-0 sm:max-w-[24rem] lg:mx-0 lg:max-w-[min(100%,38%)] xl:max-w-[20rem]">
-            <div className="overflow-hidden rounded-sm border border-stone-200/40 bg-stone-200/15">
-              <img
-                src={JETSKI_IMAGE}
-                alt="Jet Ski na orla de Japaratinga, mar aberto e costa ao fundo"
-                width={2560}
-                height={1600}
-                loading="lazy"
-                decoding="async"
-                draggable={false}
-                className="block aspect-[5/4] w-full object-cover object-center"
-              />
-            </div>
-          </figure>
-
-          <div className="jetski-sheet min-w-0 flex-1 lg:max-w-[36rem] xl:max-w-[40rem]">
+        <div className="grid grid-cols-1 gap-[clamp(2.5rem,6vh,3.5rem)] lg:grid-cols-2 lg:items-start lg:gap-14 xl:gap-20">
+          <div className="jetski-sheet min-w-0 lg:max-w-[28rem] xl:max-w-[32rem]">
             <p className="jetski-copy-item font-sans text-[0.625rem] font-semibold uppercase tracking-[0.26em] text-sepia/90 sm:text-[0.6875rem]">
               Experiência
             </p>
@@ -90,8 +73,10 @@ export function JetSki() {
               Saídas na orla de Japaratinga — combine com o concierge MHV para
               horário, briefing e condições do mar.
             </p>
+          </div>
 
-            <div className="jetski-copy-item jetski-copy-delay-3 mt-8 border-t border-stone-200/45 sm:mt-10">
+          <div className="jetski-sheet min-w-0 flex-1 lg:max-w-none">
+            <div className="jetski-copy-item jetski-copy-delay-3 border-t border-stone-200/45 lg:mt-0 lg:border-t-0 lg:pt-0">
               <FactRow label="Valor">
                 <ul className="space-y-1.5">
                   {prices.map((row) => (

@@ -47,7 +47,16 @@ export function StickyNav() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  const linkClass = (href: string) => {
+  useEffect(() => {
+    if (!menuOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [menuOpen]);
+
+  const desktopLinkClass = (href: string) => {
     const isActive = activeId === href.slice(1);
     const base =
       "inline-flex min-h-[44px] items-center rounded-full px-2.5 py-2 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.1em] antialiased transition-[color,background-color,opacity] duration-luxe ease-luxe focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:min-h-0 md:px-3 md:py-2 md:text-[0.75rem]";
@@ -67,23 +76,34 @@ export function StickyNav() {
     } focus-visible:outline-petroleum/30`;
   };
 
+  const mobileLinkClass = (href: string) => {
+    const isActive = activeId === href.slice(1);
+    return `mobile-nav-link flex min-h-[52px] w-full items-center border-b border-stone-200/80 px-1 font-sans text-[0.8125rem] font-semibold uppercase tracking-[0.12em] text-petroleum transition-[color,background-color] duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/40 ${
+      isActive
+        ? "mobile-nav-link-active bg-petroleum/[0.06] pl-3 font-bold"
+        : "hover:bg-stone-100/80"
+    }`;
+  };
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-luxe ease-luxe ${
-        overHero
-          ? "border-b border-transparent bg-transparent"
-          : "border-b border-stone-200/60 bg-sand/95 shadow-[0_2px_16px_rgba(23,52,58,0.04)] backdrop-blur-md"
+        menuOpen
+          ? "border-b border-stone-200/70 bg-sand shadow-[0_2px_16px_rgba(23,52,58,0.06)] md:border-stone-200/60 md:bg-sand/95 md:backdrop-blur-md"
+          : overHero
+            ? "border-b border-transparent bg-transparent"
+            : "border-b border-stone-200/60 bg-sand/95 shadow-[0_2px_16px_rgba(23,52,58,0.04)] backdrop-blur-md"
       }`}
     >
       <nav
-        className="section-shell flex h-16 items-center justify-between gap-3 md:h-[4.5rem]"
+        className="section-shell relative flex h-16 items-center justify-between gap-3 md:h-[4.5rem]"
         aria-label="Seções do guia"
       >
         <p
           className={`shrink-0 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.15em] antialiased transition-colors duration-luxe ease-luxe ${
-            overHero
-              ? "text-petroleum [text-shadow:0_1px_3px_rgba(255,255,255,0.32),0_1px_2px_rgba(0,0,0,0.06)]"
-              : "text-sepia"
+            menuOpen || !overHero
+              ? "text-sepia"
+              : "text-petroleum [text-shadow:0_1px_3px_rgba(255,255,255,0.32),0_1px_2px_rgba(0,0,0,0.06)]"
           }`}
         >
           MHV Milagres
@@ -91,13 +111,13 @@ export function StickyNav() {
 
         <button
           type="button"
-          className={`inline-flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full border antialiased transition-colors duration-luxe ease-luxe focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:hidden [text-shadow:0_1px_3px_rgba(255,255,255,0.32),0_1px_2px_rgba(0,0,0,0.06)] ${
-            overHero
-              ? "border-petroleum/25 text-petroleum hover:bg-white/15 focus-visible:outline-petroleum/40"
-              : "border-stone-200/70 text-petroleum hover:bg-white/60 focus-visible:outline-petroleum/40"
+          className={`inline-flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-sm border antialiased transition-colors duration-luxe ease-luxe focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:hidden ${
+            menuOpen || !overHero
+              ? "border-stone-200/80 bg-sand text-petroleum hover:bg-stone-100/80 focus-visible:outline-petroleum/40"
+              : "border-petroleum/25 text-petroleum hover:bg-white/15 focus-visible:outline-petroleum/40 [text-shadow:0_1px_3px_rgba(255,255,255,0.32),0_1px_2px_rgba(0,0,0,0.06)]"
           }`}
           aria-expanded={menuOpen}
-          aria-controls="mobile-nav"
+          aria-controls="mobile-nav-panel"
           aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
           onClick={() => setMenuOpen((open) => !open)}
         >
@@ -114,22 +134,12 @@ export function StickyNav() {
           </svg>
         </button>
 
-        <ul
-          id="mobile-nav"
-          className={`absolute left-0 right-0 top-full flex flex-col gap-0.5 border-b px-4 py-3 md:static md:flex md:flex-row md:flex-wrap md:justify-end md:gap-0.5 md:border-0 md:p-0 ${
-            menuOpen ? "flex" : "hidden md:flex"
-          } ${
-            overHero
-              ? "border-stone-200/50 bg-sand/96 backdrop-blur-md md:bg-transparent md:backdrop-blur-none"
-              : "border-stone-200/60 bg-sand/98 backdrop-blur-md md:bg-transparent md:backdrop-blur-none"
-          }`}
-        >
+        <ul className="hidden md:flex md:flex-row md:flex-wrap md:justify-end md:gap-0.5">
           {links.map(({ href, label }) => (
             <li key={href}>
               <a
                 href={href}
-                className={linkClass(href)}
-                onClick={() => setMenuOpen(false)}
+                className={desktopLinkClass(href)}
                 aria-current={activeId === href.slice(1) ? "page" : undefined}
               >
                 {label}
@@ -138,6 +148,38 @@ export function StickyNav() {
           ))}
         </ul>
       </nav>
+
+      {menuOpen ? (
+        <div
+          id="mobile-nav-panel"
+          className="mobile-nav-panel fixed inset-x-0 bottom-0 top-16 z-[60] overflow-y-auto border-t border-stone-200/80 bg-sand shadow-[0_8px_32px_rgba(23,52,58,0.12)] md:hidden motion-reduce:transition-none"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu de navegação"
+        >
+          <ul className="flex flex-col px-4 py-3">
+            {links.map(({ href, label }) => (
+              <li key={href}>
+                <a
+                  href={href}
+                  className={mobileLinkClass(href)}
+                  onClick={() => setMenuOpen(false)}
+                  aria-current={activeId === href.slice(1) ? "page" : undefined}
+                >
+                  {isActiveMarker(activeId, href) ? (
+                    <span className="mr-3 h-px w-4 shrink-0 bg-petroleum" aria-hidden />
+                  ) : null}
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
     </header>
   );
+}
+
+function isActiveMarker(activeId: string, href: string) {
+  return activeId === href.slice(1);
 }

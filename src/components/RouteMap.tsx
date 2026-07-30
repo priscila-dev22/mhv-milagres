@@ -1,10 +1,10 @@
 import { useEffect, useId, useMemo, useState } from "react";
 import {
-  ROUTE_MAP_EMBED_DEFAULT,
   ROUTE_MAP_FULL_URL,
   routeMapCategories,
   routeMapDirectionsUrl,
-  routeMapEmbedUrl,
+  routeMapEmbedForCategory,
+  routeMapPlaceLocationHref,
   routeMapPlaces,
   routeMapSequence,
   routeMapZones,
@@ -23,10 +23,10 @@ const textLinkClass =
   "route-map-text-link group inline-flex min-h-11 items-center gap-1.5 border-b border-petroleum/20 pb-0.5 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-petroleum transition-[color,border-color] duration-300 hover:border-petroleum/45 hover:text-sepia focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/40";
 
 const filterBtnClass = (active: boolean) =>
-  `route-map-filter shrink-0 snap-start rounded-sm border px-3 py-2 font-sans text-[0.75rem] font-medium tracking-[0.02em] transition-[background-color,border-color,color] duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/40 sm:px-3.5 sm:text-[0.8125rem] ${
+  `route-map-filter shrink-0 snap-start rounded-none border-0 border-b-2 bg-transparent px-2.5 py-2 font-sans text-[0.75rem] font-medium tracking-[0.02em] transition-[border-color,color,background-color] duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/40 sm:px-3 sm:text-[0.8125rem] ${
     active
-      ? "border-petroleum/35 bg-petroleum text-sand"
-      : "border-stone-200/55 bg-white/40 text-petroleum/85 hover:border-petroleum/20 hover:bg-white/70"
+      ? "border-petroleum font-semibold text-petroleum"
+      : "border-transparent text-petroleum/70 hover:border-petroleum/25 hover:text-petroleum"
   }`;
 
 type MapFrameProps = {
@@ -70,6 +70,100 @@ function MapFrame({
   );
 }
 
+type PlaceDetailPanelProps = {
+  place: RouteMapPlace;
+  categoryLabel: string;
+  onClose: () => void;
+};
+
+function PlaceDetailPanel({
+  place,
+  categoryLabel,
+  onClose,
+}: PlaceDetailPanelProps) {
+  const whatsappHref = place.whatsapp
+    ? place.whatsapp.startsWith("http")
+      ? place.whatsapp
+      : `https://wa.me/${place.whatsapp.replace(/\D/g, "")}`
+    : null;
+
+  return (
+    <div
+      className="route-map-detail mb-3 rounded-sm border border-stone-200/55 bg-white/95 px-4 py-4 shadow-[0_4px_20px_rgba(23,52,58,0.08)] sm:px-5"
+      role="region"
+      aria-label={`Detalhes de ${place.name}`}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-sepia/85">
+            {categoryLabel}
+          </p>
+          <h3 className="mt-1 font-serif text-lg font-medium leading-snug text-petroleum">
+            {place.name}
+          </h3>
+        </div>
+        <button
+          type="button"
+          className="shrink-0 rounded-sm p-2 font-sans text-xs font-medium uppercase tracking-wider text-petroleum/70 transition-colors hover:text-petroleum focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/40"
+          onClick={onClose}
+          aria-label="Fechar detalhes do local"
+        >
+          Fechar
+        </button>
+      </div>
+      {place.description ? (
+        <p className="mt-2 font-sans text-[0.8125rem] leading-relaxed text-stone-600">
+          {place.description}
+        </p>
+      ) : null}
+      {place.address ? (
+        <p className="mt-2 font-sans text-[0.8125rem] leading-relaxed text-stone-600">
+          {place.address}
+        </p>
+      ) : null}
+      <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-2">
+        {place.instagram ? (
+          <li>
+            <a
+              href={place.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={textLinkClass}
+              aria-label={`Instagram de ${place.name}`}
+            >
+              Instagram
+            </a>
+          </li>
+        ) : null}
+        {whatsappHref ? (
+          <li>
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={textLinkClass}
+              aria-label={`WhatsApp de ${place.name}`}
+            >
+              WhatsApp
+            </a>
+          </li>
+        ) : null}
+        <li>
+          <a
+            href={routeMapPlaceLocationHref(place)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={textLinkClass}
+            aria-label={`Ver localização de ${place.name}`}
+          >
+            Localização
+          </a>
+        </li>
+      </ul>
+    </div>
+  );
+}
+
 export function RouteMap() {
   const overlayId = useId();
   const searchId = useId();
@@ -106,12 +200,29 @@ export function RouteMap() {
     });
   }, [activeCategory, searchQuery]);
 
-  const embedSrc = useMemo(() => {
-    const place = routeMapPlaces.find((p) => p.id === selectedPlaceId);
-    return place
-      ? routeMapEmbedUrl(place.mapsQuery, 12)
-      : ROUTE_MAP_EMBED_DEFAULT;
-  }, [selectedPlaceId]);
+  useEffect(() => {
+    if (!selectedPlaceId) return;
+    const stillVisible = filteredPlaces.some((p) => p.id === selectedPlaceId);
+    if (!stillVisible) setSelectedPlaceId(null);
+  }, [filteredPlaces, selectedPlaceId]);
+
+  const embedSrc = useMemo(
+    () =>
+      routeMapEmbedForCategory(
+        activeCategory,
+        filteredPlaces,
+        selectedPlaceId,
+      ),
+    [activeCategory, filteredPlaces, selectedPlaceId],
+  );
+
+  const selectedPlace = useMemo(
+    () =>
+      selectedPlaceId
+        ? routeMapPlaces.find((p) => p.id === selectedPlaceId) ?? null
+        : null,
+    [selectedPlaceId],
+  );
 
   const showMapOverlay = compactMap && !mapInteractive;
 
@@ -183,7 +294,10 @@ export function RouteMap() {
                   role="tab"
                   aria-selected={activeCategory === cat.id}
                   className={filterBtnClass(activeCategory === cat.id)}
-                  onClick={() => setActiveCategory(cat.id)}
+                  onClick={() => {
+                    setActiveCategory(cat.id);
+                    setSelectedPlaceId(null);
+                  }}
                 >
                   {cat.label}
                 </button>
@@ -192,6 +306,13 @@ export function RouteMap() {
           </div>
 
           <div className="reveal-item reveal-item-delay-2 lg:col-start-2 lg:row-start-1 lg:row-span-6 lg:min-h-[620px] lg:self-stretch">
+            {selectedPlace ? (
+              <PlaceDetailPanel
+                place={selectedPlace}
+                categoryLabel={categoryLabel(selectedPlace.category)}
+                onClose={() => setSelectedPlaceId(null)}
+              />
+            ) : null}
             <MapFrame
               embedSrc={embedSrc}
               showMapOverlay={showMapOverlay}
@@ -217,8 +338,10 @@ export function RouteMap() {
                   <article
                     key={place.id}
                     role="listitem"
-                    className={`route-map-place border-b border-stone-200/45 py-5 transition-[background-color] duration-300 sm:py-6 ${
-                      isActive ? "route-map-place-active bg-white/35" : ""
+                    className={`route-map-place border-b border-stone-200/45 py-5 transition-[background-color,border-color] duration-300 sm:py-6 ${
+                      isActive
+                        ? "route-map-place-active border-l-2 border-l-petroleum bg-white/45 pl-3 sm:pl-4"
+                        : "border-l-2 border-l-transparent pl-3 sm:pl-4"
                     }`}
                   >
                     <button

@@ -550,16 +550,45 @@
     @apply text-sepia;
   }
 
+  @keyframes mobile-nav-enter {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .mobile-nav-panel {
+    animation: mobile-nav-enter 280ms cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+  }
+
   .concierge-catalog {
-    @apply grid grid-cols-1 lg:grid-cols-2;
+    @apply grid grid-cols-1 gap-0 lg:grid-cols-2;
   }
 
   .concierge-service-item {
-    @apply border-t border-[rgba(241,230,210,0.14)] px-0 py-8 transition-[background-color,transform] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] sm:py-10 lg:border-r lg:border-[rgba(241,230,210,0.14)] lg:px-8 lg:py-12 xl:px-10;
+    @apply border-t border-stone-200/40 px-5 py-8 transition-[background-color,transform] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] sm:py-10 lg:px-8 lg:py-12 xl:px-10;
   }
 
-  .concierge-service-item:nth-child(2n) {
-    @apply lg:border-r-0;
+  .concierge-service-item-petroleum {
+    @apply border-[rgba(241,230,210,0.12)] bg-petroleum;
+  }
+
+  .concierge-service-item-sand {
+    @apply bg-sand;
+  }
+
+  .concierge-service-item-petroleum:nth-child(4n + 1),
+  .concierge-service-item-petroleum:nth-child(4n) {
+    @apply lg:border-r lg:border-[rgba(241,230,210,0.12)];
+  }
+
+  .concierge-service-item-sand:nth-child(4n + 2),
+  .concierge-service-item-sand:nth-child(4n + 3) {
+    @apply lg:border-r lg:border-stone-200/35;
   }
 
   .concierge-service-item:last-child:nth-child(odd) {
@@ -567,13 +596,14 @@
   }
 
   @media (hover: hover) {
-    .concierge-service-item:hover {
-      @apply bg-white/5;
+    .concierge-service-item-petroleum:hover {
+      @apply bg-[#1a3d44];
       transform: translateY(-2px);
     }
 
-    .concierge-service-item:hover .concierge-service-num {
-      @apply text-[rgba(241,230,210,0.95)];
+    .concierge-service-item-sand:hover {
+      @apply bg-stone-100/50;
+      transform: translateY(-2px);
     }
 
     .concierge-service-item:hover .concierge-service-cta-arrow {
@@ -582,7 +612,7 @@
   }
 
   .concierge-service-item:focus-within .concierge-service-num {
-    @apply text-[rgba(241,230,210,0.95)];
+    @apply opacity-100;
   }
 
   @media (hover: hover) {
@@ -706,6 +736,12 @@
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .mobile-nav-panel {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 
   .concierge-service-item:hover {
