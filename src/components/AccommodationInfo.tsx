@@ -2,26 +2,30 @@ import { useId, useState } from "react";
 import { useReveal } from "../hooks/useReveal";
 import { revealDelay } from "../utils/revealDelay";
 
-const faqItems = [
+const HOSPEDAGEM_IMAGE_SRC = "/media/images/mesa-posta.jpg";
+
+const CHAMPAGNE = "#E8D9B5";
+
+const hospitalityItems = [
   {
-    title: "Caução",
-    body: "Algumas reservas podem exigir caução, devolvida após a vistoria do imóvel caso não existam danos.",
+    title: "Caução e garantia",
+    body: "Algumas reservas podem incluir caução, devolvida após a vistoria de saída, desde que o imóvel seja entregue nas condições acordadas.",
   },
   {
-    title: "Visitantes",
-    body: "Visitantes extras devem ser previamente autorizados conforme as regras da propriedade.",
+    title: "Recebendo visitantes",
+    body: "Para preservar a tranquilidade e a segurança da hospedagem, visitantes devem ser previamente autorizados conforme a política de cada propriedade.",
   },
   {
-    title: "Enxoval",
-    body: "Todas as casas são entregues preparadas com enxoval e utensílios básicos.",
+    title: "Enxoval completo",
+    body: "Cada casa é recebida com enxoval impecável e utensílios essenciais, para que você se sinta em casa desde o primeiro momento.",
   },
   {
-    title: "Suporte",
-    body: "Durante toda a hospedagem o concierge permanece disponível para auxiliar.",
+    title: "Concierge e suporte",
+    body: "Durante toda a estadia, nossa equipe de concierge permanece disponível para auxiliar sempre que necessário.",
   },
   {
-    title: "Manutenção",
-    body: "Caso ocorra qualquer problema na casa, o hóspede deve comunicar imediatamente para que a equipe providencie atendimento.",
+    title: "Assistência durante a estadia",
+    body: "Se surgir qualquer necessidade na casa, basta avisar — nossa equipe organizará o atendimento com agilidade e discrição.",
   },
 ];
 
@@ -41,9 +45,9 @@ function ChevronIcon({ open }: { open: boolean }) {
       viewBox="0 0 20 20"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="1.25"
       aria-hidden
-      className={`h-3.5 w-3.5 text-sepia transition-transform duration-luxe ease-luxe motion-reduce:transition-none ${open ? "rotate-180" : ""}`}
+      className={`h-3 w-3 text-petroleum/70 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${open ? "rotate-180" : ""}`}
     >
       <path d="M5 7.5 10 12.5 15 7.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
@@ -52,7 +56,7 @@ function ChevronIcon({ open }: { open: boolean }) {
 
 function AccordionItem({ title, body, isOpen, onToggle, triggerId, panelId }: AccordionItemProps) {
   return (
-    <div className="border-b border-stone-200/45 last:border-b-0">
+    <div className="border-b border-stone-200/35 last:border-b-0">
       <h3>
         <button
           type="button"
@@ -60,12 +64,15 @@ function AccordionItem({ title, body, isOpen, onToggle, triggerId, panelId }: Ac
           aria-expanded={isOpen}
           aria-controls={panelId}
           onClick={onToggle}
-          className="flex w-full min-h-[44px] items-center justify-between gap-4 px-5 py-4 text-left transition-colors duration-luxe ease-luxe hover:bg-sand/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-petroleum/40 sm:px-6"
+          className="flex w-full min-h-[44px] items-center justify-between gap-4 py-5 text-left transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-stone-100/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-petroleum/35 sm:py-[1.375rem]"
         >
-          <span className="font-sans text-[0.9375rem] font-semibold tracking-[0.01em] text-petroleum">
+          <span className="font-serif text-[clamp(1.0625rem,1.35vw,1.1875rem)] font-medium leading-snug tracking-[-0.01em] text-petroleum">
             {title}
           </span>
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-stone-200/50 bg-white/70">
+          <span
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-stone-200/45 bg-[#FAF8F5]"
+            style={{ boxShadow: "0 1px 6px rgba(23, 52, 58, 0.04)" }}
+          >
             <ChevronIcon open={isOpen} />
           </span>
         </button>
@@ -75,10 +82,10 @@ function AccordionItem({ title, body, isOpen, onToggle, triggerId, panelId }: Ac
         role="region"
         aria-labelledby={triggerId}
         aria-hidden={!isOpen}
-        className={`grid transition-[grid-template-rows] duration-luxe ease-luxe motion-reduce:transition-none ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+        className={`grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
       >
         <div className="overflow-hidden">
-          <p className="px-5 pb-4 body-text text-[0.875rem] leading-[1.6] sm:px-6 sm:pb-5">
+          <p className="pb-6 pr-2 font-sans text-[0.9375rem] font-normal leading-[1.75] tracking-[0.01em] text-stone-700 sm:pb-7 sm:pr-4">
             {body}
           </p>
         </div>
@@ -90,31 +97,60 @@ function AccordionItem({ title, body, isOpen, onToggle, triggerId, panelId }: Ac
 export function AccommodationInfo() {
   const baseId = useId();
   const { ref, visible } = useReveal<HTMLElement>();
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
     <section
       ref={ref}
       id="informacoes"
-      className={`section-band section-pad-tight scroll-mt-[4.5rem] ${visible ? "section-visible" : ""}`}
+      className={`section-band section-pad scroll-mt-[4.5rem] ${visible ? "section-visible" : ""}`}
     >
       <div className="section-shell">
-        <header className="section-header mb-6 text-center sm:mb-8 sm:text-left">
-          <h2 className="section-title reveal-item">Informações da Hospedagem</h2>
-        </header>
+        <div className="flex flex-col gap-12 lg:flex-row lg:items-stretch lg:gap-16 xl:gap-20">
+          <figure
+            className={`reveal-item order-1 w-full shrink-0 lg:order-none lg:w-[45%] ${revealDelay(1)}`}
+          >
+            <div className="overflow-hidden rounded-2xl shadow-[0_8px_32px_rgba(23,52,58,0.07)]">
+              <img
+                src={HOSPEDAGEM_IMAGE_SRC}
+                alt="Mesa posta com frutas, louças e taças — hospitalidade MHV Milagres"
+                decoding="async"
+                className="aspect-[5/6] w-full object-cover object-[50%_42%] sm:aspect-[4/5] sm:object-[50%_40%] lg:aspect-auto lg:min-h-[min(100%,38rem)] lg:h-full lg:object-[52%_center]"
+              />
+            </div>
+          </figure>
 
-        <div className={`mx-auto max-w-[960px] luxe-card reveal-item ${revealDelay(1)}`}>
-          {faqItems.map((item, index) => (
-            <AccordionItem
-              key={item.title}
-              title={item.title}
-              body={item.body}
-              isOpen={openIndex === index}
-              onToggle={() => setOpenIndex(openIndex === index ? null : index)}
-              triggerId={`${baseId}-trigger-${index}`}
-              panelId={`${baseId}-panel-${index}`}
-            />
-          ))}
+          <div className={`reveal-item order-2 flex min-w-0 flex-1 flex-col lg:order-none ${revealDelay(2)}`}>
+            <header className="mb-10 max-w-xl sm:mb-12">
+              <p className="mb-4 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-sepia/90">
+                Informações da hospedagem
+              </p>
+              <span
+                className="mb-5 block h-px w-9"
+                style={{ backgroundColor: CHAMPAGNE }}
+                aria-hidden
+              />
+              <h2 className="section-title text-petroleum">Tudo preparado para a sua estadia</h2>
+              <p className="section-lead mt-6 max-w-[42ch] leading-[1.74] text-stone-600/95">
+                Da chegada ao check-out, cada detalhe é pensado para que você aproveite Milagres com
+                tranquilidade, conforto e uma experiência acolhedora do início ao fim.
+              </p>
+            </header>
+
+            <div className="border-t border-stone-200/40">
+              {hospitalityItems.map((item, index) => (
+                <AccordionItem
+                  key={item.title}
+                  title={item.title}
+                  body={item.body}
+                  isOpen={openIndex === index}
+                  onToggle={() => setOpenIndex(openIndex === index ? null : index)}
+                  triggerId={`${baseId}-trigger-${index}`}
+                  panelId={`${baseId}-panel-${index}`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

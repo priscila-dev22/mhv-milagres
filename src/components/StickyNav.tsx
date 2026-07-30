@@ -50,14 +50,14 @@ export function StickyNav() {
   const linkClass = (href: string) => {
     const isActive = activeId === href.slice(1);
     const base =
-      "inline-flex min-h-[44px] items-center rounded-full px-2.5 py-2 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.1em] transition-[color,background-color,opacity] duration-luxe ease-luxe focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:min-h-0 md:px-3 md:py-2 md:text-[0.75rem]";
+      "inline-flex min-h-[44px] items-center rounded-full px-2.5 py-2 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.1em] antialiased transition-[color,background-color,opacity] duration-luxe ease-luxe focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:min-h-0 md:px-3 md:py-2 md:text-[0.75rem]";
 
     if (overHero) {
-      return `${base} ${
+      return `${base} [text-shadow:0_1px_3px_rgba(255,255,255,0.32),0_1px_2px_rgba(0,0,0,0.06)] ${
         isActive
-          ? "bg-white/15 text-sand"
-          : "text-sand/80 hover:bg-white/10 hover:text-sand"
-      } focus-visible:outline-sand/50`;
+          ? "bg-white/20 text-petroleum"
+          : "text-petroleum hover:bg-white/15 hover:text-petroleum"
+      } focus-visible:outline-petroleum/40`;
     }
 
     return `${base} ${
@@ -80,8 +80,10 @@ export function StickyNav() {
         aria-label="Seções do guia"
       >
         <p
-          className={`shrink-0 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.14em] transition-colors duration-luxe ease-luxe ${
-            overHero ? "text-sand/90" : "text-sepia"
+          className={`shrink-0 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.15em] antialiased transition-colors duration-luxe ease-luxe ${
+            overHero
+              ? "text-petroleum [text-shadow:0_1px_3px_rgba(255,255,255,0.32),0_1px_2px_rgba(0,0,0,0.06)]"
+              : "text-sepia"
           }`}
         >
           MHV Milagres
@@ -89,9 +91,9 @@ export function StickyNav() {
 
         <button
           type="button"
-          className={`inline-flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full border transition-colors duration-luxe ease-luxe focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:hidden ${
+          className={`inline-flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full border antialiased transition-colors duration-luxe ease-luxe focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:hidden [text-shadow:0_1px_3px_rgba(255,255,255,0.32),0_1px_2px_rgba(0,0,0,0.06)] ${
             overHero
-              ? "border-sand/25 text-sand hover:bg-white/10 focus-visible:outline-sand/50"
+              ? "border-petroleum/25 text-petroleum hover:bg-white/15 focus-visible:outline-petroleum/40"
               : "border-stone-200/70 text-petroleum hover:bg-white/60 focus-visible:outline-petroleum/40"
           }`}
           aria-expanded={menuOpen}
@@ -118,7 +120,7 @@ export function StickyNav() {
             menuOpen ? "flex" : "hidden md:flex"
           } ${
             overHero
-              ? "border-sand/15 bg-petroleum/90 backdrop-blur-md md:bg-transparent md:backdrop-blur-none"
+              ? "border-stone-200/50 bg-sand/96 backdrop-blur-md md:bg-transparent md:backdrop-blur-none"
               : "border-stone-200/60 bg-sand/98 backdrop-blur-md md:bg-transparent md:backdrop-blur-none"
           }`}
         >

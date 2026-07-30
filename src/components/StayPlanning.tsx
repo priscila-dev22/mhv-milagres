@@ -1,48 +1,32 @@
 import { useReveal } from "../hooks/useReveal";
 import { revealDelay } from "../utils/revealDelay";
 
-type ListCard = {
-  title: string;
-  type: "list";
-  items: string[];
-};
+const ESTADIA_BG_SRC = "/media/images/estadia/estadia.jpg?v=2";
 
-type TextCard = {
-  title: string;
-  type: "text";
-  body: string;
-};
+const ESTADIA_TITLE_SHADOW =
+  "[text-shadow:0_2px_10px_rgba(0,0,0,0.28),0_1px_3px_rgba(0,0,0,0.18)]";
 
-type Card = ListCard | TextCard;
+const ESTADIA_CAPTION_SHADOW =
+  "[text-shadow:0_2px_10px_rgba(0,0,0,0.26),0_1px_4px_rgba(0,0,0,0.16)]";
 
-const cards: Card[] = [
+const CHAMPAGNE = "#F1E6D2";
+
+const editorialBlocks = [
   {
-    title: "Check-in",
-    type: "list",
-    items: [
-      "Check-in a partir das 14h.",
-      "Early Check-in gratuito mediante disponibilidade.",
-      "Caso deseje garantir entrada antecipada, consulte nossa equipe.",
-    ],
+    title: "Conforto",
+    lines: ["Arquitetura pensada", "para descansar."],
   },
   {
-    title: "Check-out",
-    type: "list",
-    items: [
-      "Check-out até as 10h.",
-      "Late Check-out gratuito mediante disponibilidade.",
-      "Caso deseje garantir saída estendida, consulte nossa equipe.",
-    ],
+    title: "Privacidade",
+    lines: ["Casas exclusivas", "para viver Milagres."],
   },
   {
-    title: "Durante sua estadia",
-    type: "text",
-    body: "Nosso concierge poderá auxiliar com restaurantes, passeios, compras, experiências e suporte durante toda sua hospedagem.",
+    title: "Experiências",
+    lines: ["Vivências selecionadas", "para cada hóspede."],
   },
   {
-    title: "Suporte",
-    type: "text",
-    body: "Caso precise de qualquer ajuda durante sua estadia, basta entrar em contato com nossa equipe pelo WhatsApp.",
+    title: "Concierge",
+    lines: ["Tudo preparado", "antes da sua chegada."],
   },
 ];
 
@@ -53,37 +37,69 @@ export function StayPlanning() {
     <section
       ref={ref}
       id="estadia"
-      className={`section-pad-tight scroll-mt-[4.5rem] ${visible ? "section-visible" : ""}`}
+      className={`section-pad relative isolate scroll-mt-[4.5rem] overflow-hidden ${visible ? "section-visible" : ""}`}
     >
-      <div className="section-shell">
-        <header className="section-header mb-6 text-center sm:mb-8 sm:text-left">
-          <h2 className="section-title reveal-item">Planejando sua estadia</h2>
-        </header>
+      <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden>
+        <img
+          src={ESTADIA_BG_SRC}
+          alt=""
+          decoding="async"
+          className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-[52%_32%] sm:object-[38%_center] lg:object-[42%_center]"
+        />
+      </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5">
-          {cards.map((card, index) => (
-            <div
-              key={card.title}
-              className={`luxe-card flex h-full flex-col p-5 sm:p-6 reveal-item ${revealDelay(index + 1)}`}
+      <div
+        className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(to_right,rgba(15,36,40,0.34)_0%,rgba(15,36,40,0.14)_22%,rgba(15,36,40,0.04)_38%,transparent_52%)] sm:bg-[linear-gradient(to_right,rgba(15,36,40,0.28)_0%,rgba(15,36,40,0.1)_20%,transparent_42%)]"
+        aria-hidden
+      />
+
+      <div className="section-shell relative z-[2]">
+        <div className="max-w-[min(100%,19.5rem)] sm:max-w-[22.5rem] lg:max-w-[24rem]">
+          <header className="reveal-item mb-14 sm:mb-16 lg:mb-20">
+            <span
+              className="mb-4 block h-[0.5px] w-8 sm:mb-5 sm:w-9"
+              style={{ backgroundColor: CHAMPAGNE }}
+              aria-hidden
+            />
+            <h2
+              className={`section-title font-semibold text-[#FFFFFF] ${ESTADIA_TITLE_SHADOW} text-[clamp(2rem,3.45vw,3.35rem)]`}
             >
-              <h3 className="card-title">{card.title}</h3>
-              {card.type === "list" ? (
-                <ul className="mt-3 space-y-2 body-text text-[0.875rem] leading-[1.6]">
-                  {card.items.map((item) => (
-                    <li key={item} className="flex gap-2.5">
-                      <span
-                        className="mt-[0.5em] h-1 w-1 shrink-0 rounded-full bg-sepia/70"
-                        aria-hidden
-                      />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="mt-3 body-text text-[0.875rem] leading-[1.6]">{card.body}</p>
-              )}
-            </div>
-          ))}
+              Planejando sua estadia
+            </h2>
+          </header>
+
+          <div className="flex flex-col">
+            {editorialBlocks.map((block, index) => (
+              <div key={block.title}>
+                <article
+                  className={`reveal-item py-12 first:pt-0 sm:py-14 lg:py-16 ${revealDelay(index + 1)}`}
+                >
+                  <h3
+                    className={`font-serif text-[clamp(1.9rem,3.95vw,2.875rem)] font-semibold leading-[1.06] tracking-[-0.02em] text-[#FFFFFF] ${ESTADIA_TITLE_SHADOW}`}
+                  >
+                    {block.title}
+                  </h3>
+                  <p
+                    className={`mt-6 max-w-[22ch] font-sans text-[clamp(0.875rem,1.42vw,1rem)] font-light leading-[1.85] tracking-[0.025em] text-[#F1E6D2] sm:mt-7 ${ESTADIA_CAPTION_SHADOW}`}
+                  >
+                    {block.lines.map((line, lineIndex) => (
+                      <span key={line}>
+                        {lineIndex > 0 ? <br /> : null}
+                        {line}
+                      </span>
+                    ))}
+                  </p>
+                </article>
+                {index < editorialBlocks.length - 1 ? (
+                  <div
+                    className="h-[0.5px] w-full max-w-[9rem] opacity-55 sm:max-w-[10rem]"
+                    style={{ backgroundColor: CHAMPAGNE }}
+                    aria-hidden
+                  />
+                ) : null}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
