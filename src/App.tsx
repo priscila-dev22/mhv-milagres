@@ -2,6 +2,7 @@ import { AccommodationInfo } from "./components/AccommodationInfo";
 import { ConciergeServices } from "./components/ConciergeServices";
 import { Footer } from "./components/Footer";
 import { Gastronomy } from "./components/Gastronomy";
+import { GastronomyChapterTransition } from "./components/GastronomyChapterTransition";
 import { Hero } from "./components/Hero";
 import { HospitalityEditorial } from "./components/HospitalityEditorial";
 import { JetSki } from "./components/JetSki";
@@ -23,6 +24,7 @@ export default function App() {
         <StayPlanning />
         <HospitalityEditorial />
         <AccommodationInfo />
+        <GastronomyChapterTransition />
         <Gastronomy />
         <ToursMosaic />
         <JetSki />

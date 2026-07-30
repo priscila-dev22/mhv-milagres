@@ -1,0 +1,43 @@
+---
+description: Commit e push após alterações para deploy automático na Vercel
+alwaysApply: true
+---
+
+# Deploy Vercel (MHV Milagres)
+
+Este projeto publica na **Vercel** via **`git push` na branch `main`**. Trate deploy como parte do trabalho, não como passo opcional.
+
+## Quando aplicar
+
+Ao **concluir** uma tarefa com mudanças no repo (código, estilos, assets em `public/`, config), **se o usuário não pediu explicitamente para não commitar/pushar**:
+
+1. Rode `git status` e confira o diff.
+2. **Não** inclua `.env`, credenciais ou segredos.
+3. Faça **commit** com mensagem curta em português (foco no *porquê*).
+4. Faça **`git push origin main`** para disparar o deploy na Vercel.
+5. Informe o usuário: commit (hash curto) + que o deploy na Vercel foi acionado.
+
+## Quando NÃO aplicar
+
+- Usuário pediu só análise, revisão ou plano, sem implementação.
+- Não há alterações para commitar.
+- Usuário disse explicitamente para não commitar, não fazer push ou guardar localmente.
+- Commit falhou por hook de pre-commit → corrigir e **novo** commit (nunca `--no-verify` salvo pedido explícito).
+
+## Git (obrigatório)
+
+- Nunca alterar `git config`.
+- Nunca `push --force` em `main`.
+- Nunca commitar arquivos claramente sensíveis.
+
+## Se o push for bloqueado
+
+Peça ao usuário para aprovar o push ou rodar localmente:
+
+```powershell
+git push origin main
+```
+
+## Build rápido
+
+Antes do push, rode `npm run build` quando a mudança for em `src/` ou config de build; avise se falhar e não faça push até corrigir.

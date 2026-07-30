@@ -133,6 +133,22 @@
   .skip-link {
     @apply absolute left-4 top-4 z-[100] -translate-y-[200%] rounded-full bg-petroleum px-5 py-3 font-sans text-sm font-semibold text-sand transition-transform duration-150 focus:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-sand/50;
   }
+
+  .chapter-pause-item {
+    @apply translate-y-5 opacity-0 transition-[opacity,transform] duration-[1050ms] ease-[cubic-bezier(0.25,0.1,0.25,1)];
+  }
+
+  .chapter-pause-visible .chapter-pause-item {
+    @apply translate-y-0 opacity-100;
+  }
+
+  .chapter-pause-delay-1 {
+    transition-delay: 110ms;
+  }
+
+  .chapter-pause-delay-2 {
+    transition-delay: 240ms;
+  }
 }
 
 /* Hero entrance animations */
@@ -205,6 +221,12 @@
   }
 
   .reveal-item {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .chapter-pause-item {
     opacity: 1;
     transform: none;
     transition: none;
