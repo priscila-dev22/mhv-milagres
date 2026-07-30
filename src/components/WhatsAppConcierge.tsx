@@ -1,4 +1,4 @@
-const WHATSAPP_NUMBER = "5500000000000";
+const WHATSAPP_NUMBER = "5582999486130";
 
 const WHATSAPP_MESSAGE =
   "Olá! Estou hospedado pela MHV Milagres e preciso de ajuda.";
@@ -27,7 +27,7 @@ export function WhatsAppConcierge() {
       rel="noopener noreferrer"
       aria-label="Falar com o concierge pelo WhatsApp"
       title="Falar com o concierge"
-      className="group fixed z-40 flex items-center justify-center gap-2 rounded-full border border-sepia/30 bg-petroleum text-sand shadow-[0_2px_14px_rgba(23,52,58,0.12)] transition-[background-color,box-shadow,transform,border-color] duration-luxe ease-luxe hover:border-sepia/50 hover:bg-sepia hover:shadow-[0_6px_20px_rgba(23,52,58,0.14)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/40 active:scale-[0.98] bottom-[max(1.25rem,env(safe-area-inset-bottom,0px))] right-5 h-10 w-10 sm:bottom-6 sm:right-6 sm:h-auto sm:w-auto sm:px-4 sm:py-2.5"
+      className="group fixed z-40 flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center gap-2 rounded-full border border-sepia/30 bg-petroleum text-sand shadow-[0_2px_14px_rgba(23,52,58,0.12)] transition-[background-color,box-shadow,transform,border-color] duration-luxe ease-luxe hover:border-sepia/50 hover:bg-sepia hover:shadow-[0_6px_20px_rgba(23,52,58,0.14)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/40 active:scale-[0.98] bottom-[max(1.25rem,env(safe-area-inset-bottom,0px))] right-5 sm:bottom-6 sm:right-6 sm:h-auto sm:w-auto sm:min-h-[44px] sm:min-w-0 sm:px-4 sm:py-2.5"
     >
       <WhatsAppIcon />
       <span className="hidden font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.12em] sm:inline">

@@ -95,7 +95,8 @@ export function Hero() {
           <div className="hero-animate hero-animate-delay-4 mt-7 sm:mt-8">
             <a
               href="#mapa"
-              className="hero-cta group relative inline-flex items-center gap-3 overflow-hidden rounded-full border border-sand/30 bg-sand/95 px-7 py-3 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-petroleum shadow-[0_4px_20px_rgba(23,52,58,0.14)] transition-[background-color,box-shadow,transform,border-color] duration-500 ease-out hover:border-sand hover:bg-white hover:shadow-[0_8px_28px_rgba(23,52,58,0.16)] active:scale-[0.98]"
+              aria-label="Explorar o mapa da Rota Ecológica dos Milagres"
+              className="hero-cta group relative inline-flex min-h-[44px] items-center gap-3 overflow-hidden rounded-full border border-sand/30 bg-sand/95 px-7 py-3 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-petroleum shadow-[0_4px_20px_rgba(23,52,58,0.14)] transition-[background-color,box-shadow,transform,border-color] duration-500 ease-out hover:border-sand hover:bg-white hover:shadow-[0_8px_28px_rgba(23,52,58,0.16)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sand/60 active:scale-[0.98]"
             >
               <span
                 className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/35 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"

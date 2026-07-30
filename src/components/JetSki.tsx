@@ -1,13 +1,28 @@
 import { useReveal } from "../hooks/useReveal";
 
+const JETSKI_WHATSAPP_NUMBER: string = "5582993623883";
+
+const JETSKI_INSTAGRAM_URL: string = "https://www.instagram.com/pri.ribe/";
+
+const JETSKI_WHATSAPP_MESSAGE =
+  "Olá! Vi o passeio de Jet Ski no guia da MHV Milagres e gostaria de consultar horários e disponibilidade.";
+
+const isJetskiWhatsAppConfigured = JETSKI_WHATSAPP_NUMBER !== "INSERIR_NUMERO_AQUI";
+const isJetskiInstagramConfigured =
+  JETSKI_INSTAGRAM_URL !== "INSERIR_URL_DIRETA_AQUI" && JETSKI_INSTAGRAM_URL.startsWith("http");
+
+const jetskiWhatsAppHref = isJetskiWhatsAppConfigured
+  ? `https://wa.me/${JETSKI_WHATSAPP_NUMBER}?text=${encodeURIComponent(JETSKI_WHATSAPP_MESSAGE)}`
+  : undefined;
+
 const prices = [
   { duration: "20 min", value: "R$ 200" },
   { duration: "30 min", value: "R$ 300" },
   { duration: "1 h", value: "R$ 500" },
 ];
 
-const bookHref =
-  "https://www.google.com/maps/search/jetski+Japaratinga+AL/?hl=pt";
+const actionButtonClass =
+  "btn-pill-light inline-flex min-h-[44px] w-full items-center justify-center gap-2 sm:w-auto";
 
 export function JetSki() {
   const { ref, visible } = useReveal<HTMLElement>();
@@ -47,10 +62,15 @@ export function JetSki() {
 
             <div className="reveal-item reveal-item-delay-3 mt-6 overflow-hidden rounded-xl border border-white/15 bg-petroleum/55">
               <table className="w-full border-collapse text-left font-sans text-[0.9375rem] tracking-[0.01em]">
+                <caption className="sr-only">Tabela de preços do passeio de Jet Ski</caption>
                 <thead>
                   <tr className="border-b border-white/12 text-[0.6875rem] uppercase tracking-[0.12em] text-sand/65">
-                    <th className="w-1/2 px-5 py-3 font-semibold sm:px-6">Duração</th>
-                    <th className="w-1/2 px-5 py-3 font-semibold sm:px-6">Valor</th>
+                    <th scope="col" className="w-1/2 px-5 py-3 font-semibold sm:px-6">
+                      Duração
+                    </th>
+                    <th scope="col" className="w-1/2 px-5 py-3 font-semibold sm:px-6">
+                      Valor
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -67,21 +87,50 @@ export function JetSki() {
               </table>
             </div>
 
-            <div className="reveal-item reveal-item-delay-4 mt-6">
-              <a
-                href={bookHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-pill-light group inline-flex gap-2.5"
-              >
-                Agendar passeio
-                <span
-                  aria-hidden
-                  className="transition-transform duration-luxe ease-luxe group-hover:translate-x-0.5"
+            <div className="reveal-item reveal-item-delay-4 mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+              {isJetskiWhatsAppConfigured ? (
+                <a
+                  href={jetskiWhatsAppHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Agendar passeio de Jet Ski pelo WhatsApp do fornecedor"
+                  className={actionButtonClass}
                 >
-                  →
-                </span>
-              </a>
+                  Agendar pelo WhatsApp
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  disabled
+                  aria-label="Agendar pelo WhatsApp — contato do fornecedor ainda não configurado"
+                  className={`${actionButtonClass} cursor-not-allowed opacity-60`}
+                  title="TODO: inserir JETSKI_WHATSAPP_NUMBER"
+                >
+                  Agendar pelo WhatsApp
+                </button>
+              )}
+
+              {isJetskiInstagramConfigured ? (
+                <a
+                  href={JETSKI_INSTAGRAM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Ver perfil oficial do fornecedor de Jet Ski no Instagram"
+                  className={`${actionButtonClass} border-white/20 bg-white/10 text-sand hover:border-white/35 hover:bg-white/15`}
+                >
+                  Ver Instagram
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  disabled
+                  aria-label="Ver Instagram — perfil do fornecedor ainda não configurado"
+                  className={`${actionButtonClass} cursor-not-allowed border-white/20 bg-white/10 text-sand opacity-60`}
+                  title="TODO: inserir JETSKI_INSTAGRAM_URL"
+                >
+                  Ver Instagram
+                </button>
+              )}
             </div>
 
             <p className="reveal-item reveal-item-delay-5 mt-4 font-sans text-xs font-normal leading-[1.6] tracking-[0.01em] text-white/72">
@@ -94,3 +143,5 @@ export function JetSki() {
     </section>
   );
 }
+
+export { JETSKI_INSTAGRAM_URL, JETSKI_WHATSAPP_NUMBER };

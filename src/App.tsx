@@ -13,8 +13,11 @@ import { WhatsAppConcierge } from "./components/WhatsAppConcierge";
 export default function App() {
   return (
     <div className="min-h-screen bg-sand antialiased">
+      <a href="#conteudo-principal" className="skip-link">
+        Pular para o conteúdo
+      </a>
       <StickyNav />
-      <main className="overflow-x-hidden">
+      <main id="conteudo-principal" className="overflow-x-hidden" tabIndex={-1}>
         <Hero />
         <StayPlanning />
         <AccommodationInfo />

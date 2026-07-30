@@ -11,6 +11,15 @@
     background-color: rgba(23, 52, 58, 0.14);
     color: #17343a;
   }
+
+  :focus {
+    outline: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgba(23, 52, 58, 0.5);
+    outline-offset: 2px;
+  }
 }
 
 @layer components {
@@ -75,7 +84,7 @@
   }
 
   .btn-pill {
-    @apply inline-flex items-center justify-center rounded-full font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.12em] transition-[background-color,border-color,color,box-shadow,transform] duration-luxe ease-luxe active:scale-[0.98];
+    @apply inline-flex min-h-[44px] items-center justify-center rounded-full font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.12em] transition-[background-color,border-color,color,box-shadow,transform] duration-luxe ease-luxe active:scale-[0.98] sm:min-h-0;
   }
 
   .btn-pill-primary {
@@ -119,6 +128,10 @@
   }
   .reveal-item-delay-6 {
     transition-delay: 480ms;
+  }
+
+  .skip-link {
+    @apply absolute left-4 top-4 z-[100] -translate-y-[200%] rounded-full bg-petroleum px-5 py-3 font-sans text-sm font-semibold text-sand transition-transform duration-150 focus:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-sand/50;
   }
 }
 
@@ -199,5 +212,9 @@
 
   .luxe-card-hover:hover {
     transform: none;
+  }
+
+  .luxe-media {
+    transform: none !important;
   }
 }

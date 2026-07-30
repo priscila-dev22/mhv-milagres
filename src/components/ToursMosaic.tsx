@@ -55,7 +55,8 @@ export function ToursMosaic() {
               href={s.maps}
               target="_blank"
               rel="noopener noreferrer"
-              className={`group relative flex min-h-[220px] flex-col justify-end overflow-hidden rounded-2xl border border-stone-200/40 shadow-[0_2px_14px_rgba(23,52,58,0.04)] transition-[transform,box-shadow,border-color] duration-luxe ease-luxe hover:-translate-y-px hover:border-stone-200/65 hover:shadow-[0_6px_24px_rgba(23,52,58,0.07)] ${s.span} ${i === 2 ? "md:max-h-[220px]" : ""} reveal-item ${revealDelay(i + 2)}`}
+              aria-label={`Ver ${s.title} no Google Maps`}
+              className={`group relative flex min-h-[220px] flex-col justify-end overflow-hidden rounded-2xl border border-stone-200/40 shadow-[0_2px_14px_rgba(23,52,58,0.04)] transition-[transform,box-shadow,border-color] duration-luxe ease-luxe hover:-translate-y-px hover:border-stone-200/65 hover:shadow-[0_6px_24px_rgba(23,52,58,0.07)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/40 ${s.span} ${i === 2 ? "md:max-h-[220px]" : ""} reveal-item ${revealDelay(i + 2)}`}
             >
               <img
                 src={s.image}

@@ -26,7 +26,8 @@ export function Footer() {
             href="https://givalto.stays.net/pt/"
             target="_blank"
             rel="noopener noreferrer"
-            className="link-footer"
+            aria-label="Contato e reservas no Stays.net"
+            className="link-footer min-h-[44px] inline-flex items-center sm:min-h-0"
           >
             Contato &amp; reservas (Stays.net)
           </a>
@@ -34,7 +35,8 @@ export function Footer() {
             href="https://www.google.com/search?q=roteiro+ecológico+milagres+sustentabilidade"
             target="_blank"
             rel="noopener noreferrer"
-            className="link-footer"
+            aria-label="Pesquisar sustentabilidade na região dos Milagres"
+            className="link-footer min-h-[44px] inline-flex items-center sm:min-h-0"
           >
             Sustentabilidade na região
           </a>
@@ -42,7 +44,8 @@ export function Footer() {
             href="https://givalto.stays.net/pt/"
             target="_blank"
             rel="noopener noreferrer"
-            className="link-footer"
+            aria-label="Termos de reserva no Stays.net"
+            className="link-footer min-h-[44px] inline-flex items-center sm:min-h-0"
           >
             Termos de reserva
           </a>

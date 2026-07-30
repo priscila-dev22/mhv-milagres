@@ -50,7 +50,7 @@ export function StickyNav() {
   const linkClass = (href: string) => {
     const isActive = activeId === href.slice(1);
     const base =
-      "inline-block rounded-full px-2.5 py-1.5 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.1em] transition-[color,background-color,opacity] duration-luxe ease-luxe focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:px-3 md:py-2 md:text-[0.75rem]";
+      "inline-flex min-h-[44px] items-center rounded-full px-2.5 py-2 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.1em] transition-[color,background-color,opacity] duration-luxe ease-luxe focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:min-h-0 md:px-3 md:py-2 md:text-[0.75rem]";
 
     if (overHero) {
       return `${base} ${
@@ -89,10 +89,10 @@ export function StickyNav() {
 
         <button
           type="button"
-          className={`inline-flex h-9 w-9 items-center justify-center rounded-full border transition-colors duration-luxe ease-luxe md:hidden ${
+          className={`inline-flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full border transition-colors duration-luxe ease-luxe focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:hidden ${
             overHero
-              ? "border-sand/25 text-sand hover:bg-white/10"
-              : "border-stone-200/70 text-petroleum hover:bg-white/60"
+              ? "border-sand/25 text-sand hover:bg-white/10 focus-visible:outline-sand/50"
+              : "border-stone-200/70 text-petroleum hover:bg-white/60 focus-visible:outline-petroleum/40"
           }`}
           aria-expanded={menuOpen}
           aria-controls="mobile-nav"

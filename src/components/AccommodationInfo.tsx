@@ -60,7 +60,7 @@ function AccordionItem({ title, body, isOpen, onToggle, triggerId, panelId }: Ac
           aria-expanded={isOpen}
           aria-controls={panelId}
           onClick={onToggle}
-          className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors duration-luxe ease-luxe hover:bg-sand/25 sm:px-6"
+          className="flex w-full min-h-[44px] items-center justify-between gap-4 px-5 py-4 text-left transition-colors duration-luxe ease-luxe hover:bg-sand/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-petroleum/40 sm:px-6"
         >
           <span className="font-sans text-[0.9375rem] font-semibold tracking-[0.01em] text-petroleum">
             {title}
