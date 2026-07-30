@@ -73,7 +73,7 @@ export function MilagresExperiencesEditorial() {
         </p>
         <h2
           id="experiencias-titulo"
-          className="experience-header-item experience-header-delay-1 mt-5 font-serif text-[clamp(2rem,4.2vw,3.25rem)] font-medium leading-[1.08] tracking-[-0.02em] text-petroleum"
+          className="experience-header-item experience-header-delay-1 mt-5 text-balance font-serif text-[clamp(1.875rem,4.2vw,3.25rem)] font-medium leading-[1.08] tracking-[-0.02em] text-petroleum max-[389px]:text-[clamp(1.75rem,8.5vw,2rem)]"
         >
           Um dia em Milagres
         </h2>
@@ -98,13 +98,18 @@ export function MilagresExperiencesEditorial() {
           role="region"
           aria-roledescription="carrossel"
           aria-label="Galeria Um dia em Milagres"
-          className="experience-gallery flex w-full cursor-grab snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] active:cursor-grabbing sm:gap-5 md:gap-6 lg:gap-6 [&::-webkit-scrollbar]:hidden px-[calc((100%-min(86vw,22rem))/2)] lg:px-0"
+          className="experience-gallery flex w-full max-w-[100vw] cursor-grab snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] active:cursor-grabbing sm:gap-5 md:gap-6 lg:gap-6 [&::-webkit-scrollbar]:hidden max-lg:px-[calc((100%-84vw)/2)] max-[389px]:px-[calc((100%-82vw)/2)] lg:px-0"
         >
           {gallerySlides.map(({ experience, extendedIndex, isClone, eagerLoad }) => {
             const isFocused = extendedIndex === focusedExtendedIndex;
             const objectStyle = {
               "--exp-pos": experience.objectPosition,
-              "--exp-pos-md": experience.objectPositionMd ?? experience.objectPosition,
+              "--exp-pos-md":
+                experience.objectPositionMd ?? experience.objectPosition,
+              "--exp-pos-lg":
+                experience.objectPositionLg ??
+                experience.objectPositionMd ??
+                experience.objectPosition,
             } as CSSProperties;
 
             return (
@@ -114,9 +119,9 @@ export function MilagresExperiencesEditorial() {
                 aria-hidden={isClone ? true : undefined}
                 className={`experience-slide shrink-0 snap-center transition-[transform,opacity] duration-[650ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] motion-reduce:transition-none ${
                   isFocused ? "scale-[1.015] opacity-100" : "scale-100 opacity-[0.68]"
-                } w-[min(86vw,22rem)] sm:w-[min(72vw,28rem)] md:w-[min(64vw,42rem)] lg:w-[57vw] lg:max-w-[54rem]`}
+                } w-[82vw] min-[390px]:w-[84vw] md:w-[58vw] lg:w-[57vw] lg:max-w-[54rem] xl:w-[56vw] xl:max-w-[52rem]`}
               >
-                <div className="experience-slide-media overflow-hidden rounded-sm bg-stone-200/30 aspect-[4/5] sm:aspect-[5/4] md:aspect-[3/2] lg:h-[clamp(22rem,62vh,68vh)] lg:max-h-[68vh] lg:aspect-auto">
+                <div className="experience-slide-media overflow-hidden rounded-sm bg-stone-200/30 aspect-[4/5] max-h-[min(70vh,26.5rem)] sm:aspect-[5/4] sm:max-h-[min(68vh,28rem)] md:aspect-[3/2] md:max-h-none lg:h-[clamp(20rem,58vh,68vh)] lg:max-h-[68vh] lg:aspect-auto">
                   <img
                     src={experience.image}
                     alt={isClone ? "" : experience.alt}
@@ -135,7 +140,7 @@ export function MilagresExperiencesEditorial() {
         </div>
       </div>
 
-      <div className="section-shell mt-[clamp(2rem,5vh,3rem)] text-center">
+      <div className="section-shell mt-[clamp(1.75rem,4.5vh,3rem)] px-4 text-center sm:px-5 md:px-6">
         <p className="font-sans text-[0.625rem] font-semibold uppercase tracking-[0.22em] text-sepia/90">
           {active.moment}
         </p>

@@ -7,8 +7,12 @@ export type MilagresExperience = {
   support: string;
   width: number;
   height: number;
+  /** Mobile (<768px), crop vertical 4:5 */
   objectPosition: string;
+  /** Tablet (768px+) */
   objectPositionMd?: string;
+  /** Desktop (1024px+) */
+  objectPositionLg?: string;
 };
 
 export const milagresExperiences: MilagresExperience[] = [
@@ -21,8 +25,9 @@ export const milagresExperiences: MilagresExperience[] = [
     support: "A brisa, o mar e o primeiro silêncio do dia.",
     width: 4032,
     height: 2268,
-    objectPosition: "48% 58%",
-    objectPositionMd: "50% 52%",
+    objectPosition: "46% 62%",
+    objectPositionMd: "48% 56%",
+    objectPositionLg: "50% 52%",
   },
   {
     id: "cafe-da-manha",
@@ -33,8 +38,9 @@ export const milagresExperiences: MilagresExperience[] = [
     support: "Frutas frescas e pequenos rituais para aproveitar o tempo.",
     width: 1600,
     height: 1071,
-    objectPosition: "50% 46%",
-    objectPositionMd: "50% 44%",
+    objectPosition: "50% 48%",
+    objectPositionMd: "50% 46%",
+    objectPositionLg: "48% 42%",
   },
   {
     id: "area-gourmet",
@@ -45,8 +51,9 @@ export const milagresExperiences: MilagresExperience[] = [
     support: "Ambientes preparados para reunir, celebrar e permanecer.",
     width: 4032,
     height: 3024,
-    objectPosition: "50% 48%",
-    objectPositionMd: "50% 45%",
+    objectPosition: "50% 52%",
+    objectPositionMd: "50% 48%",
+    objectPositionLg: "50% 44%",
   },
   {
     id: "fim-de-tarde",
@@ -57,8 +64,9 @@ export const milagresExperiences: MilagresExperience[] = [
     support: "A luz se reflete na água e Milagres desacelera outra vez.",
     width: 941,
     height: 1672,
-    objectPosition: "54% 36%",
-    objectPositionMd: "52% 32%",
+    objectPosition: "56% 40%",
+    objectPositionMd: "54% 34%",
+    objectPositionLg: "52% 30%",
   },
   {
     id: "casa-noite",
@@ -69,7 +77,8 @@ export const milagresExperiences: MilagresExperience[] = [
     support: "Privacidade e conforto para encerrar o dia no seu ritmo.",
     width: 3213,
     height: 5712,
-    objectPosition: "50% 42%",
-    objectPositionMd: "50% 38%",
+    objectPosition: "50% 38%",
+    objectPositionMd: "50% 36%",
+    objectPositionLg: "50% 32%",
   },
 ];

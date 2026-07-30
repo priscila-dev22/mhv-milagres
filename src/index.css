@@ -221,6 +221,12 @@
       object-position: var(--exp-pos-md);
     }
   }
+
+  @media (min-width: 1024px) {
+    .experience-slide-img {
+      object-position: var(--exp-pos-lg);
+    }
+  }
 }
 
 /* Hero entrance animations */

@@ -22,6 +22,7 @@ export function useExperienceCarousel(slideCount: number) {
   const dragState = useRef({ active: false, startX: 0, scrollLeft: 0, pointerId: -1 });
   const scrollRaf = useRef<number | null>(null);
   const loopAdjusting = useRef(false);
+  const focusedExtendedRef = useRef(1);
 
   const setSlideRef = useCallback((index: number, node: HTMLElement | null) => {
     slideRefs.current[index] = node;
@@ -95,6 +96,7 @@ export function useExperienceCarousel(slideCount: number) {
 
       setFocusedExtendedIndex(resolvedExtended);
       setActiveIndex(extendedToReal(resolvedExtended, slideCount));
+      focusedExtendedRef.current = resolvedExtended;
     },
     [applyLoopJump, slideCount],
   );
@@ -121,7 +123,10 @@ export function useExperienceCarousel(slideCount: number) {
     if (!gallery) return;
 
     const onScrollEnd = () => syncFromScroll(true);
-    const onResize = () => syncFromScroll(false);
+    const onResize = () => {
+      scrollToExtended(focusedExtendedRef.current, "auto");
+      syncFromScroll(false);
+    };
 
     gallery.addEventListener("scroll", scheduleSync, { passive: true });
     gallery.addEventListener("scrollend", onScrollEnd);
@@ -135,7 +140,7 @@ export function useExperienceCarousel(slideCount: number) {
         window.cancelAnimationFrame(scrollRaf.current);
       }
     };
-  }, [scheduleSync, syncFromScroll]);
+  }, [scheduleSync, scrollToExtended, syncFromScroll]);
 
   const scrollToRealIndex = useCallback(
     (realIndex: number, behavior: ScrollBehavior = "smooth") => {
@@ -199,6 +204,7 @@ export function useExperienceCarousel(slideCount: number) {
       state.active = false;
       gallery.releasePointerCapture(event.pointerId);
       syncFromScroll(true);
+      window.setTimeout(() => syncFromScroll(true), 120);
     },
     [syncFromScroll],
   );
