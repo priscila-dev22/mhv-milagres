@@ -631,6 +631,71 @@
     scrollbar-width: thin;
     scrollbar-color: rgba(23, 52, 58, 0.2) transparent;
   }
+
+  .route-map-leaflet {
+    z-index: 0;
+    font-family: inherit;
+  }
+
+  .route-map-leaflet .leaflet-control-zoom a {
+    @apply text-petroleum;
+  }
+
+  .route-map-leaflet-popup .leaflet-popup-content-wrapper {
+    @apply rounded-sm border border-stone-200/60 shadow-[0_4px_20px_rgba(23,52,58,0.1)];
+  }
+
+  .route-map-leaflet-popup .leaflet-popup-content {
+    margin: 12px 14px;
+  }
+
+  .route-map-pin {
+    display: block;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 9999px;
+    border: 2px solid #f8f4ed;
+    background: #17343a;
+    box-shadow: 0 2px 8px rgba(23, 52, 58, 0.28);
+    transition: transform 200ms ease, box-shadow 200ms ease;
+  }
+
+  .route-map-pin--active {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 3px rgba(23, 52, 58, 0.2);
+  }
+
+  .route-map-pin--gastronomia {
+    border-radius: 4px;
+    transform: rotate(45deg);
+  }
+
+  .route-map-pin--gastronomia.route-map-pin--active {
+    transform: rotate(45deg) scale(1.12);
+  }
+
+  .route-map-pin--passeios {
+    border-radius: 9999px 9999px 9999px 2px;
+    transform: rotate(-45deg);
+  }
+
+  .route-map-pin--passeios.route-map-pin--active {
+    transform: rotate(-45deg) scale(1.12);
+  }
+
+  .route-map-pin--beach-clubs {
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 9999px;
+    background: linear-gradient(180deg, #17343a 55%, #f8f4ed 55%);
+  }
+
+  .route-map-pin--pontos-uteis {
+    width: 0.55rem;
+    height: 0.55rem;
+    margin: 0.35rem;
+    border-width: 1.5px;
+  }
 }
 
 /* Hero entrance animations */

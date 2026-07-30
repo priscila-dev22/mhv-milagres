@@ -1,18 +1,22 @@
 import { useEffect, useId, useMemo, useState } from "react";
 import {
   ROUTE_MAP_FULL_URL,
+  mapLocationCategoryLabel,
+  mapLocationHasMarker,
+  mapLocations,
+  mapLocationsWithMarkers,
   routeMapCategories,
   routeMapDirectionsUrl,
-  routeMapEmbedForCategory,
-  routeMapPlaceLocationHref,
+  routeMapOpenMapsHref,
   routeMapPlaces,
   routeMapSequence,
   routeMapZones,
+  type MapLocation,
   type RouteMapCategoryId,
-  type RouteMapPlace,
 } from "../data/routeMapPlaces";
 import { useReveal } from "../hooks/useReveal";
 import { WHATSAPP_NUMBER } from "./WhatsAppConcierge";
+import { RouteMapLeaflet, RouteMapMapShell } from "./RouteMapLeaflet";
 
 const CONCIERGE_WHATSAPP_MESSAGE =
   "Olá! Estou hospedado pela MHV Milagres e gostaria de ajuda para montar minha rota pela região.";
@@ -29,176 +33,33 @@ const filterBtnClass = (active: boolean) =>
       : "border-transparent text-petroleum/70 hover:border-petroleum/25 hover:text-petroleum"
   }`;
 
-type MapFrameProps = {
-  embedSrc: string;
-  showMapOverlay: boolean;
-  overlayId: string;
-  onActivateMap: () => void;
-};
-
-function MapFrame({
-  embedSrc,
-  showMapOverlay,
-  overlayId,
-  onActivateMap,
-}: MapFrameProps) {
-  return (
-    <div className="route-map-frame relative h-[clamp(420px,52vh,520px)] w-full overflow-hidden rounded-sm border border-stone-200/50 bg-stone-200/25 lg:h-full lg:min-h-[620px] lg:max-h-[760px]">
-      {showMapOverlay && (
-        <button
-          type="button"
-          id={overlayId}
-          className="absolute inset-0 z-10 flex items-center justify-center bg-sand/55 px-6 backdrop-blur-[2px] transition-colors duration-300 hover:bg-sand/65 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/40"
-          onClick={onActivateMap}
-          aria-label="Ativar interação com o mapa da Rota Ecológica dos Milagres"
-        >
-          <span className="max-w-[16rem] text-center font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-petroleum/90">
-            Toque para interagir com o mapa
-          </span>
-        </button>
-      )}
-      <iframe
-        key={embedSrc}
-        title="Mapa — São Miguel dos Milagres e Rota Ecológica"
-        className={`h-full w-full grayscale-[0.08] contrast-[1.02] sepia-[0.04] transition-[filter] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:grayscale-0 ${showMapOverlay ? "pointer-events-none" : "pointer-events-auto"}`}
-        loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-        src={embedSrc}
-        tabIndex={showMapOverlay ? -1 : 0}
-      />
-    </div>
-  );
-}
-
-type PlaceDetailPanelProps = {
-  place: RouteMapPlace;
-  categoryLabel: string;
-  onClose: () => void;
-};
-
-function PlaceDetailPanel({
-  place,
-  categoryLabel,
-  onClose,
-}: PlaceDetailPanelProps) {
-  const whatsappHref = place.whatsapp
-    ? place.whatsapp.startsWith("http")
-      ? place.whatsapp
-      : `https://wa.me/${place.whatsapp.replace(/\D/g, "")}`
-    : null;
-
-  return (
-    <div
-      className="route-map-detail mb-3 rounded-sm border border-stone-200/55 bg-white/95 px-4 py-4 shadow-[0_4px_20px_rgba(23,52,58,0.08)] sm:px-5"
-      role="region"
-      aria-label={`Detalhes de ${place.name}`}
-    >
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <p className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-sepia/85">
-            {categoryLabel}
-          </p>
-          <h3 className="mt-1 font-serif text-lg font-medium leading-snug text-petroleum">
-            {place.name}
-          </h3>
-        </div>
-        <button
-          type="button"
-          className="shrink-0 rounded-sm p-2 font-sans text-xs font-medium uppercase tracking-wider text-petroleum/70 transition-colors hover:text-petroleum focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/40"
-          onClick={onClose}
-          aria-label="Fechar detalhes do local"
-        >
-          Fechar
-        </button>
-      </div>
-      {place.description ? (
-        <p className="mt-2 font-sans text-[0.8125rem] leading-relaxed text-stone-600">
-          {place.description}
-        </p>
-      ) : null}
-      {place.address ? (
-        <p className="mt-2 font-sans text-[0.8125rem] leading-relaxed text-stone-600">
-          {place.address}
-        </p>
-      ) : null}
-      <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-2">
-        {place.instagram ? (
-          <li>
-            <a
-              href={place.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={textLinkClass}
-              aria-label={`Instagram de ${place.name}`}
-            >
-              Instagram
-            </a>
-          </li>
-        ) : null}
-        {whatsappHref ? (
-          <li>
-            <a
-              href={whatsappHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={textLinkClass}
-              aria-label={`WhatsApp de ${place.name}`}
-            >
-              WhatsApp
-            </a>
-          </li>
-        ) : null}
-        <li>
-          <a
-            href={routeMapPlaceLocationHref(place)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={textLinkClass}
-            aria-label={`Ver localização de ${place.name}`}
-          >
-            Localização
-          </a>
-        </li>
-      </ul>
-    </div>
-  );
-}
-
 export function RouteMap() {
-  const overlayId = useId();
   const searchId = useId();
   const { ref, visible } = useReveal<HTMLElement>(0.06);
 
   const [activeCategory, setActiveCategory] = useState<RouteMapCategoryId>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
-  const [mapInteractive, setMapInteractive] = useState(false);
-  const [compactMap, setCompactMap] = useState(false);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 1023px)");
-    const update = () => {
-      setCompactMap(mediaQuery.matches);
-      if (!mediaQuery.matches) setMapInteractive(true);
-    };
-    update();
-    mediaQuery.addEventListener("change", update);
-    return () => mediaQuery.removeEventListener("change", update);
-  }, []);
 
   const filteredPlaces = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
-    return routeMapPlaces.filter((place) => {
+    return mapLocations.filter((place) => {
       const categoryMatch =
         activeCategory === "all" || place.category === activeCategory;
       if (!categoryMatch) return false;
       if (!q) return true;
       return (
         place.name.toLowerCase().includes(q) ||
-        place.region.toLowerCase().includes(q)
+        place.region.toLowerCase().includes(q) ||
+        place.address.toLowerCase().includes(q)
       );
     });
   }, [activeCategory, searchQuery]);
+
+  const markerPlaces = useMemo(
+    () => mapLocationsWithMarkers(filteredPlaces),
+    [filteredPlaces],
+  );
 
   useEffect(() => {
     if (!selectedPlaceId) return;
@@ -206,35 +67,31 @@ export function RouteMap() {
     if (!stillVisible) setSelectedPlaceId(null);
   }, [filteredPlaces, selectedPlaceId]);
 
-  const embedSrc = useMemo(
-    () =>
-      routeMapEmbedForCategory(
-        activeCategory,
-        filteredPlaces,
-        selectedPlaceId,
-      ),
-    [activeCategory, filteredPlaces, selectedPlaceId],
-  );
-
   const selectedPlace = useMemo(
     () =>
       selectedPlaceId
-        ? routeMapPlaces.find((p) => p.id === selectedPlaceId) ?? null
+        ? mapLocations.find((p) => p.id === selectedPlaceId) ?? null
         : null,
     [selectedPlaceId],
   );
 
-  const showMapOverlay = compactMap && !mapInteractive;
+  const mapFocusPlace =
+    selectedPlace && mapLocationHasMarker(selectedPlace) ? selectedPlace : null;
 
-  const focusPlace = (place: RouteMapPlace) => {
+  const fitKey = useMemo(
+    () =>
+      `${activeCategory}|${searchQuery.trim()}|${markerPlaces.map((p) => p.id).join(",")}`,
+    [activeCategory, markerPlaces, searchQuery],
+  );
+
+  const focusPlace = (place: MapLocation) => {
     setSelectedPlaceId(place.id);
-    if (compactMap) setMapInteractive(true);
   };
 
-  const activateMap = () => setMapInteractive(true);
-
-  const categoryLabel = (categoryId: RouteMapPlace["category"]) =>
-    routeMapCategories.find((c) => c.id === categoryId)?.label ?? categoryId;
+  const handleCategoryChange = (categoryId: RouteMapCategoryId) => {
+    setActiveCategory(categoryId);
+    setSelectedPlaceId(null);
+  };
 
   return (
     <section
@@ -283,7 +140,7 @@ export function RouteMap() {
             </div>
 
             <div
-              className="route-map-filters -mx-1 flex snap-x snap-mandatory gap-2 overflow-x-auto pb-1 pt-6 lg:pt-0 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              className="route-map-filters -mx-1 flex snap-x snap-mandatory flex-wrap gap-x-1 gap-y-1 overflow-x-auto pb-1 pt-6 lg:flex-nowrap lg:pt-0 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
               role="tablist"
               aria-label="Filtrar pontos do mapa"
             >
@@ -294,10 +151,7 @@ export function RouteMap() {
                   role="tab"
                   aria-selected={activeCategory === cat.id}
                   className={filterBtnClass(activeCategory === cat.id)}
-                  onClick={() => {
-                    setActiveCategory(cat.id);
-                    setSelectedPlaceId(null);
-                  }}
+                  onClick={() => handleCategoryChange(cat.id)}
                 >
                   {cat.label}
                 </button>
@@ -306,19 +160,15 @@ export function RouteMap() {
           </div>
 
           <div className="reveal-item reveal-item-delay-2 lg:col-start-2 lg:row-start-1 lg:row-span-6 lg:min-h-[620px] lg:self-stretch">
-            {selectedPlace ? (
-              <PlaceDetailPanel
-                place={selectedPlace}
-                categoryLabel={categoryLabel(selectedPlace.category)}
-                onClose={() => setSelectedPlaceId(null)}
+            <RouteMapMapShell>
+              <RouteMapLeaflet
+                markerPlaces={markerPlaces}
+                selectedPlace={mapFocusPlace}
+                fitKey={fitKey}
+                onSelectPlace={setSelectedPlaceId}
+                onClearSelection={() => setSelectedPlaceId(null)}
               />
-            ) : null}
-            <MapFrame
-              embedSrc={embedSrc}
-              showMapOverlay={showMapOverlay}
-              overlayId={overlayId}
-              onActivateMap={activateMap}
-            />
+            </RouteMapMapShell>
           </div>
 
           <div
@@ -334,6 +184,7 @@ export function RouteMap() {
             ) : (
               filteredPlaces.map((place) => {
                 const isActive = selectedPlaceId === place.id;
+                const onMap = mapLocationHasMarker(place);
                 return (
                   <article
                     key={place.id}
@@ -351,7 +202,7 @@ export function RouteMap() {
                       aria-pressed={isActive}
                     >
                       <p className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-sepia/85">
-                        {categoryLabel(place.category)}
+                        {mapLocationCategoryLabel(place.category)}
                       </p>
                       <h3 className="route-map-place-name mt-2 font-serif text-[clamp(1.0625rem,1.8vw,1.25rem)] font-medium leading-snug tracking-[-0.01em] text-petroleum transition-colors duration-300 group-hover:text-sepia/95">
                         {place.name}
@@ -359,27 +210,56 @@ export function RouteMap() {
                       <p className="mt-1.5 font-sans text-[0.8125rem] leading-relaxed text-stone-600">
                         {place.region}
                       </p>
+                      {!onMap ? (
+                        <p className="mt-2 font-sans text-[0.75rem] leading-relaxed text-stone-500">
+                          Pin no mapa em atualização — use o link abaixo para
+                          localização.
+                        </p>
+                      ) : null}
                     </button>
                     <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
-                      <button
-                        type="button"
-                        className={textLinkClass}
-                        onClick={() => focusPlace(place)}
-                      >
-                        <span>Ver no mapa</span>
-                        <span className="route-map-arrow transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden>
-                          →
-                        </span>
-                      </button>
+                      {onMap ? (
+                        <button
+                          type="button"
+                          className={textLinkClass}
+                          onClick={() => focusPlace(place)}
+                        >
+                          <span>Ver no mapa</span>
+                          <span
+                            className="route-map-arrow transition-transform duration-300 group-hover:translate-x-0.5"
+                            aria-hidden
+                          >
+                            →
+                          </span>
+                        </button>
+                      ) : null}
                       <a
-                        href={routeMapDirectionsUrl(place.mapsQuery)}
+                        href={routeMapDirectionsUrl(place)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={textLinkClass}
                         aria-label={`Traçar rota até ${place.name} no Google Maps`}
                       >
                         <span>Traçar rota</span>
-                        <span className="route-map-arrow transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden>
+                        <span
+                          className="route-map-arrow transition-transform duration-300 group-hover:translate-x-0.5"
+                          aria-hidden
+                        >
+                          →
+                        </span>
+                      </a>
+                      <a
+                        href={routeMapOpenMapsHref(place)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={textLinkClass}
+                        aria-label={`Abrir ${place.name} no Google Maps`}
+                      >
+                        <span>Abrir no mapa</span>
+                        <span
+                          className="route-map-arrow transition-transform duration-300 group-hover:translate-x-0.5"
+                          aria-hidden
+                        >
                           →
                         </span>
                       </a>
@@ -399,7 +279,10 @@ export function RouteMap() {
             </p>
             <div className="route-map-sequence mt-4 flex snap-x snap-mandatory items-center gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {routeMapSequence.map((stop, index) => (
-                <span key={stop.id} className="flex shrink-0 snap-start items-center gap-2">
+                <span
+                  key={stop.id}
+                  className="flex shrink-0 snap-start items-center gap-2"
+                >
                   {index > 0 ? (
                     <span
                       className="h-px w-4 shrink-0 bg-stone-300/80 sm:w-6"
@@ -455,7 +338,10 @@ export function RouteMap() {
             className={`${textLinkClass} reveal-item reveal-item-delay-4 inline-flex lg:col-start-1 lg:row-start-6`}
           >
             <span>Abrir mapa completo</span>
-            <span className="route-map-arrow transition-transform duration-300 group-hover:translate-x-1" aria-hidden>
+            <span
+              className="route-map-arrow transition-transform duration-300 group-hover:translate-x-1"
+              aria-hidden
+            >
               →
             </span>
           </a>
@@ -480,7 +366,10 @@ export function RouteMap() {
             className={`${textLinkClass} mt-8`}
           >
             <span>Falar com o concierge</span>
-            <span className="route-map-arrow transition-transform duration-300 group-hover:translate-x-1" aria-hidden>
+            <span
+              className="route-map-arrow transition-transform duration-300 group-hover:translate-x-1"
+              aria-hidden
+            >
               →
             </span>
           </a>

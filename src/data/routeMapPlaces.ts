@@ -1,59 +1,51 @@
-export type RouteMapCategoryId =
-  | "all"
-  | "praias"
+/**
+ * Localizações do mapa — curadoria MHV.
+ * Coordenadas de praias/pontos: OpenStreetMap Nominatim (consulta em mar/2026).
+ * Restaurantes: pendente geocodificação confirmada — sem marcador até haver lat/lng.
+ */
+
+export type MapLocationCategory =
   | "gastronomia"
   | "passeios"
   | "beach-clubs"
-  | "mercados"
-  | "farmacias"
-  | "emergencia"
-  | "hospedagens-mhv";
+  | "pontos-uteis";
+
+export type RouteMapCategoryId = "all" | MapLocationCategory;
 
 export type RouteMapCategory = {
   id: RouteMapCategoryId;
   label: string;
 };
 
-/** Categorias exibidas nos filtros — locais filtrados por `category`. */
-export const routeMapCategories: RouteMapCategory[] = [
-  { id: "all", label: "Todos" },
-  { id: "gastronomia", label: "Gastronomia" },
-  { id: "passeios", label: "Passeios" },
-  { id: "beach-clubs", label: "Beach clubs" },
-  { id: "praias", label: "Praias" },
-  { id: "mercados", label: "Mercados" },
-  { id: "farmacias", label: "Farmácias" },
-  { id: "emergencia", label: "Emergência" },
-  { id: "hospedagens-mhv", label: "Hospedagens MHV" },
-];
-
-export type RouteMapPlace = {
+export type MapLocation = {
   id: string;
   name: string;
-  category: Exclude<RouteMapCategoryId, "all">;
+  category: MapLocationCategory;
+  address: string;
+  /** Subtítulo na lista lateral */
   region: string;
-  mapsQuery: string;
-  address?: string;
-  description?: string;
-  /** Pendente geocodificação — não inventar valores. */
   latitude?: number;
   longitude?: number;
+  /** Sem marcador no mapa interativo */
+  coordinatesPending?: boolean;
+  description?: string;
   instagram?: string;
   whatsapp?: string;
-  locationUrl?: string;
-  image?: string;
+  mapsUrl?: string;
+  /** Fallback para rotas quando não há mapsUrl */
+  mapsQuery?: string;
 };
 
-/** Curadoria MHV — apenas dados reais já usados no site (Gastronomia + rota). */
-export const routeMapPlaces: RouteMapPlace[] = [
+export const mapLocations: MapLocation[] = [
   {
     id: "patricia-bistro",
     name: "Patrícia Bistrô",
     category: "gastronomia",
     region: "São Miguel dos Milagres, AL",
     address: "São Miguel dos Milagres, AL",
+    coordinatesPending: true,
     mapsQuery: "Patrícia Bistrô São Miguel dos Milagres",
-    locationUrl:
+    mapsUrl:
       "https://www.google.com/maps/search/?api=1&query=Patr%C3%ADcia+Bistr%C3%B4+S%C3%A3o+Miguel+dos+Milagres",
     instagram: "https://www.instagram.com/patriciabistro/",
   },
@@ -63,8 +55,9 @@ export const routeMapPlaces: RouteMapPlace[] = [
     category: "gastronomia",
     region: "São Miguel dos Milagres",
     address: "São Miguel dos Milagres",
+    coordinatesPending: true,
     mapsQuery: "No Quintal restaurante São Miguel dos Milagres",
-    locationUrl:
+    mapsUrl:
       "https://www.google.com/maps/search/?api=1&query=No+Quintal+restaurante+S%C3%A3o+Miguel+dos+Milagres",
     instagram: "https://www.instagram.com/restaurantenoquintal/",
   },
@@ -74,8 +67,9 @@ export const routeMapPlaces: RouteMapPlace[] = [
     category: "gastronomia",
     region: "Litoral norte, Alagoas",
     address: "Litoral norte, Alagoas",
+    coordinatesPending: true,
     mapsQuery: "NACASA de boa São Miguel dos Milagres",
-    locationUrl:
+    mapsUrl:
       "https://www.google.com/maps/search/?api=1&query=NACASA+de+boa+S%C3%A3o+Miguel+dos+Milagres",
     instagram: "https://www.instagram.com/nacasadeboa/",
   },
@@ -85,8 +79,9 @@ export const routeMapPlaces: RouteMapPlace[] = [
     category: "gastronomia",
     region: "São Miguel dos Milagres",
     address: "São Miguel dos Milagres",
+    coordinatesPending: true,
     mapsQuery: "O beco São Miguel dos Milagres",
-    locationUrl:
+    mapsUrl:
       "https://www.google.com/maps/search/?api=1&query=O+beco+S%C3%A3o+Miguel+dos+Milagres",
     instagram: "https://www.instagram.com/restauranteobeco/",
   },
@@ -96,8 +91,9 @@ export const routeMapPlaces: RouteMapPlace[] = [
     category: "gastronomia",
     region: "Milagres · costa",
     address: "Milagres · costa",
+    coordinatesPending: true,
     mapsQuery: "Sur restaurante São Miguel dos Milagres",
-    locationUrl:
+    mapsUrl:
       "https://www.google.com/maps/search/?api=1&query=Sur+restaurante+S%C3%A3o+Miguel+dos+Milagres",
     instagram: "https://www.instagram.com/restaurantesur/",
   },
@@ -107,8 +103,9 @@ export const routeMapPlaces: RouteMapPlace[] = [
     category: "gastronomia",
     region: "Praia do Toque",
     address: "Praia do Toque",
+    coordinatesPending: true,
     mapsQuery: "Milagres do Toque Praia do Toque",
-    locationUrl:
+    mapsUrl:
       "https://www.google.com/maps/search/?api=1&query=Milagres+do+Toque+Praia+do+Toque",
     instagram: "https://www.instagram.com/milagresdotoque/",
   },
@@ -118,7 +115,11 @@ export const routeMapPlaces: RouteMapPlace[] = [
     category: "passeios",
     region: "Zona Norte · Patacho / Lages",
     address: "Praia do Patacho, AL",
+    latitude: -9.1830895,
+    longitude: -35.3003583,
     mapsQuery: "Praia do Patacho, AL",
+    mapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=Praia+do+Patacho,+AL",
   },
   {
     id: "toque",
@@ -126,7 +127,11 @@ export const routeMapPlaces: RouteMapPlace[] = [
     category: "passeios",
     region: "Litoral norte · Toque",
     address: "Praia do Toque, AL",
+    latitude: -9.2831598,
+    longitude: -35.3833077,
     mapsQuery: "Praia do Toque, AL",
+    mapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=Praia+do+Toque,+AL",
   },
   {
     id: "jetski-japaratinga",
@@ -134,8 +139,12 @@ export const routeMapPlaces: RouteMapPlace[] = [
     category: "passeios",
     region: "Orla de Japaratinga",
     address: "Orla de Japaratinga, litoral norte de Alagoas",
-    mapsQuery: "Japaratinga, AL",
+    latitude: -9.0896423,
+    longitude: -35.2572606,
     description: "Saídas na orla — horários via concierge MHV.",
+    mapsQuery: "Praia de Japaratinga, AL",
+    mapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=Praia+de+Japaratinga,+AL",
   },
   {
     id: "porto-da-rua",
@@ -143,25 +152,88 @@ export const routeMapPlaces: RouteMapPlace[] = [
     category: "passeios",
     region: "Zona Central · Milagres / Porto da Rua",
     address: "Porto da Rua, São Miguel dos Milagres, AL",
+    latitude: -9.238257,
+    longitude: -35.352504,
     mapsQuery: "Porto da Rua, São Miguel dos Milagres, AL",
+    mapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=Porto+da+Rua,+S%C3%A3o+Miguel+dos+Milagres,+AL",
   },
   {
     id: "milagres",
     name: "São Miguel dos Milagres",
-    category: "praias",
+    category: "pontos-uteis",
     region: "Zona Central · Milagres",
     address: "São Miguel dos Milagres, AL",
+    latitude: -9.267217,
+    longitude: -35.376312,
     mapsQuery: "São Miguel dos Milagres, AL",
+    mapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=S%C3%A3o+Miguel+dos+Milagres,+AL",
   },
   {
     id: "japaratinga",
     name: "Japaratinga",
-    category: "praias",
+    category: "pontos-uteis",
     region: "Zona Sul · Litoral",
     address: "Japaratinga, AL",
+    latitude: -9.087464,
+    longitude: -35.263403,
     mapsQuery: "Japaratinga, AL",
+    mapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=Japaratinga,+AL",
   },
 ];
+
+const CATEGORY_LABELS: Record<MapLocationCategory, string> = {
+  gastronomia: "Gastronomia",
+  passeios: "Passeios",
+  "beach-clubs": "Beach clubs",
+  "pontos-uteis": "Pontos úteis",
+};
+
+const BASE_FILTERS: RouteMapCategory[] = [
+  { id: "all", label: "Todos" },
+  { id: "gastronomia", label: "Gastronomia" },
+  { id: "passeios", label: "Passeios" },
+  { id: "beach-clubs", label: "Beach clubs" },
+  { id: "pontos-uteis", label: "Pontos úteis" },
+];
+
+/** Filtros visíveis — oculta categorias sem nenhum local cadastrado. */
+export const routeMapCategories: RouteMapCategory[] = BASE_FILTERS.filter(
+  (cat) =>
+    cat.id === "all" ||
+    mapLocations.some((loc) => loc.category === cat.id),
+);
+
+export function mapLocationHasMarker(loc: MapLocation): boolean {
+  return (
+    !loc.coordinatesPending &&
+    typeof loc.latitude === "number" &&
+    typeof loc.longitude === "number"
+  );
+}
+
+export function mapLocationsWithMarkers(
+  locations: MapLocation[],
+): MapLocation[] {
+  return locations.filter(mapLocationHasMarker);
+}
+
+export function mapLocationCategoryLabel(
+  category: MapLocationCategory,
+): string {
+  return CATEGORY_LABELS[category];
+}
+
+export const routeMapPlacesMissingCoordinates = mapLocations.filter(
+  (loc) => loc.coordinatesPending || !mapLocationHasMarker(loc),
+);
+
+/** @deprecated use mapLocations — alias para compatibilidade interna */
+export type RouteMapPlace = MapLocation;
+
+export const routeMapPlaces = mapLocations;
 
 export const routeMapSequence = [
   { id: "patacho", short: "Patacho" },
@@ -189,60 +261,38 @@ export const routeMapZones = [
   },
 ];
 
-export const ROUTE_MAP_EMBED_DEFAULT =
-  "https://www.google.com/maps?q=São+Miguel+dos+Milagres,+AL&hl=pt&z=10&output=embed";
-
 export const ROUTE_MAP_FULL_URL =
-  "https://www.google.com/maps/search/?api=1&query=Rota+Ecológica+dos+Milagres,+São+Miguel+dos+Milagres,+AL&hl=pt";
+  "https://www.google.com/maps/search/?api=1&query=Rota+Ecológica+dos+Milagres,+S%C3%A3o+Miguel+dos+Milagres,+AL&hl=pt";
 
-const CATEGORY_EMBED_QUERY: Partial<
-  Record<Exclude<RouteMapCategoryId, "all">, string>
-> = {
-  gastronomia: "restaurantes São Miguel dos Milagres, AL",
-  passeios: "Rota Ecológica dos Milagres, AL",
-  "beach-clubs": "beach club Japaratinga Litoral Norte Alagoas",
-  praias: "praias São Miguel dos Milagres, AL",
-};
+export const ROUTE_MAP_DEFAULT_CENTER: [number, number] = [
+  -9.25, -35.33,
+];
 
-export function routeMapEmbedUrl(mapsQuery: string, zoom = 11): string {
-  return `https://www.google.com/maps?q=${encodeURIComponent(mapsQuery)}&hl=pt&z=${zoom}&output=embed`;
-}
+export const ROUTE_MAP_DEFAULT_ZOOM = 10;
 
-export function routeMapEmbedForCategory(
-  category: RouteMapCategoryId,
-  places: RouteMapPlace[],
-  selectedId: string | null,
-): string {
-  if (selectedId) {
-    const selected = places.find((p) => p.id === selectedId);
-    if (selected) return routeMapEmbedUrl(selected.mapsQuery, 13);
+export function routeMapDirectionsUrl(place: MapLocation): string {
+  if (mapLocationHasMarker(place)) {
+    return `https://www.google.com/maps/dir/?api=1&destination=${place.latitude},${place.longitude}&hl=pt`;
   }
-  if (places.length === 1) {
-    return routeMapEmbedUrl(places[0]!.mapsQuery, 12);
+  const q = place.mapsQuery ?? place.name;
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(q)}&hl=pt`;
+}
+
+export function routeMapOpenMapsHref(place: MapLocation): string {
+  if (place.mapsUrl) return place.mapsUrl;
+  if (mapLocationHasMarker(place)) {
+    return `https://www.google.com/maps/search/?api=1&query=${place.latitude},${place.longitude}&hl=pt`;
   }
-  if (places.length > 1) {
-    return routeMapEmbedUrl(places[0]!.mapsQuery, 11);
-  }
-  if (category !== "all") {
-    const q = CATEGORY_EMBED_QUERY[category];
-    if (q) return routeMapEmbedUrl(q, 11);
-  }
-  return ROUTE_MAP_EMBED_DEFAULT;
+  const q = place.mapsQuery ?? place.name;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}&hl=pt`;
 }
 
-export function routeMapDirectionsUrl(mapsQuery: string): string {
-  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(mapsQuery)}&hl=pt`;
+export function mapLocationWhatsappHref(
+  whatsapp: string | undefined,
+): string | null {
+  if (!whatsapp?.trim()) return null;
+  if (whatsapp.startsWith("http")) return whatsapp;
+  const digits = whatsapp.replace(/\D/g, "");
+  if (digits.length < 10) return null;
+  return `https://wa.me/${digits}`;
 }
-
-export function routeMapSearchUrl(mapsQuery: string): string {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsQuery)}&hl=pt`;
-}
-
-export function routeMapPlaceLocationHref(place: RouteMapPlace): string {
-  return place.locationUrl ?? routeMapSearchUrl(place.mapsQuery);
-}
-
-/** Locais sem latitude/longitude — pendente geocodificação manual. */
-export const routeMapPlacesMissingCoordinates = routeMapPlaces.filter(
-  (p) => p.latitude == null || p.longitude == null,
-);
