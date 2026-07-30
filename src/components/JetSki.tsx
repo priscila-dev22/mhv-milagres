@@ -1,25 +1,56 @@
+import type { ReactNode } from "react";
 import { useReveal } from "../hooks/useReveal";
 
-const JETSKI_IMAGE = "/media/images/turista/jetski.jpg";
+const JETSKI_IMAGE = "/media/jetski-bg.jpg";
 
 const JETSKI_WHATSAPP_NUMBER: string = "5582993623883";
 
 const JETSKI_INSTAGRAM_URL: string = "https://www.instagram.com/pri.ribe/";
 
 const JETSKI_WHATSAPP_MESSAGE =
-  "Olá! Gostaria de conhecer a experiência Japaratinga Jet Ski e consultar disponibilidade.";
+  "Olá! Vi o passeio de Jet Ski no guia da MHV Milagres e gostaria de consultar horários e disponibilidade.";
 
 const isJetskiWhatsAppConfigured = JETSKI_WHATSAPP_NUMBER !== "INSERIR_NUMERO_AQUI";
+const isJetskiInstagramConfigured =
+  JETSKI_INSTAGRAM_URL !== "INSERIR_URL_DIRETA_AQUI" &&
+  JETSKI_INSTAGRAM_URL.startsWith("http");
 
-const jetskiExperienceHref = isJetskiWhatsAppConfigured
+const jetskiWhatsAppHref = isJetskiWhatsAppConfigured
   ? `https://wa.me/${JETSKI_WHATSAPP_NUMBER}?text=${encodeURIComponent(JETSKI_WHATSAPP_MESSAGE)}`
-  : "#jetski";
+  : undefined;
 
-const editorialLinkClass =
-  "inline-block font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-petroleum/85 underline-offset-[5px] transition-[color,border-color] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:text-sepia focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-petroleum/40 border-b border-petroleum/22 pb-0.5 hover:border-sepia/45";
+const prices = [
+  { duration: "20 min", value: "R$ 200" },
+  { duration: "30 min", value: "R$ 300" },
+  { duration: "1 h", value: "R$ 500" },
+] as const;
+
+const inlineLinkClass =
+  "font-sans text-[0.8125rem] font-normal text-petroleum underline-offset-[4px] transition-colors duration-300 hover:text-sepia hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/45";
+
+type FactRowProps = {
+  label: string;
+  children: ReactNode;
+  delayClass?: string;
+};
+
+function FactRow({ label, children, delayClass }: FactRowProps) {
+  return (
+    <div
+      className={`jetski-fact-row group jetski-copy-item border-t border-stone-200/45 py-5 transition-[border-color] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:border-petroleum/25 sm:py-6 ${delayClass ?? ""}`}
+    >
+      <p className="font-sans text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-sepia/90 transition-colors duration-300 group-hover:text-sepia">
+        {label}
+      </p>
+      <div className="jetski-fact-value mt-2.5 font-sans text-[0.9375rem] font-normal leading-[1.72] tracking-[0.01em] text-stone-700">
+        {children}
+      </div>
+    </div>
+  );
+}
 
 export function JetSki() {
-  const { ref, visible } = useReveal<HTMLElement>(0.12);
+  const { ref, visible } = useReveal<HTMLElement>(0.1);
 
   return (
     <section
@@ -29,62 +60,106 @@ export function JetSki() {
       className={`jetski-section scroll-mt-[4.5rem] overflow-hidden bg-sand pb-[clamp(4rem,9vh,6.5rem)] pt-[clamp(4rem,9vh,6.5rem)] ${visible ? "jetski-section-visible" : ""}`}
     >
       <div className="section-shell">
-        <div className="flex flex-col gap-[clamp(2.75rem,7vh,4rem)] lg:flex-row lg:items-stretch lg:justify-between lg:gap-12 xl:gap-20">
-          <div className="jetski-copy flex flex-col justify-center lg:order-2 lg:w-[min(100%,45%)] lg:max-w-[26rem] lg:pl-2 xl:max-w-[28rem]">
-            <p className="jetski-copy-item font-sans text-[0.625rem] font-semibold uppercase tracking-[0.26em] text-sepia/90 sm:text-[0.6875rem]">
-              Experiência exclusiva
-            </p>
-            <h2
-              id="jetski-titulo"
-              className="jetski-copy-item jetski-copy-delay-1 mt-6 font-serif text-[clamp(1.875rem,3.6vw,3.125rem)] font-medium leading-[1.08] tracking-[-0.02em] text-petroleum sm:mt-7"
-            >
-              Japaratinga vista por outro horizonte.
-            </h2>
-            <p className="jetski-copy-item jetski-copy-delay-2 mt-8 max-w-[38ch] font-sans text-[clamp(0.9375rem,1.35vw,1.0625rem)] font-normal leading-[1.78] tracking-[0.012em] text-stone-600 sm:mt-10">
-              Algumas paisagens só revelam toda a sua beleza quando observadas a
-              partir do mar. Navegue por águas cristalinas, descubra novos ângulos
-              da costa e viva um momento reservado para quem deseja conhecer a
-              região de uma forma diferente.
-            </p>
-            <div className="jetski-copy-item jetski-copy-delay-3 mt-10 sm:mt-12">
-              {isJetskiWhatsAppConfigured ? (
-                <a
-                  href={jetskiExperienceHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={editorialLinkClass}
-                  aria-label="Conhecer a experiência Japaratinga Jet Ski pelo WhatsApp"
-                >
-                  Conhecer a experiência
-                </a>
-              ) : (
-                <span
-                  className={`${editorialLinkClass} cursor-not-allowed opacity-50`}
-                  aria-disabled
-                >
-                  Conhecer a experiência
-                </span>
-              )}
-            </div>
-            <p className="jetski-copy-item jetski-copy-delay-4 mt-8 font-sans text-[0.6875rem] font-normal leading-relaxed tracking-[0.04em] text-stone-500/95 sm:mt-10">
-              Experiência mediante agendamento.
-            </p>
-          </div>
-
-          <figure className="jetski-media jetski-media-reveal lg:order-1 lg:w-[min(100%,55%)] lg:shrink-0">
-            <div className="overflow-hidden rounded-sm border border-stone-200/45 bg-stone-200/20">
+        <div className="flex flex-col gap-[clamp(2.5rem,6vh,3.5rem)] lg:flex-row lg:items-start lg:gap-14 xl:gap-20">
+          <figure className="jetski-media jetski-media-reveal mx-auto w-full max-w-[min(100%,22rem)] shrink-0 sm:max-w-[24rem] lg:mx-0 lg:max-w-[min(100%,38%)] xl:max-w-[20rem]">
+            <div className="overflow-hidden rounded-sm border border-stone-200/40 bg-stone-200/15">
               <img
                 src={JETSKI_IMAGE}
-                alt="Horizonte aberto e mar cristalino na costa de Japaratinga, vista editorial"
-                width={1800}
-                height={1200}
+                alt="Jet Ski na orla de Japaratinga, mar aberto e costa ao fundo"
+                width={2560}
+                height={1600}
                 loading="lazy"
                 decoding="async"
                 draggable={false}
-                className="jetski-media-img block aspect-[4/5] w-full object-cover object-[50%_42%] sm:aspect-[5/4] lg:aspect-[4/5] lg:min-h-[28rem] lg:max-h-[min(72vh,40rem)] xl:min-h-[30rem]"
+                className="block aspect-[5/4] w-full object-cover object-center"
               />
             </div>
           </figure>
+
+          <div className="jetski-sheet min-w-0 flex-1 lg:max-w-[36rem] xl:max-w-[40rem]">
+            <p className="jetski-copy-item font-sans text-[0.625rem] font-semibold uppercase tracking-[0.26em] text-sepia/90 sm:text-[0.6875rem]">
+              Experiência
+            </p>
+            <h2
+              id="jetski-titulo"
+              className="jetski-copy-item jetski-copy-delay-1 mt-4 font-serif text-[clamp(1.75rem,3.2vw,2.75rem)] font-medium leading-[1.1] tracking-[-0.02em] text-petroleum sm:mt-5"
+            >
+              Japaratinga Jet Ski
+            </h2>
+            <p className="jetski-copy-item jetski-copy-delay-2 mt-5 max-w-[42ch] font-sans text-[clamp(0.9375rem,1.3vw,1.0625rem)] font-normal leading-[1.75] tracking-[0.012em] text-stone-600 sm:mt-6">
+              Saídas na orla de Japaratinga — combine com o concierge MHV para
+              horário, briefing e condições do mar.
+            </p>
+
+            <div className="jetski-copy-item jetski-copy-delay-3 mt-8 border-t border-stone-200/45 sm:mt-10">
+              <FactRow label="Valor">
+                <ul className="space-y-1.5">
+                  {prices.map((row) => (
+                    <li key={row.duration}>
+                      <span className="text-petroleum/90">{row.duration}</span>
+                      <span className="text-stone-500"> — </span>
+                      <span className="font-medium text-petroleum">{row.value}</span>
+                    </li>
+                  ))}
+                </ul>
+              </FactRow>
+
+              <FactRow label="Duração" delayClass="jetski-copy-delay-3">
+                Opções de 20 minutos, 30 minutos ou 1 hora, conforme o roteiro
+                escolhido na reserva.
+              </FactRow>
+
+              <FactRow label="Capacidade" delayClass="jetski-copy-delay-3">
+                Saídas individuais ou em dupla, conforme equipamento e
+                disponibilidade — confirme ao agendar.
+              </FactRow>
+
+              <FactRow label="Horários" delayClass="jetski-copy-delay-4">
+                Mediante disponibilidade do mar e do anfitrião. O concierge MHV
+                auxilia na combinação de horário e briefing antes da saída.
+              </FactRow>
+
+              <FactRow label="Local" delayClass="jetski-copy-delay-4">
+                Orla de Japaratinga, litoral norte de Alagoas.
+              </FactRow>
+
+              <FactRow label="Reserva" delayClass="jetski-copy-delay-4">
+                <p>Concierge MHV</p>
+                <div className="mt-3 flex flex-col items-start gap-2 sm:flex-row sm:flex-wrap sm:gap-x-6">
+                  {isJetskiWhatsAppConfigured ? (
+                    <a
+                      href={jetskiWhatsAppHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={inlineLinkClass}
+                      aria-label="Agendar passeio de Jet Ski pelo WhatsApp do fornecedor"
+                    >
+                      Agendar pelo WhatsApp
+                    </a>
+                  ) : (
+                    <span className="text-stone-500">WhatsApp em configuração</span>
+                  )}
+                  {isJetskiInstagramConfigured ? (
+                    <a
+                      href={JETSKI_INSTAGRAM_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={inlineLinkClass}
+                      aria-label="Ver perfil oficial do fornecedor de Jet Ski no Instagram"
+                    >
+                      Ver Instagram
+                    </a>
+                  ) : null}
+                </div>
+              </FactRow>
+
+              <FactRow label="Observações" delayClass="jetski-copy-delay-4">
+                Valores e disponibilidade sujeitos à temporada. Confirme com o
+                anfitrião ou concierge MHV antes do check-in. Briefing de
+                segurança realizado antes de cada saída.
+              </FactRow>
+            </div>
+          </div>
         </div>
       </div>
     </section>

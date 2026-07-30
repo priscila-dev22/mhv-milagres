@@ -488,6 +488,10 @@
   .jetski-section-visible .jetski-media-reveal {
     @apply opacity-100;
   }
+
+  .jetski-fact-row:hover > p:first-child {
+    @apply text-sepia;
+  }
 }
 
 /* Hero entrance animations */
