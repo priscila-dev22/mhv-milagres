@@ -92,3 +92,8 @@ export const milagresExperiences: MilagresExperience[] = [
     objectPositionLg: "50% 32%",
   },
 ];
+
+/** Slide central ao carregar a seção (lua.jpg). */
+export const milagresExperienceInitialRealIndex = milagresExperiences.findIndex(
+  (item) => item.id === "lua",
+);

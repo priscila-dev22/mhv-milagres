@@ -61,17 +61,9 @@ const restaurants: Restaurant[] = [
   },
 ];
 
-const SECTION_MAPS =
-  "https://www.google.com/maps/search/?api=1&query=" +
-  encodeURIComponent("restaurantes São Miguel dos Milagres AL");
-const SECTION_INSTAGRAM = "https://www.instagram.com/explore/tags/saomigueldosmilagres/";
-
 function mapsUrl(query: string) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
-
-const editorialLinkClass =
-  "inline-flex min-h-[44px] items-center font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-petroleum underline-offset-[5px] transition-[color,opacity] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:text-sepia hover:underline sm:min-h-0";
 
 const cardLinkClass =
   "font-sans text-[0.625rem] font-medium uppercase tracking-[0.12em] text-petroleum/90 underline-offset-[4px] transition-colors duration-300 hover:text-sepia hover:underline";
@@ -99,26 +91,6 @@ export function Gastronomy() {
               Uma seleção de restaurantes, beach clubs e experiências gastronômicas
               para descobrir durante sua estadia.
             </p>
-            <div className="reveal-item reveal-item-delay-1 mt-10 flex flex-wrap items-center gap-x-8 gap-y-3">
-              <a
-                href={SECTION_MAPS}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Ver localização de restaurantes na região no Google Maps"
-                className={editorialLinkClass}
-              >
-                Ver localização
-              </a>
-              <a
-                href={SECTION_INSTAGRAM}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Explorar São Miguel dos Milagres no Instagram"
-                className={editorialLinkClass}
-              >
-                Instagram
-              </a>
-            </div>
           </header>
 
           <div className="min-w-0 flex-1 lg:-mr-[max(1rem,calc((100vw-min(100vw,1180px))/2+1rem))]">

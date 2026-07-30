@@ -1,7 +1,6 @@
 import { AccommodationInfo } from "./components/AccommodationInfo";
 import { ConciergeServices } from "./components/ConciergeServices";
 import { Footer } from "./components/Footer";
-import { EveningAtMilagresEditorial } from "./components/EveningAtMilagresEditorial";
 import { Gastronomy } from "./components/Gastronomy";
 import { GastronomyChapterTransition } from "./components/GastronomyChapterTransition";
 import { Hero } from "./components/Hero";
@@ -24,7 +23,6 @@ export default function App() {
         <Hero />
         <StayPlanning />
         <MilagresExperiencesEditorial />
-        <EveningAtMilagresEditorial />
         <AccommodationInfo />
         <GastronomyChapterTransition />
         <Gastronomy />

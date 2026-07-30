@@ -6,6 +6,7 @@ import {
   useExperienceCarousel,
 } from "../hooks/useExperienceCarousel";
 import {
+  milagresExperienceInitialRealIndex,
   milagresExperiences,
   type MilagresExperience,
 } from "../data/milagresExperiences";
@@ -35,7 +36,7 @@ function buildGallerySlides(): GallerySlide[] {
     experience,
     extendedIndex: index + 1,
     isClone: false,
-    eagerLoad: index <= 1,
+    eagerLoad: index <= 1 || experience.id === "lua",
   }));
   const tailClone: GallerySlide = {
     experience: milagresExperiences[0]!,
@@ -57,7 +58,10 @@ export function MilagresExperiencesEditorial() {
     goPrev,
     goNext,
     galleryProps,
-  } = useExperienceCarousel(milagresExperiences.length);
+  } = useExperienceCarousel(
+    milagresExperiences.length,
+    milagresExperienceInitialRealIndex,
+  );
 
   const active = milagresExperiences[activeIndex]!;
   const indexLabel = String(activeIndex + 1).padStart(2, "0");
@@ -102,7 +106,7 @@ export function MilagresExperiencesEditorial() {
             role="region"
             aria-roledescription="carrossel"
             aria-label="Galeria Um dia em Milagres"
-            className="experience-gallery flex w-full max-w-[100vw] touch-pan-x snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-5 md:gap-6 lg:gap-6 [&::-webkit-scrollbar]:hidden max-lg:px-[calc((100%-84vw)/2)] max-[389px]:px-[calc((100%-82vw)/2)] lg:px-0"
+            className="experience-gallery flex w-full max-w-[100vw] touch-pan-x touch-pan-y snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-5 md:gap-6 lg:gap-6 [&::-webkit-scrollbar]:hidden max-lg:px-[calc((100%-84vw)/2)] max-[389px]:px-[calc((100%-82vw)/2)] lg:px-0"
           >
             {gallerySlides.map(({ experience, extendedIndex, isClone, eagerLoad }) => {
               const visualRole = getExperienceSlideVisualRole(

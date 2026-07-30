@@ -14,15 +14,25 @@ function extendedToReal(extendedIndex: number, slideCount: number) {
   return extendedIndex - 1;
 }
 
-export function useExperienceCarousel(slideCount: number) {
+const SNAP_THRESHOLD_RATIO = 0.14;
+
+export function useExperienceCarousel(
+  slideCount: number,
+  initialRealIndex = 0,
+) {
+  const initialExtended = initialRealIndex + 1;
+
   const galleryRef = useRef<HTMLDivElement>(null);
   const slideRefs = useRef<(HTMLElement | null)[]>([]);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [focusedExtendedIndex, setFocusedExtendedIndex] = useState(1);
-  const focusedExtendedRef = useRef(1);
+  const [activeIndex, setActiveIndex] = useState(initialRealIndex);
+  const [focusedExtendedIndex, setFocusedExtendedIndex] =
+    useState(initialExtended);
+  const focusedExtendedRef = useRef(initialExtended);
   const isDraggingRef = useRef(false);
   const dragState = useRef({ startX: 0, scrollLeft: 0, pointerId: -1 });
-  const scrollRaf = useRef<number | null>(null);
+  const gestureStartExtendedRef = useRef(initialExtended);
+  const pendingSnapExtendedRef = useRef<number | null>(null);
+  const programmaticNavRef = useRef(false);
   const loopAdjusting = useRef(false);
   const resizeTimeout = useRef<number | null>(null);
 
@@ -86,6 +96,45 @@ export function useExperienceCarousel(slideCount: number) {
     [slideCount],
   );
 
+  const pickSnapAmongGestureCandidates = useCallback(() => {
+    const gallery = galleryRef.current;
+    if (!gallery) return gestureStartExtendedRef.current;
+
+    const start = gestureStartExtendedRef.current;
+    const center = gallery.scrollLeft + gallery.clientWidth / 2;
+    const scrollMoved = Math.abs(
+      gallery.scrollLeft - dragState.current.scrollLeft,
+    );
+    const threshold = gallery.clientWidth * SNAP_THRESHOLD_RATIO;
+
+    const candidates = [start - 1, start, start + 1].filter(
+      (i) => i >= 0 && i <= slideCount + 1,
+    );
+
+    let best = start;
+    let minDistance = Number.POSITIVE_INFINITY;
+
+    for (const index of candidates) {
+      const slide = slideRefs.current[index];
+      if (!slide) continue;
+      const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+      const distance = Math.abs(center - slideCenter);
+      if (distance < minDistance) {
+        minDistance = distance;
+        best = index;
+      }
+    }
+
+    if (best !== start && scrollMoved < threshold) {
+      best = start;
+    }
+
+    if (best < start - 1) best = start - 1;
+    if (best > start + 1) best = start + 1;
+
+    return best;
+  }, [slideCount]);
+
   const syncFromScroll = useCallback(
     (withLoopJump = false) => {
       if (loopAdjusting.current || isDraggingRef.current) return;
@@ -113,27 +162,70 @@ export function useExperienceCarousel(slideCount: number) {
     [applyLoopJump, commitFocusedExtended],
   );
 
-  const scheduleSync = useCallback(() => {
-    if (isDraggingRef.current || scrollRaf.current !== null) return;
-    scrollRaf.current = window.requestAnimationFrame(() => {
-      scrollRaf.current = null;
-      syncFromScroll(false);
-    });
-  }, [syncFromScroll]);
+  const finalizeSnap = useCallback(
+    (extendedTarget: number) => {
+      const resolved = applyLoopJump(extendedTarget);
+      commitFocusedExtended(resolved);
+    },
+    [applyLoopJump, commitFocusedExtended],
+  );
 
-  const finishInteraction = useCallback(() => {
-    syncFromScroll(true);
-  }, [syncFromScroll]);
+  const beginGestureSnap = useCallback(() => {
+    const best = pickSnapAmongGestureCandidates();
+    const gallery = galleryRef.current;
+
+    if (!gallery) {
+      finalizeSnap(best);
+      return;
+    }
+
+    if (best === focusedExtendedRef.current) {
+      const center = gallery.scrollLeft + gallery.clientWidth / 2;
+      const slide = slideRefs.current[best];
+      if (slide) {
+        const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+        if (Math.abs(center - slideCenter) < 2) {
+          finalizeSnap(best);
+          return;
+        }
+      }
+    }
+
+    pendingSnapExtendedRef.current = best;
+    scrollToExtended(best, "smooth");
+    window.setTimeout(() => {
+      if (pendingSnapExtendedRef.current === best) {
+        pendingSnapExtendedRef.current = null;
+        finalizeSnap(best);
+      }
+    }, 480);
+  }, [finalizeSnap, pickSnapAmongGestureCandidates, scrollToExtended]);
+
+  const onScrollEnd = useCallback(() => {
+    if (loopAdjusting.current) return;
+
+    if (pendingSnapExtendedRef.current !== null) {
+      const target = pendingSnapExtendedRef.current;
+      pendingSnapExtendedRef.current = null;
+      finalizeSnap(target);
+      return;
+    }
+
+    if (programmaticNavRef.current) {
+      programmaticNavRef.current = false;
+      syncFromScroll(true);
+    }
+  }, [finalizeSnap, syncFromScroll]);
 
   useLayoutEffect(() => {
     let cancelled = false;
     const centerInitial = (attempt = 0) => {
       if (cancelled) return;
-      const head = slideRefs.current[0];
-      const first = slideRefs.current[1];
-      if (head && first && first.offsetWidth > 0) {
-        scrollToExtended(1, "auto");
-        commitFocusedExtended(1);
+      const targetSlide = slideRefs.current[initialExtended];
+      if (targetSlide && targetSlide.offsetWidth > 0) {
+        scrollToExtended(initialExtended, "auto");
+        commitFocusedExtended(initialExtended);
+        gestureStartExtendedRef.current = initialExtended;
         return;
       }
       if (attempt < 30) {
@@ -144,15 +236,12 @@ export function useExperienceCarousel(slideCount: number) {
     return () => {
       cancelled = true;
     };
-  }, [commitFocusedExtended, scrollToExtended]);
+  }, [commitFocusedExtended, initialExtended, scrollToExtended]);
 
   useEffect(() => {
     const gallery = galleryRef.current;
     if (!gallery) return;
 
-    const onScrollEnd = () => finishInteraction();
-
-    gallery.addEventListener("scroll", scheduleSync, { passive: true });
     gallery.addEventListener("scrollend", onScrollEnd);
 
     const onResize = () => {
@@ -167,23 +256,27 @@ export function useExperienceCarousel(slideCount: number) {
     window.addEventListener("resize", onResize);
 
     return () => {
-      gallery.removeEventListener("scroll", scheduleSync);
       gallery.removeEventListener("scrollend", onScrollEnd);
       window.removeEventListener("resize", onResize);
-      if (scrollRaf.current !== null) {
-        window.cancelAnimationFrame(scrollRaf.current);
-      }
       if (resizeTimeout.current !== null) {
         window.clearTimeout(resizeTimeout.current);
       }
     };
-  }, [finishInteraction, scheduleSync, scrollToExtended, syncFromScroll]);
+  }, [onScrollEnd, scrollToExtended, syncFromScroll]);
 
   const scrollToRealIndex = useCallback(
     (realIndex: number, behavior: ScrollBehavior = "smooth") => {
+      programmaticNavRef.current = true;
+      pendingSnapExtendedRef.current = null;
       scrollToExtended(realIndex + 1, behavior);
+      window.setTimeout(() => {
+        if (programmaticNavRef.current) {
+          programmaticNavRef.current = false;
+          syncFromScroll(true);
+        }
+      }, 480);
     },
-    [scrollToExtended],
+    [scrollToExtended, syncFromScroll],
   );
 
   const goPrev = useCallback(() => {
@@ -214,6 +307,9 @@ export function useExperienceCarousel(slideCount: number) {
     const gallery = galleryRef.current;
     if (!gallery) return;
 
+    pendingSnapExtendedRef.current = null;
+    programmaticNavRef.current = false;
+    gestureStartExtendedRef.current = focusedExtendedRef.current;
     isDraggingRef.current = true;
     gallery.classList.add("experience-gallery--dragging");
     dragState.current = {
@@ -229,8 +325,11 @@ export function useExperienceCarousel(slideCount: number) {
     const state = dragState.current;
     if (!gallery || state.pointerId !== event.pointerId) return;
 
-    event.preventDefault();
-    gallery.scrollLeft = state.scrollLeft - (event.clientX - state.startX);
+    const deltaX = event.clientX - state.startX;
+    if (Math.abs(deltaX) > 8) {
+      event.preventDefault();
+    }
+    gallery.scrollLeft = state.scrollLeft - deltaX;
   }, []);
 
   const endDrag = useCallback(
@@ -243,10 +342,9 @@ export function useExperienceCarousel(slideCount: number) {
       isDraggingRef.current = false;
       gallery.classList.remove("experience-gallery--dragging");
       gallery.releasePointerCapture(event.pointerId);
-      finishInteraction();
-      window.setTimeout(finishInteraction, 100);
+      beginGestureSnap();
     },
-    [finishInteraction],
+    [beginGestureSnap],
   );
 
   return {
