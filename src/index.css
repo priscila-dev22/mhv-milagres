@@ -571,12 +571,33 @@
     @apply grid grid-cols-1 gap-0 lg:grid-cols-2;
   }
 
+  @media (max-width: 1023px) {
+    .concierge-catalog {
+      @apply -mx-5 w-[calc(100%+2.5rem)];
+    }
+
+    .concierge-service-item {
+      @apply border-t-0 px-5 py-5 opacity-100;
+      transform: none;
+    }
+
+    .concierge-service-item + .concierge-service-item {
+      @apply border-t border-stone-200/35;
+    }
+
+    .concierge-service-item-petroleum + .concierge-service-item-petroleum,
+    .concierge-service-item-sand + .concierge-service-item-sand {
+      border-top-color: rgba(241, 230, 210, 0.14);
+    }
+  }
+
   .concierge-service-item {
     @apply border-t border-stone-200/40 px-5 py-8 transition-[background-color,transform] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] sm:py-10 lg:px-8 lg:py-12 xl:px-10;
   }
 
   .concierge-service-item-petroleum {
-    @apply border-[rgba(241,230,210,0.12)] bg-petroleum;
+    @apply bg-petroleum;
+    border-color: rgba(241, 230, 210, 0.14);
   }
 
   .concierge-service-item-sand {

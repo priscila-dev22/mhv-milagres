@@ -57,7 +57,6 @@ type ConciergeServiceItemProps = {
   role: string;
   price: string;
   description: string;
-  delayClass: string;
   tone: ConciergeTone;
 };
 
@@ -66,7 +65,6 @@ function ConciergeServiceItem({
   role,
   price,
   description,
-  delayClass,
   tone,
 }: ConciergeServiceItemProps) {
   const num = String(index + 1).padStart(2, "0");
@@ -78,21 +76,19 @@ function ConciergeServiceItem({
 
   return (
     <article
-      className={`concierge-service-item concierge-service-item-${tone} group reveal-item flex flex-col ${delayClass}`}
+      className={`concierge-service-item concierge-service-item-${tone} group flex flex-col`}
     >
       <div className="flex flex-col gap-3 sm:gap-3.5">
         <p
           className={`concierge-service-num font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.2em] ${
-            isGreen ? "text-[rgba(241,230,210,0.65)]" : "text-sepia/85"
+            isGreen ? "text-[rgba(241,230,210,0.75)]" : "text-sepia/90"
           }`}
         >
           {num}
         </p>
         <h3
-          className={`concierge-service-name font-serif text-[clamp(1.5625rem,2.5vw,2.25rem)] font-medium leading-[1.12] tracking-[-0.02em] transition-colors duration-300 ${
-            isGreen
-              ? "text-[#F8F4ED] group-hover:text-[rgba(241,230,210,0.95)]"
-              : "text-petroleum group-hover:text-sepia/95"
+          className={`concierge-service-name font-serif text-[clamp(1.375rem,2.5vw,2.25rem)] font-medium leading-[1.12] tracking-[-0.02em] ${
+            isGreen ? "text-[#F8F4ED]" : "text-petroleum"
           }`}
         >
           {role}
@@ -100,17 +96,17 @@ function ConciergeServiceItem({
       </div>
 
       <p
-        className={`concierge-service-desc mt-5 max-w-[36ch] flex-1 font-sans text-base font-normal leading-[1.72] tracking-[0.01em] sm:mt-6 ${
-          isGreen ? "text-[rgba(241,230,210,0.78)]" : "text-stone-600"
+        className={`concierge-service-desc mt-4 max-w-[36ch] flex-1 font-sans text-[0.9375rem] font-normal leading-[1.65] tracking-[0.01em] sm:mt-5 sm:text-base sm:leading-[1.72] ${
+          isGreen ? "text-[rgba(241,230,210,0.9)]" : "text-stone-600"
         }`}
       >
         {description}
       </p>
 
-      <div className="mt-8 flex flex-col items-start gap-5 sm:mt-9">
+      <div className="mt-5 flex flex-col items-start gap-4 sm:mt-8 sm:gap-5">
         <p
-          className={`font-sans text-[clamp(1rem,1.15vw,1.125rem)] font-medium tracking-[0.01em] ${
-            isGreen ? "text-[rgba(241,230,210,0.88)]" : "text-petroleum"
+          className={`font-sans text-[0.9375rem] font-medium tracking-[0.01em] sm:text-[clamp(1rem,1.15vw,1.125rem)] ${
+            isGreen ? "text-[#F8F4ED]" : "text-petroleum"
           }`}
         >
           {price}
@@ -165,7 +161,7 @@ export function ConciergeServices() {
         </header>
 
         <div
-          className="concierge-catalog reveal-item mt-[clamp(4rem,7vh,6.25rem)]"
+          className="concierge-catalog mt-[clamp(3rem,6vh,6.25rem)]"
           role="list"
           aria-label="Catálogo de serviços do concierge"
         >
@@ -176,7 +172,6 @@ export function ConciergeServices() {
                 role={service.role}
                 price={service.price}
                 description={service.description}
-                delayClass={revealDelay(index + 1)}
                 tone={index % 2 === 0 ? "petroleum" : "sand"}
               />
             </div>

@@ -1,13 +1,10 @@
 import { useEffect, useId, useMemo, useState } from "react";
 import {
   ROUTE_MAP_FULL_URL,
-  mapLocationCategoryLabel,
   mapLocationHasMarker,
   mapLocations,
   mapLocationsWithMarkers,
   routeMapCategories,
-  routeMapDirectionsUrl,
-  routeMapOpenMapsHref,
   routeMapPlaces,
   routeMapSequence,
   routeMapZones,
@@ -159,7 +156,7 @@ export function RouteMap() {
             </div>
           </div>
 
-          <div className="reveal-item reveal-item-delay-2 lg:col-start-2 lg:row-start-1 lg:row-span-6 lg:min-h-[620px] lg:self-stretch">
+          <div className="reveal-item reveal-item-delay-2 lg:col-start-2 lg:row-start-1 lg:row-span-4 lg:min-h-[620px] lg:self-stretch">
             <RouteMapMapShell>
               <RouteMapLeaflet
                 markerPlaces={markerPlaces}
@@ -171,107 +168,8 @@ export function RouteMap() {
             </RouteMapMapShell>
           </div>
 
-          <div
-            className="route-map-list reveal-item reveal-item-delay-2 min-h-0 border-t border-stone-200/45 lg:col-start-1 lg:row-start-3 lg:max-h-[min(420px,50vh)] lg:overflow-y-auto lg:overscroll-contain lg:pr-2"
-            role="list"
-            aria-label="Locais selecionados"
-          >
-            {filteredPlaces.length === 0 ? (
-              <p className="py-8 font-sans text-[0.9375rem] leading-[1.65] text-stone-600">
-                Nenhum ponto curado nesta categoria. Ajuste o filtro, use a
-                busca ou abra o mapa completo no Google Maps.
-              </p>
-            ) : (
-              filteredPlaces.map((place) => {
-                const isActive = selectedPlaceId === place.id;
-                const onMap = mapLocationHasMarker(place);
-                return (
-                  <article
-                    key={place.id}
-                    role="listitem"
-                    className={`route-map-place border-b border-stone-200/45 py-5 transition-[background-color,border-color] duration-300 sm:py-6 ${
-                      isActive
-                        ? "route-map-place-active border-l-2 border-l-petroleum bg-white/45 pl-3 sm:pl-4"
-                        : "border-l-2 border-l-transparent pl-3 sm:pl-4"
-                    }`}
-                  >
-                    <button
-                      type="button"
-                      className="group w-full text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/40"
-                      onClick={() => focusPlace(place)}
-                      aria-pressed={isActive}
-                    >
-                      <p className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-sepia/85">
-                        {mapLocationCategoryLabel(place.category)}
-                      </p>
-                      <h3 className="route-map-place-name mt-2 font-serif text-[clamp(1.0625rem,1.8vw,1.25rem)] font-medium leading-snug tracking-[-0.01em] text-petroleum transition-colors duration-300 group-hover:text-sepia/95">
-                        {place.name}
-                      </h3>
-                      <p className="mt-1.5 font-sans text-[0.8125rem] leading-relaxed text-stone-600">
-                        {place.region}
-                      </p>
-                      {!onMap ? (
-                        <p className="mt-2 font-sans text-[0.75rem] leading-relaxed text-stone-500">
-                          Pin no mapa em atualização — use o link abaixo para
-                          localização.
-                        </p>
-                      ) : null}
-                    </button>
-                    <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
-                      {onMap ? (
-                        <button
-                          type="button"
-                          className={textLinkClass}
-                          onClick={() => focusPlace(place)}
-                        >
-                          <span>Ver no mapa</span>
-                          <span
-                            className="route-map-arrow transition-transform duration-300 group-hover:translate-x-0.5"
-                            aria-hidden
-                          >
-                            →
-                          </span>
-                        </button>
-                      ) : null}
-                      <a
-                        href={routeMapDirectionsUrl(place)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={textLinkClass}
-                        aria-label={`Traçar rota até ${place.name} no Google Maps`}
-                      >
-                        <span>Traçar rota</span>
-                        <span
-                          className="route-map-arrow transition-transform duration-300 group-hover:translate-x-0.5"
-                          aria-hidden
-                        >
-                          →
-                        </span>
-                      </a>
-                      <a
-                        href={routeMapOpenMapsHref(place)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={textLinkClass}
-                        aria-label={`Abrir ${place.name} no Google Maps`}
-                      >
-                        <span>Abrir no mapa</span>
-                        <span
-                          className="route-map-arrow transition-transform duration-300 group-hover:translate-x-0.5"
-                          aria-hidden
-                        >
-                          →
-                        </span>
-                      </a>
-                    </div>
-                  </article>
-                );
-              })
-            )}
-          </div>
-
           <nav
-            className="reveal-item reveal-item-delay-3 border-t border-stone-200/45 pt-8 lg:col-start-1 lg:row-start-4"
+            className="reveal-item reveal-item-delay-3 border-t border-stone-200/45 pt-8 lg:col-start-1 lg:row-start-3"
             aria-label="Sequência geográfica da Rota Ecológica"
           >
             <p className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-sepia/90">
@@ -320,7 +218,7 @@ export function RouteMap() {
             </div>
           </nav>
 
-          <div className="reveal-item reveal-item-delay-3 border-t border-stone-200/45 pt-6 lg:col-start-1 lg:row-start-5">
+          <div className="reveal-item reveal-item-delay-3 border-t border-stone-200/45 pt-6 lg:col-start-1 lg:row-start-4">
             <p className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-sepia/90">
               Dica de navegação
             </p>
@@ -335,7 +233,7 @@ export function RouteMap() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Abrir mapa completo da Rota Ecológica dos Milagres no Google Maps"
-            className={`${textLinkClass} reveal-item reveal-item-delay-4 inline-flex lg:col-start-1 lg:row-start-6`}
+            className={`${textLinkClass} reveal-item reveal-item-delay-4 inline-flex lg:col-start-1 lg:row-start-5`}
           >
             <span>Abrir mapa completo</span>
             <span
