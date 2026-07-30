@@ -208,10 +208,6 @@
     @apply translate-y-0 opacity-100;
   }
 
-  .experience-gallery {
-    scroll-padding-inline: 50%;
-  }
-
   .experience-slide-img {
     object-position: var(--exp-pos);
   }

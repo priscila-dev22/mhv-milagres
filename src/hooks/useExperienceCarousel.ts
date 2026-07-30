@@ -34,11 +34,23 @@ export function useExperienceCarousel(slideCount: number) {
       const slide = slideRefs.current[extendedIndex];
       if (!gallery || !slide) return;
 
-      const target =
-        slide.offsetLeft - (gallery.clientWidth - slide.offsetWidth) / 2;
-      gallery.scrollTo({ left: target, behavior });
+      const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+      const target = slideCenter - gallery.clientWidth / 2;
+      const maxScroll = Math.max(0, gallery.scrollWidth - gallery.clientWidth);
+
+      gallery.scrollTo({
+        left: Math.min(Math.max(0, target), maxScroll),
+        behavior,
+      });
     },
     [],
+  );
+
+  const recenterFocused = useCallback(
+    (behavior: ScrollBehavior = "auto") => {
+      scrollToExtended(focusedExtendedRef.current, behavior);
+    },
+    [scrollToExtended],
   );
 
   const applyLoopJump = useCallback(
@@ -49,14 +61,24 @@ export function useExperienceCarousel(slideCount: number) {
       if (closestExtended === 0) {
         loopAdjusting.current = true;
         scrollToExtended(slideCount, "auto");
-        loopAdjusting.current = false;
+        window.requestAnimationFrame(() => {
+          loopAdjusting.current = false;
+          focusedExtendedRef.current = slideCount;
+          setFocusedExtendedIndex(slideCount);
+          setActiveIndex(slideCount - 1);
+        });
         return slideCount;
       }
 
       if (closestExtended === slideCount + 1) {
         loopAdjusting.current = true;
         scrollToExtended(1, "auto");
-        loopAdjusting.current = false;
+        window.requestAnimationFrame(() => {
+          loopAdjusting.current = false;
+          focusedExtendedRef.current = 1;
+          setFocusedExtendedIndex(1);
+          setActiveIndex(0);
+        });
         return 1;
       }
 
@@ -110,12 +132,26 @@ export function useExperienceCarousel(slideCount: number) {
   }, [syncFromScroll]);
 
   useLayoutEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
-      scrollToExtended(1, "auto");
-      setFocusedExtendedIndex(1);
-      setActiveIndex(0);
-    });
-    return () => window.cancelAnimationFrame(frame);
+    let cancelled = false;
+    const centerInitial = (attempt = 0) => {
+      if (cancelled) return;
+      const head = slideRefs.current[0];
+      const first = slideRefs.current[1];
+      if (head && first && first.offsetWidth > 0) {
+        scrollToExtended(1, "auto");
+        focusedExtendedRef.current = 1;
+        setFocusedExtendedIndex(1);
+        setActiveIndex(0);
+        return;
+      }
+      if (attempt < 24) {
+        window.requestAnimationFrame(() => centerInitial(attempt + 1));
+      }
+    };
+    centerInitial();
+    return () => {
+      cancelled = true;
+    };
   }, [scrollToExtended]);
 
   useEffect(() => {
@@ -124,7 +160,7 @@ export function useExperienceCarousel(slideCount: number) {
 
     const onScrollEnd = () => syncFromScroll(true);
     const onResize = () => {
-      scrollToExtended(focusedExtendedRef.current, "auto");
+      recenterFocused("auto");
       syncFromScroll(false);
     };
 
@@ -132,15 +168,21 @@ export function useExperienceCarousel(slideCount: number) {
     gallery.addEventListener("scrollend", onScrollEnd);
     window.addEventListener("resize", onResize);
 
+    const resizeObserver = new ResizeObserver(() => {
+      recenterFocused("auto");
+    });
+    resizeObserver.observe(gallery);
+
     return () => {
       gallery.removeEventListener("scroll", scheduleSync);
       gallery.removeEventListener("scrollend", onScrollEnd);
       window.removeEventListener("resize", onResize);
+      resizeObserver.disconnect();
       if (scrollRaf.current !== null) {
         window.cancelAnimationFrame(scrollRaf.current);
       }
     };
-  }, [scheduleSync, scrollToExtended, syncFromScroll]);
+  }, [recenterFocused, scheduleSync, syncFromScroll]);
 
   const scrollToRealIndex = useCallback(
     (realIndex: number, behavior: ScrollBehavior = "smooth") => {
@@ -217,6 +259,7 @@ export function useExperienceCarousel(slideCount: number) {
     scrollToRealIndex,
     goPrev,
     goNext,
+    recenterFocused,
     galleryProps: {
       onKeyDown: onGalleryKeyDown,
       onPointerDown,

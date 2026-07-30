@@ -53,6 +53,7 @@ export function MilagresExperiencesEditorial() {
     focusedExtendedIndex,
     goPrev,
     goNext,
+    recenterFocused,
     galleryProps,
   } = useExperienceCarousel(milagresExperiences.length);
 
@@ -119,7 +120,7 @@ export function MilagresExperiencesEditorial() {
                 aria-hidden={isClone ? true : undefined}
                 className={`experience-slide shrink-0 snap-center transition-[transform,opacity] duration-[650ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] motion-reduce:transition-none ${
                   isFocused ? "scale-[1.015] opacity-100" : "scale-100 opacity-[0.68]"
-                } w-[82vw] min-[390px]:w-[84vw] md:w-[58vw] lg:w-[57vw] lg:max-w-[54rem] xl:w-[56vw] xl:max-w-[52rem]`}
+                } w-[82vw] min-[390px]:w-[84vw] md:w-[58vw] lg:w-[58vw] lg:max-w-[56rem] xl:w-[56vw] xl:max-w-[52rem]`}
               >
                 <div className="experience-slide-media overflow-hidden rounded-sm bg-stone-200/30 aspect-[4/5] max-h-[min(70vh,26.5rem)] sm:aspect-[5/4] sm:max-h-[min(68vh,28rem)] md:aspect-[3/2] md:max-h-none lg:h-[clamp(20rem,58vh,68vh)] lg:max-h-[68vh] lg:aspect-auto">
                   <img
@@ -132,6 +133,7 @@ export function MilagresExperiencesEditorial() {
                     draggable={false}
                     className="experience-slide-img h-full w-full object-cover"
                     style={objectStyle}
+                    onLoad={() => recenterFocused("auto")}
                   />
                 </div>
               </figure>
