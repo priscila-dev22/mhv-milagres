@@ -249,12 +249,12 @@ export function RouteMap() {
             href={conciergeWhatsAppHref}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Falar com o concierge MHV pelo WhatsApp"
-            className={`${textLinkClass} mt-8`}
+            aria-label="Falar com o Concierge MHV pelo WhatsApp"
+            className="route-map-concierge-cta group mt-8 sm:mt-10"
           >
-            <span>Falar com o concierge</span>
+            <span>Falar com o Concierge</span>
             <span
-              className="route-map-arrow transition-transform duration-300 group-hover:translate-x-1"
+              className="route-map-arrow"
               aria-hidden
             >
               →

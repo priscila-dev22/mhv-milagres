@@ -683,13 +683,45 @@
     @apply lg:border-r-0;
   }
 
-  @media (hover: hover) {
-    .concierge-service-cta:hover .concierge-service-cta-arrow {
-      transform: translateX(3px);
+  .route-map-concierge-cta {
+    @apply inline-flex max-w-full cursor-pointer items-center gap-2.5 self-start border-b-2 border-petroleum/28 pb-1.5 pl-0.5 pr-1 font-sans text-[0.9375rem] font-medium normal-case tracking-[0.015em] text-petroleum transition-[color,border-color] duration-200 ease-out;
+    min-height: 3rem;
+    padding-top: 0.625rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .route-map-concierge-cta .route-map-arrow {
+    @apply transition-transform duration-200 ease-out;
+  }
+
+  @media (min-width: 640px) {
+    .route-map-concierge-cta {
+      min-height: 3.125rem;
+      gap: 0.625rem;
+      padding-top: 0.5rem;
+      font-size: 1.0625rem;
     }
   }
 
   @media (hover: hover) {
+    .route-map-concierge-cta:hover {
+      @apply border-petroleum/48 text-sepia;
+    }
+  }
+
+  .route-map-concierge-cta:focus-visible {
+    @apply outline outline-2 outline-offset-[3px] outline-petroleum/45;
+  }
+
+  @media (hover: hover) {
+    .concierge-service-cta:hover .concierge-service-cta-arrow {
+      transform: translateX(3px);
+    }
+
+    .route-map-concierge-cta:hover .route-map-arrow {
+      transform: translateX(4px);
+    }
+
     .route-map-text-link:hover .route-map-arrow {
       transform: translateX(4px);
     }

@@ -20,9 +20,9 @@ const footerLinks = [
     ariaLabel: "Pesquisar sustentabilidade na região dos Milagres",
   },
   {
-    href: "https://givalto.stays.net/pt/",
+    href: "https://givalto.stays.net/pt/terms-and-conditions",
     label: "Termos de reserva",
-    ariaLabel: "Termos de reserva no Stays.net",
+    ariaLabel: "Termos e condições de reserva no Stays.net",
   },
 ] as const;
 
