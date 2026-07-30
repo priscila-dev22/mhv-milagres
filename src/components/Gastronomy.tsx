@@ -8,29 +8,33 @@ type Restaurant = {
   image: string;
   mapsQuery: string;
   instagram: string;
+  objectPosition?: string;
 };
 
 const restaurants: Restaurant[] = [
   {
     name: "Patrícia Bistrô",
     location: "São Miguel dos Milagres, AL",
-    image: "/media/patricia-bistro.png",
+    image: "/media/images/gastronomy/bistro.jpg",
     mapsQuery: "Patrícia Bistrô São Miguel dos Milagres",
     instagram: "https://www.instagram.com/patriciabistro/",
+    objectPosition: "50% 42%",
   },
   {
     name: "No Quintal",
     location: "São Miguel dos Milagres",
-    image: "/media/no-quintal.png",
+    image: "/media/images/gastronomy/quintal.jpg",
     mapsQuery: "No Quintal restaurante São Miguel dos Milagres",
     instagram: "https://www.instagram.com/restaurantenoquintal/",
+    objectPosition: "50% 45%",
   },
   {
     name: "NACASA de boa",
     location: "Litoral norte, Alagoas",
-    image: "/media/nacasa-de-boa.png",
+    image: "/media/images/gastronomy/nacasa.jpg",
     mapsQuery: "NACASA de boa São Miguel dos Milagres",
     instagram: "https://www.instagram.com/nacasadeboa/",
+    objectPosition: "50% 40%",
   },
   {
     name: "O beco",
@@ -42,16 +46,18 @@ const restaurants: Restaurant[] = [
   {
     name: "Sur",
     location: "Milagres · costa",
-    image: "/media/sur.png",
+    image: "/media/images/gastronomy/sur.jpg",
     mapsQuery: "Sur restaurante São Miguel dos Milagres",
     instagram: "https://www.instagram.com/restaurantesur/",
+    objectPosition: "50% 38%",
   },
   {
     name: "Milagres do Toque",
     location: "Praia do Toque",
-    image: "/media/milagres-do-toque.png",
+    image: "/media/images/gastronomy/toque.jpg",
     mapsQuery: "Milagres do Toque Praia do Toque",
     instagram: "https://www.instagram.com/milagresdotoque/",
+    objectPosition: "50% 44%",
   },
 ];
 
@@ -134,7 +140,12 @@ export function Gastronomy() {
                       alt=""
                       loading="lazy"
                       decoding="async"
-                      className="h-full w-full object-cover object-center"
+                      className="h-full w-full object-cover"
+                      style={
+                        restaurant.objectPosition
+                          ? { objectPosition: restaurant.objectPosition }
+                          : undefined
+                      }
                     />
                   </div>
                   <h3 className="mt-5 font-serif text-[clamp(1.25rem,2vw,1.4375rem)] font-semibold leading-snug text-petroleum">
