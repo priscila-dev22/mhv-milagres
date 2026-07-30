@@ -149,6 +149,35 @@
   .chapter-pause-delay-2 {
     transition-delay: 240ms;
   }
+
+  .editorial-sunset-item {
+    @apply translate-y-[18px] opacity-0 transition-[opacity,transform] duration-[1000ms] ease-[cubic-bezier(0.25,0.1,0.25,1)];
+  }
+
+  .editorial-sunset-visible .editorial-sunset-item {
+    @apply translate-y-0 opacity-100;
+  }
+
+  .editorial-sunset-delay-1 {
+    transition-delay: 100ms;
+  }
+
+  .editorial-sunset-delay-2 {
+    transition-delay: 220ms;
+  }
+
+  .editorial-sunset-delay-3 {
+    transition-delay: 340ms;
+  }
+
+  .editorial-sunset-media {
+    transform: scale(1);
+    will-change: transform;
+  }
+
+  .editorial-sunset-visible .editorial-sunset-media {
+    animation: editorial-sunset-kenburns 32s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+  }
 }
 
 /* Hero entrance animations */
@@ -200,6 +229,15 @@
   animation: hero-scroll-pulse 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
+@keyframes editorial-sunset-kenburns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.03);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -230,6 +268,17 @@
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .editorial-sunset-item {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .editorial-sunset-visible .editorial-sunset-media {
+    animation: none;
+    transform: none;
   }
 
   .luxe-card-hover:hover {
