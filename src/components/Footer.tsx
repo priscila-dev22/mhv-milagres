@@ -25,7 +25,7 @@ const footerLinks = [
 ] as const;
 
 const institutionalLinkClass =
-  "footer-institutional-link group flex min-h-[44px] items-center justify-between gap-3 py-3 font-sans text-[0.8125rem] font-medium tracking-[0.02em] text-petroleum/85 transition-colors duration-300 hover:text-sepia focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/40 sm:text-sm";
+  "group flex min-h-[44px] items-center justify-between gap-3 border-b border-transparent py-3 font-sans text-[0.8125rem] font-medium tracking-[0.02em] text-petroleum/85 transition-[color,border-color] duration-luxe ease-luxe hover:text-sepia focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/40 sm:text-sm";
 
 export function Footer() {
   const footerVideoSrc = useBackgroundVideoSrc(
@@ -58,7 +58,7 @@ export function Footer() {
       <div className="footer-institutional border-t border-stone-200/50 bg-sand pb-[max(1.75rem,env(safe-area-inset-bottom))] pt-8 sm:pt-9 lg:pt-10">
         <div className="section-shell px-5 md:px-5 lg:px-6">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between sm:gap-10 lg:items-center">
-            <p className="max-w-[18rem] font-serif text-[clamp(1.25rem,3.5vw,1.625rem)] font-semibold leading-[1.15] tracking-[-0.02em] text-petroleum">
+            <p className="editorial-title-card max-w-[18rem] !text-[clamp(1.25rem,3.5vw,1.5rem)]">
               MHV — Você vive. A gente cuida.
             </p>
 

@@ -106,7 +106,7 @@ export function Hero() {
             MHV Milagres · Guia Exclusivo do Hóspede
           </p>
 
-          <h1 className="hero-animate hero-animate-delay-2 max-w-[18ch] font-serif text-[clamp(2.375rem,4.8vw,4.25rem)] font-semibold leading-[1.04] tracking-[-0.02em] text-[#FFFFFF] sm:max-w-[16ch]">
+          <h1 className="hero-animate hero-animate-delay-2 hero-title-display max-w-[19ch] text-[clamp(2.25rem,4.6vw,4.125rem)] leading-[1.1] text-[#FFFFFF] sm:max-w-[17ch]">
             Sua jornada de luxo e tranquilidade começa aqui.
           </h1>
 

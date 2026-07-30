@@ -7,6 +7,11 @@
     scroll-behavior: smooth;
   }
 
+  body {
+    @apply font-sans text-stone-700 antialiased;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
   ::selection {
     background-color: rgba(23, 52, 58, 0.14);
     color: #17343a;
@@ -28,23 +33,95 @@
   }
 
   .section-pad {
-    @apply py-[clamp(3.25rem,7.5vh,5.5rem)];
+    @apply py-[clamp(3.5rem,8vh,6rem)];
   }
 
   .section-pad-tight {
-    @apply py-[clamp(2.75rem,6vh,4.5rem)];
+    @apply py-[clamp(3rem,6.5vh,5rem)];
   }
 
   .section-header {
-    @apply mb-8 max-w-2xl sm:mb-10;
+    @apply mb-9 max-w-2xl sm:mb-11;
+  }
+
+  .hero-title-display {
+    font-family: "Playfair Display", Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    font-feature-settings: "liga" 1, "kern" 1;
+  }
+
+  .editorial-label {
+    @apply font-sans text-[0.625rem] font-medium uppercase tracking-[0.28em] text-sepia/90 sm:text-[0.6875rem];
+  }
+
+  .editorial-label-on-dark {
+    @apply font-sans text-[0.625rem] font-medium uppercase tracking-[0.28em] text-[rgba(241,230,210,0.88)] sm:text-[0.6875rem];
+  }
+
+  .editorial-title-display {
+    @apply font-serif text-[clamp(2.25rem,5vw,4.25rem)] font-normal leading-[1.06] tracking-[-0.025em] text-petroleum;
+  }
+
+  .editorial-title-section {
+    @apply font-serif text-[clamp(1.875rem,3.4vw,2.875rem)] font-normal leading-[1.08] tracking-[-0.022em] text-petroleum;
+  }
+
+  .editorial-title-card {
+    @apply font-serif text-[clamp(1.125rem,1.85vw,1.375rem)] font-normal leading-[1.2] tracking-[-0.015em] text-petroleum;
+  }
+
+  .editorial-body {
+    @apply font-sans text-[clamp(0.9375rem,1.25vw,1.0625rem)] font-normal leading-[1.72] tracking-[0.006em] text-stone-600;
+  }
+
+  .editorial-body-muted {
+    @apply font-sans text-[0.9375rem] font-normal leading-[1.68] tracking-[0.004em] text-stone-500;
+  }
+
+  .editorial-caption {
+    @apply font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-sepia/95;
+  }
+
+  .editorial-link {
+    @apply inline-flex min-h-11 items-center gap-1.5 border-b border-petroleum/25 pb-0.5 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-petroleum/90 underline-offset-[3px] transition-[color,border-color,transform] duration-luxe ease-luxe hover:border-petroleum/45 hover:text-sepia focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/40;
+  }
+
+  .editorial-link-on-dark {
+    @apply inline-flex min-h-11 items-center gap-1.5 border-b border-[rgba(241,230,210,0.28)] pb-0.5 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-[#F8F4ED] transition-[color,border-color] duration-luxe ease-luxe hover:border-[rgba(241,230,210,0.55)] hover:text-[rgba(241,230,210,0.95)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgba(248,244,237,0.45)];
+  }
+
+  .measure-tight {
+    @apply max-w-[32ch];
+  }
+
+  .measure-prose {
+    @apply max-w-[38ch];
+  }
+
+  .measure-relaxed {
+    @apply max-w-[44ch];
   }
 
   .section-title {
-    @apply font-serif text-[clamp(1.875rem,3.2vw,3.125rem)] font-semibold leading-[1.1] tracking-[-0.015em] text-petroleum;
+    @apply editorial-title-section;
   }
 
   .section-lead {
-    @apply mt-4 font-sans text-[clamp(0.9375rem,1.35vw,1.0625rem)] font-normal leading-[1.65] tracking-[0.01em] text-stone-700;
+    @apply editorial-body mt-4 measure-prose text-stone-600;
+  }
+
+  .card-title {
+    @apply editorial-title-card;
+  }
+
+  .body-text {
+    @apply editorial-body text-stone-700;
+  }
+
+  .section-band {
+    @apply bg-stone-100/35;
   }
 
   .gastro-carousel--dragging {
@@ -54,18 +131,6 @@
 
   .gastro-carousel--dragging .experience-slide {
     transition: none;
-  }
-
-  .card-title {
-    @apply font-serif text-[clamp(1.0625rem,1.4vw,1.1875rem)] font-semibold italic leading-snug text-petroleum;
-  }
-
-  .body-text {
-    @apply font-sans text-[0.9375rem] font-normal leading-[1.65] tracking-[0.01em] text-stone-700;
-  }
-
-  .section-band {
-    @apply bg-stone-100/35;
   }
 
   .luxe-card {
@@ -577,7 +642,7 @@
     }
 
     .concierge-service-item {
-      @apply border-t-0 px-5 py-5 opacity-100;
+      @apply border-t-0 px-5 py-4 opacity-100;
       transform: none;
     }
 
@@ -592,16 +657,16 @@
   }
 
   .concierge-service-item {
-    @apply border-t border-stone-200/40 px-5 py-8 transition-[background-color,transform] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] sm:py-10 lg:px-8 lg:py-12 xl:px-10;
+    @apply border-t border-stone-200/40 px-5 py-6 transition-none sm:py-7 lg:px-8 lg:py-9 xl:px-10;
   }
 
   .concierge-service-item-petroleum {
-    @apply bg-petroleum;
+    background-color: #17343a;
     border-color: rgba(241, 230, 210, 0.14);
   }
 
   .concierge-service-item-sand {
-    @apply bg-sand;
+    background-color: #f5f0e1;
   }
 
   .concierge-service-item-petroleum:nth-child(4n + 1),
@@ -619,23 +684,9 @@
   }
 
   @media (hover: hover) {
-    .concierge-service-item-petroleum:hover {
-      @apply bg-[#1a3d44];
-      transform: translateY(-2px);
+    .concierge-service-cta:hover .concierge-service-cta-arrow {
+      transform: translateX(3px);
     }
-
-    .concierge-service-item-sand:hover {
-      @apply bg-stone-100/50;
-      transform: translateY(-2px);
-    }
-
-    .concierge-service-item:hover .concierge-service-cta-arrow {
-      transform: translateX(4px);
-    }
-  }
-
-  .concierge-service-item:focus-within .concierge-service-num {
-    @apply opacity-100;
   }
 
   @media (hover: hover) {
@@ -651,71 +702,6 @@
   .route-map-list {
     scrollbar-width: thin;
     scrollbar-color: rgba(23, 52, 58, 0.2) transparent;
-  }
-
-  .route-map-leaflet {
-    z-index: 0;
-    font-family: inherit;
-  }
-
-  .route-map-leaflet .leaflet-control-zoom a {
-    @apply text-petroleum;
-  }
-
-  .route-map-leaflet-popup .leaflet-popup-content-wrapper {
-    @apply rounded-sm border border-stone-200/60 shadow-[0_4px_20px_rgba(23,52,58,0.1)];
-  }
-
-  .route-map-leaflet-popup .leaflet-popup-content {
-    margin: 12px 14px;
-  }
-
-  .route-map-pin {
-    display: block;
-    width: 1.25rem;
-    height: 1.25rem;
-    border-radius: 9999px;
-    border: 2px solid #f8f4ed;
-    background: #17343a;
-    box-shadow: 0 2px 8px rgba(23, 52, 58, 0.28);
-    transition: transform 200ms ease, box-shadow 200ms ease;
-  }
-
-  .route-map-pin--active {
-    transform: scale(1.15);
-    box-shadow: 0 0 0 3px rgba(23, 52, 58, 0.2);
-  }
-
-  .route-map-pin--gastronomia {
-    border-radius: 4px;
-    transform: rotate(45deg);
-  }
-
-  .route-map-pin--gastronomia.route-map-pin--active {
-    transform: rotate(45deg) scale(1.12);
-  }
-
-  .route-map-pin--passeios {
-    border-radius: 9999px 9999px 9999px 2px;
-    transform: rotate(-45deg);
-  }
-
-  .route-map-pin--passeios.route-map-pin--active {
-    transform: rotate(-45deg) scale(1.12);
-  }
-
-  .route-map-pin--beach-clubs {
-    width: 1.35rem;
-    height: 1.35rem;
-    border-radius: 9999px;
-    background: linear-gradient(180deg, #17343a 55%, #f8f4ed 55%);
-  }
-
-  .route-map-pin--pontos-uteis {
-    width: 0.55rem;
-    height: 0.55rem;
-    margin: 0.35rem;
-    border-width: 1.5px;
   }
 }
 

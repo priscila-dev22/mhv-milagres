@@ -71,17 +71,21 @@ function ConciergeServiceItem({
   const isGreen = tone === "petroleum";
 
   const ctaClass = isGreen
-    ? "concierge-service-cta group inline-flex min-h-11 items-center gap-2 border-b border-[rgba(241,230,210,0.28)] pb-1 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-[#F8F4ED] transition-[color,border-color,transform] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:border-[rgba(241,230,210,0.55)] hover:text-[rgba(241,230,210,0.95)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgba(248,244,237,0.45)] motion-reduce:transition-none"
-    : "concierge-service-cta group inline-flex min-h-11 items-center gap-2 border-b border-petroleum/25 pb-1 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-petroleum transition-[color,border-color,transform] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:border-petroleum/45 hover:text-sepia focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-petroleum/40 motion-reduce:transition-none";
+    ? "concierge-service-cta group inline-flex min-h-11 items-center gap-2 border-b border-[rgba(241,230,210,0.45)] pb-1 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-[#F8F4ED] transition-[color,border-color] duration-200 ease-out hover:border-[rgba(241,230,210,0.7)] hover:text-[#F8F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgba(248,244,237,0.45)] motion-reduce:transition-none"
+    : "concierge-service-cta group inline-flex min-h-11 items-center gap-2 border-b border-petroleum/35 pb-1 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-petroleum transition-[color,border-color] duration-200 ease-out hover:border-petroleum/55 hover:text-sepia focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-petroleum/40 motion-reduce:transition-none";
 
   return (
     <article
-      className={`concierge-service-item concierge-service-item-${tone} group flex flex-col`}
+      className={`concierge-service-item flex w-full flex-col ${
+        isGreen
+          ? "bg-petroleum concierge-service-item-petroleum"
+          : "bg-sand concierge-service-item-sand"
+      }`}
     >
       <div className="flex flex-col gap-3 sm:gap-3.5">
         <p
           className={`concierge-service-num font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.2em] ${
-            isGreen ? "text-[rgba(241,230,210,0.75)]" : "text-sepia/90"
+            isGreen ? "text-[#F1E6D2]" : "text-sepia"
           }`}
         >
           {num}
@@ -97,13 +101,13 @@ function ConciergeServiceItem({
 
       <p
         className={`concierge-service-desc mt-4 max-w-[36ch] flex-1 font-sans text-[0.9375rem] font-normal leading-[1.65] tracking-[0.01em] sm:mt-5 sm:text-base sm:leading-[1.72] ${
-          isGreen ? "text-[rgba(241,230,210,0.9)]" : "text-stone-600"
+          isGreen ? "text-[#F1E6D2]" : "text-stone-700"
         }`}
       >
         {description}
       </p>
 
-      <div className="mt-5 flex flex-col items-start gap-4 sm:mt-8 sm:gap-5">
+      <div className="mt-5 flex flex-col items-start gap-4 sm:mt-6 sm:gap-4">
         <p
           className={`font-sans text-[0.9375rem] font-medium tracking-[0.01em] sm:text-[clamp(1rem,1.15vw,1.125rem)] ${
             isGreen ? "text-[#F8F4ED]" : "text-petroleum"
@@ -120,7 +124,7 @@ function ConciergeServiceItem({
         >
           <span>Solicitar serviço</span>
           <span
-            className="concierge-service-cta-arrow inline-block transition-transform duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] motion-reduce:transition-none"
+            className="concierge-service-cta-arrow inline-block transition-transform duration-200 ease-out motion-reduce:transition-none"
             aria-hidden
           >
             →

@@ -1,19 +1,12 @@
 import { useEffect, useId, useMemo, useState } from "react";
 import {
   ROUTE_MAP_FULL_URL,
-  mapLocationHasMarker,
   mapLocations,
-  mapLocationsWithMarkers,
-  routeMapCategories,
-  routeMapPlaces,
-  routeMapSequence,
+  routeMapEmbedForQuery,
   routeMapZones,
-  type MapLocation,
-  type RouteMapCategoryId,
 } from "../data/routeMapPlaces";
 import { useReveal } from "../hooks/useReveal";
 import { WHATSAPP_NUMBER } from "./WhatsAppConcierge";
-import { RouteMapLeaflet, RouteMapMapShell } from "./RouteMapLeaflet";
 
 const CONCIERGE_WHATSAPP_MESSAGE =
   "Olá! Estou hospedado pela MHV Milagres e gostaria de ajuda para montar minha rota pela região.";
@@ -23,72 +16,101 @@ const conciergeWhatsAppHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURI
 const textLinkClass =
   "route-map-text-link group inline-flex min-h-11 items-center gap-1.5 border-b border-petroleum/20 pb-0.5 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-petroleum transition-[color,border-color] duration-300 hover:border-petroleum/45 hover:text-sepia focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/40";
 
-const filterBtnClass = (active: boolean) =>
-  `route-map-filter shrink-0 snap-start rounded-none border-0 border-b-2 bg-transparent px-2.5 py-2 font-sans text-[0.75rem] font-medium tracking-[0.02em] transition-[border-color,color,background-color] duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/40 sm:px-3 sm:text-[0.8125rem] ${
-    active
-      ? "border-petroleum font-semibold text-petroleum"
-      : "border-transparent text-petroleum/70 hover:border-petroleum/25 hover:text-petroleum"
-  }`;
+type MapFrameProps = {
+  embedSrc: string;
+  showMapOverlay: boolean;
+  overlayId: string;
+  onActivateMap: () => void;
+};
+
+function MapFrame({
+  embedSrc,
+  showMapOverlay,
+  overlayId,
+  onActivateMap,
+}: MapFrameProps) {
+  return (
+    <div className="route-map-frame relative h-[clamp(420px,52vh,520px)] w-full overflow-hidden rounded-sm border border-stone-200/50 bg-stone-200/25 lg:h-full lg:min-h-[620px] lg:max-h-[760px]">
+      {showMapOverlay && (
+        <button
+          type="button"
+          id={overlayId}
+          className="absolute inset-0 z-10 flex items-center justify-center bg-sand/55 px-6 backdrop-blur-[2px] transition-colors duration-300 hover:bg-sand/65 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/40"
+          onClick={onActivateMap}
+          aria-label="Ativar interação com o mapa da Rota Ecológica dos Milagres"
+        >
+          <span className="max-w-[16rem] text-center font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-petroleum/90">
+            Toque para interagir com o mapa
+          </span>
+        </button>
+      )}
+      <iframe
+        key={embedSrc}
+        title="Mapa — São Miguel dos Milagres e Rota Ecológica"
+        className={`h-full w-full grayscale-[0.08] contrast-[1.02] sepia-[0.04] transition-[filter] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:grayscale-0 ${showMapOverlay ? "pointer-events-none" : "pointer-events-auto"}`}
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+        src={embedSrc}
+        tabIndex={showMapOverlay ? -1 : 0}
+      />
+    </div>
+  );
+}
+
+function MapSearchIcon() {
+  return (
+    <svg
+      className="h-[1.125rem] w-[1.125rem] shrink-0 text-petroleum/55"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      aria-hidden
+    >
+      <circle cx="11" cy="11" r="7" />
+      <path d="M20 20l-3.5-3.5" strokeLinecap="round" />
+    </svg>
+  );
+}
 
 export function RouteMap() {
-  const searchId = useId();
+  const overlayId = useId();
+  const mapSearchId = useId();
+  const mapSearchListId = useId();
   const { ref, visible } = useReveal<HTMLElement>(0.06);
 
-  const [activeCategory, setActiveCategory] = useState<RouteMapCategoryId>("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
+  const [mapInteractive, setMapInteractive] = useState(false);
+  const [compactMap, setCompactMap] = useState(false);
+  const [mapSearch, setMapSearch] = useState("");
+  const [appliedMapSearch, setAppliedMapSearch] = useState("");
 
-  const filteredPlaces = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
-    return mapLocations.filter((place) => {
-      const categoryMatch =
-        activeCategory === "all" || place.category === activeCategory;
-      if (!categoryMatch) return false;
-      if (!q) return true;
-      return (
-        place.name.toLowerCase().includes(q) ||
-        place.region.toLowerCase().includes(q) ||
-        place.address.toLowerCase().includes(q)
-      );
-    });
-  }, [activeCategory, searchQuery]);
-
-  const markerPlaces = useMemo(
-    () => mapLocationsWithMarkers(filteredPlaces),
-    [filteredPlaces],
+  const embedSrc = useMemo(
+    () => routeMapEmbedForQuery(appliedMapSearch),
+    [appliedMapSearch],
   );
+
+  const mapSearchSuggestions = useMemo(
+    () => mapLocations.map((loc) => loc.name),
+    [],
+  );
+
+  const submitMapSearch = () => {
+    setAppliedMapSearch(mapSearch.trim());
+    if (compactMap) setMapInteractive(true);
+  };
 
   useEffect(() => {
-    if (!selectedPlaceId) return;
-    const stillVisible = filteredPlaces.some((p) => p.id === selectedPlaceId);
-    if (!stillVisible) setSelectedPlaceId(null);
-  }, [filteredPlaces, selectedPlaceId]);
+    const mediaQuery = window.matchMedia("(max-width: 1023px)");
+    const update = () => {
+      setCompactMap(mediaQuery.matches);
+      if (!mediaQuery.matches) setMapInteractive(true);
+    };
+    update();
+    mediaQuery.addEventListener("change", update);
+    return () => mediaQuery.removeEventListener("change", update);
+  }, []);
 
-  const selectedPlace = useMemo(
-    () =>
-      selectedPlaceId
-        ? mapLocations.find((p) => p.id === selectedPlaceId) ?? null
-        : null,
-    [selectedPlaceId],
-  );
-
-  const mapFocusPlace =
-    selectedPlace && mapLocationHasMarker(selectedPlace) ? selectedPlace : null;
-
-  const fitKey = useMemo(
-    () =>
-      `${activeCategory}|${searchQuery.trim()}|${markerPlaces.map((p) => p.id).join(",")}`,
-    [activeCategory, markerPlaces, searchQuery],
-  );
-
-  const focusPlace = (place: MapLocation) => {
-    setSelectedPlaceId(place.id);
-  };
-
-  const handleCategoryChange = (categoryId: RouteMapCategoryId) => {
-    setActiveCategory(categoryId);
-    setSelectedPlaceId(null);
-  };
+  const showMapOverlay = compactMap && !mapInteractive;
 
   return (
     <section
@@ -110,97 +132,64 @@ export function RouteMap() {
               Milagres, do seu jeito.
             </h2>
             <p className="mt-5 max-w-[38ch] font-sans text-[clamp(0.9375rem,1.35vw,1.0625rem)] font-normal leading-[1.75] tracking-[0.012em] text-stone-600">
-              Descubra praias, restaurantes, passeios e pontos essenciais da
-              Rota Ecológica em um mapa pensado para facilitar cada momento da
-              sua estadia.
-            </p>
-            <p className="mt-3 max-w-[36ch] font-sans text-[0.9375rem] font-normal leading-[1.7] tracking-[0.01em] text-stone-500">
-              Do Patacho a Japaratinga, encontre os lugares selecionados pela
-              curadoria MHV.
+              Navegue a Rota Ecológica dos Milagres — do Patacho à Japaratinga.
+              Use o mapa para traçar rotas e descobrir estabelecimentos com fotos
+              reais no Google.
             </p>
           </header>
 
-          <div className="reveal-item reveal-item-delay-1 lg:col-start-1 lg:row-start-2 lg:space-y-6">
-            <div>
-              <label htmlFor={searchId} className="sr-only">
-                Buscar no mapa da rota
+          <div className="reveal-item reveal-item-delay-2 lg:col-start-2 lg:row-start-1 lg:row-span-3 lg:min-h-[620px] lg:self-stretch">
+            <form
+              className="route-map-search-bar mb-3 flex items-center gap-3 border-b border-stone-200/55 bg-white/40 px-1 py-2.5 sm:mb-4"
+              role="search"
+              aria-label="Buscar local no mapa"
+              onSubmit={(e) => {
+                e.preventDefault();
+                submitMapSearch();
+              }}
+            >
+              <MapSearchIcon />
+              <label htmlFor={mapSearchId} className="sr-only">
+                Buscar local no mapa
               </label>
               <input
-                id={searchId}
+                id={mapSearchId}
                 type="search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Busque praias, restaurantes ou passeios"
+                list={mapSearchListId}
+                value={mapSearch}
+                onChange={(e) => setMapSearch(e.target.value)}
+                placeholder="Buscar praias, restaurantes ou passeios"
                 autoComplete="off"
-                className="route-map-search w-full border-0 border-b border-stone-200/55 bg-white/35 px-0 py-3 font-sans text-base font-normal tracking-[0.01em] text-petroleum placeholder:text-stone-400 focus:border-petroleum/35 focus:bg-white/50 focus:outline-none focus:ring-0"
+                className="min-w-0 flex-1 border-0 bg-transparent font-sans text-[0.9375rem] font-normal tracking-[0.01em] text-petroleum placeholder:text-stone-400 focus:outline-none focus:ring-0"
               />
-            </div>
-
-            <div
-              className="route-map-filters -mx-1 flex snap-x snap-mandatory flex-wrap gap-x-1 gap-y-1 overflow-x-auto pb-1 pt-6 lg:flex-nowrap lg:pt-0 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-              role="tablist"
-              aria-label="Filtrar pontos do mapa"
-            >
-              {routeMapCategories.map((cat) => (
-                <button
-                  key={cat.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={activeCategory === cat.id}
-                  className={filterBtnClass(activeCategory === cat.id)}
-                  onClick={() => handleCategoryChange(cat.id)}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="reveal-item reveal-item-delay-2 lg:col-start-2 lg:row-start-1 lg:row-span-4 lg:min-h-[620px] lg:self-stretch">
-            <RouteMapMapShell>
-              <RouteMapLeaflet
-                markerPlaces={markerPlaces}
-                selectedPlace={mapFocusPlace}
-                fitKey={fitKey}
-                onSelectPlace={setSelectedPlaceId}
-                onClearSelection={() => setSelectedPlaceId(null)}
-              />
-            </RouteMapMapShell>
+              <datalist id={mapSearchListId}>
+                {mapSearchSuggestions.map((name) => (
+                  <option key={name} value={name} />
+                ))}
+              </datalist>
+              <button
+                type="submit"
+                className="shrink-0 rounded-sm px-2 py-1.5 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.12em] text-petroleum transition-colors duration-200 hover:text-sepia focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/40"
+              >
+                Buscar
+              </button>
+            </form>
+            <MapFrame
+              embedSrc={embedSrc}
+              showMapOverlay={showMapOverlay}
+              overlayId={overlayId}
+              onActivateMap={() => setMapInteractive(true)}
+            />
           </div>
 
           <nav
-            className="reveal-item reveal-item-delay-3 border-t border-stone-200/45 pt-8 lg:col-start-1 lg:row-start-3"
-            aria-label="Sequência geográfica da Rota Ecológica"
+            className="reveal-item reveal-item-delay-3 border-t border-stone-200/45 pt-8 lg:col-start-1 lg:row-start-2"
+            aria-label="Leitura geográfica da Rota Ecológica"
           >
             <p className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-sepia/90">
               Leitura geográfica
             </p>
-            <div className="route-map-sequence mt-4 flex snap-x snap-mandatory items-center gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {routeMapSequence.map((stop, index) => (
-                <span
-                  key={stop.id}
-                  className="flex shrink-0 snap-start items-center gap-2"
-                >
-                  {index > 0 ? (
-                    <span
-                      className="h-px w-4 shrink-0 bg-stone-300/80 sm:w-6"
-                      aria-hidden
-                    />
-                  ) : null}
-                  <button
-                    type="button"
-                    className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.12em] text-petroleum/80 transition-colors duration-300 hover:text-sepia focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/40 sm:text-[0.75rem]"
-                    onClick={() => {
-                      const place = routeMapPlaces.find((p) => p.id === stop.id);
-                      if (place) focusPlace(place);
-                    }}
-                  >
-                    {stop.short}
-                  </button>
-                </span>
-              ))}
-            </div>
-            <div className="mt-6 space-y-4 border-t border-stone-200/40 pt-6">
+            <div className="mt-6 space-y-4">
               {routeMapZones.map((zone) => (
                 <div key={zone.title}>
                   <p className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.12em] text-petroleum">
@@ -218,7 +207,7 @@ export function RouteMap() {
             </div>
           </nav>
 
-          <div className="reveal-item reveal-item-delay-3 border-t border-stone-200/45 pt-6 lg:col-start-1 lg:row-start-4">
+          <div className="reveal-item reveal-item-delay-3 border-t border-stone-200/45 pt-6 lg:col-start-1 lg:row-start-3">
             <p className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-sepia/90">
               Dica de navegação
             </p>
@@ -233,7 +222,7 @@ export function RouteMap() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Abrir mapa completo da Rota Ecológica dos Milagres no Google Maps"
-            className={`${textLinkClass} reveal-item reveal-item-delay-4 inline-flex lg:col-start-1 lg:row-start-5`}
+            className={`${textLinkClass} reveal-item reveal-item-delay-4 inline-flex lg:col-start-1 lg:row-start-4`}
           >
             <span>Abrir mapa completo</span>
             <span

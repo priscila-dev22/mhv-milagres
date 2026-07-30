@@ -23,8 +23,7 @@ const prices = [
   { duration: "1 h", value: "R$ 500" },
 ] as const;
 
-const inlineLinkClass =
-  "font-sans text-[0.8125rem] font-normal text-petroleum underline-offset-[4px] transition-colors duration-300 hover:text-sepia hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/45";
+const inlineLinkClass = "editorial-link !normal-case !text-[0.8125rem] !tracking-[0.04em]";
 
 type FactRowProps = {
   label: string;
@@ -37,10 +36,10 @@ function FactRow({ label, children, delayClass }: FactRowProps) {
     <div
       className={`jetski-fact-row group jetski-copy-item border-t border-stone-200/45 py-5 transition-[border-color] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:border-petroleum/25 sm:py-6 ${delayClass ?? ""}`}
     >
-      <p className="font-sans text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-sepia/90 transition-colors duration-300 group-hover:text-sepia">
+      <p className="font-sans text-[0.625rem] font-medium uppercase tracking-[0.18em] text-sepia/90 transition-colors duration-luxe ease-luxe group-hover:text-sepia">
         {label}
       </p>
-      <div className="jetski-fact-value mt-2.5 font-sans text-[0.9375rem] font-normal leading-[1.72] tracking-[0.01em] text-stone-700">
+      <div className="jetski-fact-value mt-2 font-sans text-[0.9375rem] font-normal leading-[1.72] tracking-[0.006em] text-stone-700">
         {children}
       </div>
     </div>
@@ -60,16 +59,14 @@ export function JetSki() {
       <div className="section-shell">
         <div className="grid grid-cols-1 gap-[clamp(2.5rem,6vh,3.5rem)] lg:grid-cols-2 lg:items-start lg:gap-14 xl:gap-20">
           <div className="jetski-sheet min-w-0 lg:max-w-[28rem] xl:max-w-[32rem]">
-            <p className="jetski-copy-item font-sans text-[0.625rem] font-semibold uppercase tracking-[0.26em] text-sepia/90 sm:text-[0.6875rem]">
-              Experiência
-            </p>
+            <p className="jetski-copy-item editorial-label">Experiência</p>
             <h2
               id="jetski-titulo"
-              className="jetski-copy-item jetski-copy-delay-1 mt-4 font-serif text-[clamp(1.75rem,3.2vw,2.75rem)] font-medium leading-[1.1] tracking-[-0.02em] text-petroleum sm:mt-5"
+              className="jetski-copy-item jetski-copy-delay-1 editorial-title-section mt-4 sm:mt-5"
             >
               Japaratinga Jet Ski
             </h2>
-            <p className="jetski-copy-item jetski-copy-delay-2 mt-5 max-w-[42ch] font-sans text-[clamp(0.9375rem,1.3vw,1.0625rem)] font-normal leading-[1.75] tracking-[0.012em] text-stone-600 sm:mt-6">
+            <p className="jetski-copy-item jetski-copy-delay-2 editorial-body measure-relaxed mt-4 sm:mt-5">
               Saídas na orla de Japaratinga — combine com o concierge MHV para
               horário, briefing e condições do mar.
             </p>

@@ -64,9 +64,7 @@ function AccordionItem({ title, body, isOpen, onToggle, triggerId, panelId }: Ac
           onClick={onToggle}
           className="flex w-full min-h-[44px] items-center justify-between gap-4 py-5 text-left transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-stone-100/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-petroleum/35 sm:py-[1.375rem]"
         >
-          <span className="font-serif text-[clamp(1.0625rem,1.35vw,1.1875rem)] font-medium leading-snug tracking-[-0.01em] text-petroleum">
-            {title}
-          </span>
+          <span className="editorial-title-card">{title}</span>
           <span
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-stone-200/45 bg-[#FAF8F5]"
             style={{ boxShadow: "0 1px 6px rgba(23, 52, 58, 0.04)" }}
@@ -83,9 +81,7 @@ function AccordionItem({ title, body, isOpen, onToggle, triggerId, panelId }: Ac
         className={`grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
       >
         <div className="overflow-hidden">
-          <p className="pb-6 pr-2 font-sans text-[0.9375rem] font-normal leading-[1.75] tracking-[0.01em] text-stone-700 sm:pb-7 sm:pr-4">
-            {body}
-          </p>
+          <p className="editorial-body pb-6 pr-2 sm:pb-7 sm:pr-4">{body}</p>
         </div>
       </div>
     </div>
@@ -106,9 +102,7 @@ export function AccommodationInfo() {
       <div className="section-shell">
         <div className={`reveal-item mx-auto max-w-3xl ${revealDelay(1)}`}>
             <header className="mb-6 sm:mb-7">
-              <p className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-sepia/90">
-                Informações da hospedagem
-              </p>
+              <p className="editorial-label">Informações da hospedagem</p>
               <span
                 className="mt-4 block h-px w-9"
                 style={{ backgroundColor: CHAMPAGNE }}

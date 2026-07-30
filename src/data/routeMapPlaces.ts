@@ -261,6 +261,15 @@ export const routeMapZones = [
   },
 ];
 
+export function routeMapEmbedForQuery(query: string): string {
+  const q = query.trim();
+  if (!q) return ROUTE_MAP_EMBED_DEFAULT;
+  return `https://www.google.com/maps?q=${encodeURIComponent(`${q}, São Miguel dos Milagres, AL`)}&hl=pt&z=14&output=embed`;
+}
+
+export const ROUTE_MAP_EMBED_DEFAULT =
+  "https://www.google.com/maps?q=São+Miguel+dos+Milagres,+AL&hl=pt&z=10&output=embed";
+
 export const ROUTE_MAP_FULL_URL =
   "https://www.google.com/maps/search/?api=1&query=Rota+Ecológica+dos+Milagres,+S%C3%A3o+Miguel+dos+Milagres,+AL&hl=pt";
 

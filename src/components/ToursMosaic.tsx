@@ -8,8 +8,7 @@ import {
 } from "../data/milagresTours";
 import { useReveal } from "../hooks/useReveal";
 
-const tourLinkClass =
-  "mt-1 block font-sans text-[0.6875rem] font-normal tracking-[0.02em] text-petroleum/80 underline-offset-[3px] transition-colors duration-300 hover:text-sepia hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/45";
+const tourLinkClass = "editorial-link mt-1 !text-[0.6875rem] !tracking-[0.12em] normal-case";
 
 function TourOptionInline({ option }: { option: MilagresTourOption }) {
   const href = tourOptionHasContact(option)
@@ -53,16 +52,14 @@ export function ToursMosaic() {
     >
       <div className="section-shell">
         <header className="max-w-[46rem]">
-          <p className="tours-header-item font-sans text-[0.625rem] font-semibold uppercase tracking-[0.26em] text-sepia/90 sm:text-[0.6875rem]">
-            Passeios
-          </p>
+          <p className="tours-header-item editorial-label">Passeios</p>
           <h2
             id="passeios-titulo"
-            className="tours-header-item tours-header-delay-1 mt-5 font-serif text-[clamp(1.875rem,3.8vw,3.25rem)] font-medium leading-[1.08] tracking-[-0.02em] text-petroleum sm:mt-6"
+            className="tours-header-item tours-header-delay-1 editorial-title-section mt-5 sm:mt-6"
           >
             Milagres também se revela pelo caminho.
           </h2>
-          <p className="tours-header-item tours-header-delay-2 mt-5 max-w-[44ch] font-sans text-[clamp(0.9375rem,1.35vw,1.0625rem)] font-normal leading-[1.75] tracking-[0.012em] text-stone-600 sm:mt-6">
+          <p className="tours-header-item tours-header-delay-2 editorial-body measure-relaxed mt-5 sm:mt-6">
             Entre o mar, os coqueirais e as paisagens da Rota Ecológica, cada
             passeio oferece uma forma diferente de conhecer a região.
           </p>

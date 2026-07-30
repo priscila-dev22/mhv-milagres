@@ -66,8 +66,7 @@ function mapsUrl(query: string) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
 
-const cardLinkClass =
-  "font-sans text-[0.625rem] font-medium uppercase tracking-[0.12em] text-petroleum/90 underline-offset-[4px] transition-colors duration-300 hover:text-sepia hover:underline";
+const cardLinkClass = "editorial-link mt-4";
 
 export function Gastronomy() {
   const { ref, visible } = useReveal<HTMLElement>();
@@ -91,15 +90,11 @@ export function Gastronomy() {
       className={`section-pad scroll-mt-[4.5rem] overflow-hidden bg-sand ${visible ? "section-visible" : ""}`}
     >
       <div className="section-shell">
-        <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-10 xl:gap-14">
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-12 xl:gap-16">
           <header className="reveal-item shrink-0 lg:sticky lg:top-[5.5rem] lg:w-[min(100%,22rem)] lg:max-w-[24rem] xl:w-[26rem]">
-            <p className="font-sans text-[0.625rem] font-semibold uppercase tracking-[0.26em] text-sepia/90 sm:text-[0.6875rem]">
-              GASTRONOMIA
-            </p>
-            <h2 className="section-title mt-5 text-[clamp(2rem,3.6vw,3.125rem)]">
-              Sabores de Milagres
-            </h2>
-            <p className="section-lead mt-5 max-w-[32ch] text-stone-600">
+            <p className="editorial-label">GASTRONOMIA</p>
+            <h2 className="section-title mt-5">Sabores de Milagres</h2>
+            <p className="section-lead measure-tight">
               Uma seleção de restaurantes, beach clubs e experiências gastronômicas
               para descobrir durante sua estadia.
             </p>
@@ -133,12 +128,8 @@ export function Gastronomy() {
                       }
                     />
                   </div>
-                  <h3 className="mt-5 font-serif text-[clamp(1.25rem,2vw,1.4375rem)] font-semibold leading-snug text-petroleum">
-                    {restaurant.name}
-                  </h3>
-                  <p className="mt-2 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.11em] text-sepia/95">
-                    {restaurant.location}
-                  </p>
+                  <h3 className="editorial-title-card mt-5">{restaurant.name}</h3>
+                  <p className="editorial-caption mt-2.5">{restaurant.location}</p>
                   <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
                     <a
                       href={mapsUrl(restaurant.mapsQuery)}
