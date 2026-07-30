@@ -52,6 +52,11 @@
     scroll-snap-type: none;
   }
 
+  .gastro-carousel--dragging .experience-slide,
+  .gastro-carousel--dragging .tours-slide {
+    transition: none;
+  }
+
   .card-title {
     @apply font-serif text-[clamp(1.0625rem,1.4vw,1.1875rem)] font-semibold italic leading-snug text-petroleum;
   }

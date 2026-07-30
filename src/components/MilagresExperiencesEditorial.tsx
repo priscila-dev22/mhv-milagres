@@ -1,83 +1,47 @@
 import type { CSSProperties } from "react";
-import { useMemo } from "react";
-import { useReveal } from "../hooks/useReveal";
-import {
-  getExperienceSlideVisualRole,
-  useExperienceCarousel,
-} from "../hooks/useExperienceCarousel";
+import { EditorialCarouselNav } from "./EditorialCarouselNav";
 import {
   milagresExperienceInitialRealIndex,
   milagresExperiences,
-  type MilagresExperience,
 } from "../data/milagresExperiences";
+import {
+  getSnapSlideVisualRole,
+  useHorizontalSnapCarousel,
+} from "../hooks/useHorizontalScrollCarousel";
+import { useReveal } from "../hooks/useReveal";
 
 const editorialLinkClass =
   "mt-8 inline-block font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-petroleum/85 underline-offset-[5px] transition-[color,border-color] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:text-sepia focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-petroleum/40 border-b border-petroleum/22 pb-0.5 hover:border-sepia/45";
 
-const navControlClass =
-  "min-h-[44px] cursor-pointer font-sans text-[0.625rem] font-medium uppercase tracking-[0.14em] text-petroleum/80 underline-offset-[4px] transition-colors duration-500 hover:text-sepia hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/45 sm:min-h-0";
-
-type GallerySlide = {
-  experience: MilagresExperience;
-  extendedIndex: number;
-  isClone: boolean;
-  eagerLoad: boolean;
-};
-
-function buildGallerySlides(): GallerySlide[] {
-  const last = milagresExperiences.length - 1;
-  const headClone: GallerySlide = {
-    experience: milagresExperiences[last]!,
-    extendedIndex: 0,
-    isClone: true,
-    eagerLoad: true,
-  };
-  const reals: GallerySlide[] = milagresExperiences.map((experience, index) => ({
-    experience,
-    extendedIndex: index + 1,
-    isClone: false,
-    eagerLoad:
-      index <= 1 ||
-      experience.id === "lua" ||
-      experience.id === "fim-de-tarde" ||
-      experience.id === "chuveiro",
-  }));
-  const tailClone: GallerySlide = {
-    experience: milagresExperiences[0]!,
-    extendedIndex: milagresExperiences.length + 1,
-    isClone: true,
-    eagerLoad: true,
-  };
-  return [headClone, ...reals, tailClone];
-}
+const trackClassName =
+  "gastro-carousel experience-gallery flex w-full max-w-[100vw] cursor-grab touch-pan-x touch-pan-y snap-x snap-mandatory gap-3 overflow-x-auto pb-1 pt-0.5 [-ms-overflow-style:none] [scrollbar-width:none] active:cursor-grabbing sm:gap-5 md:gap-6 lg:gap-6 lg:px-[calc((100%-min(58vw,56rem))/2)] [&::-webkit-scrollbar]:hidden max-lg:px-[calc((100%-84vw)/2)] max-[389px]:px-[calc((100%-82vw)/2)]";
 
 export function MilagresExperiencesEditorial() {
   const { ref, visible } = useReveal<HTMLElement>(0.08);
-  const gallerySlides = useMemo(() => buildGallerySlides(), []);
   const {
-    galleryRef,
-    setSlideRef,
+    trackRef,
+    trackProps,
+    scrollBar,
     activeIndex,
-    focusedExtendedIndex,
+    setSlideRef,
     goPrev,
     goNext,
-    galleryProps,
-    scrollBar,
-  } = useExperienceCarousel(
+    canGoPrev,
+    canGoNext,
+  } = useHorizontalSnapCarousel(
     milagresExperiences.length,
     milagresExperienceInitialRealIndex,
+    { thumbSelector: "[data-carousel-thumb]" },
   );
 
   const active = milagresExperiences[activeIndex]!;
-  const indexLabel = String(activeIndex + 1).padStart(2, "0");
-  const totalLabel = String(milagresExperiences.length).padStart(2, "0");
 
   return (
     <section
       ref={ref}
       id="experiencias"
       aria-labelledby="experiencias-titulo"
-      className={`experience-section scroll-mt-[4.5rem] overflow-hidden bg-sand pb-[clamp(3.5rem,8vh,5.5rem)] pt-[clamp(3.75rem,9vh,6rem)] ${visible ? "experience-section-visible" : ""}`}
+      className={`experience-section scroll-mt-[4.5rem] overflow-hidden bg-sand pb-[clamp(2.75rem,6vh,4.5rem)] pt-[clamp(3.75rem,9vh,6rem)] ${visible ? "experience-section-visible" : ""}`}
     >
       <header className="section-shell mx-auto max-w-[40rem] text-center">
         <p className="experience-header-item font-sans text-[0.625rem] font-semibold uppercase tracking-[0.28em] text-sepia/90 sm:text-[0.6875rem]">
@@ -105,19 +69,21 @@ export function MilagresExperiencesEditorial() {
         <div className="experience-gallery-stage">
           <div
             id="experiencias-galeria"
-            ref={galleryRef}
-            {...galleryProps}
+            ref={trackRef}
+            {...trackProps}
             tabIndex={0}
             role="region"
             aria-roledescription="carrossel"
             aria-label="Galeria Um dia em Milagres"
-            className="experience-gallery flex w-full max-w-[100vw] cursor-grab select-none touch-pan-y snap-x snap-mandatory gap-3 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] active:cursor-grabbing sm:gap-5 md:gap-6 lg:gap-6 lg:px-[calc((100%-min(58vw,56rem))/2)] [&::-webkit-scrollbar]:hidden max-lg:px-[calc((100%-84vw)/2)] max-[389px]:px-[calc((100%-82vw)/2)]"
+            className={trackClassName}
           >
-            {gallerySlides.map(({ experience, extendedIndex, isClone, eagerLoad }) => {
-              const visualRole = getExperienceSlideVisualRole(
-                extendedIndex,
-                focusedExtendedIndex,
-              );
+            {milagresExperiences.map((experience, index) => {
+              const visualRole = getSnapSlideVisualRole(index, activeIndex);
+              const eagerLoad =
+                index <= 1 ||
+                experience.id === "lua" ||
+                experience.id === "fim-de-tarde" ||
+                experience.id === "chuveiro";
               const objectStyle = {
                 "--exp-pos": experience.objectPosition,
                 "--exp-pos-md":
@@ -130,16 +96,15 @@ export function MilagresExperiencesEditorial() {
 
               return (
                 <figure
-                  key={`${experience.id}-${extendedIndex}`}
-                  ref={(node) => setSlideRef(extendedIndex, node)}
+                  key={experience.id}
+                  ref={(node) => setSlideRef(index, node)}
                   data-role={visualRole}
-                  aria-hidden={isClone ? true : undefined}
                   className="experience-slide shrink-0 snap-center w-[82vw] min-[390px]:w-[84vw] md:w-[58vw] lg:w-[58vw] lg:max-w-[56rem] xl:w-[56vw] xl:max-w-[52rem]"
                 >
                   <div className="experience-slide-media overflow-hidden rounded-sm bg-stone-200/35 aspect-[4/5] max-h-[min(70vh,26.5rem)] sm:aspect-[5/4] sm:max-h-[min(68vh,28rem)] md:aspect-[3/2] md:max-h-none lg:h-[clamp(20rem,58vh,68vh)] lg:max-h-[68vh] lg:aspect-auto">
                     <img
                       src={experience.image}
-                      alt={isClone ? "" : experience.alt}
+                      alt={experience.alt}
                       width={experience.width}
                       height={experience.height}
                       loading={eagerLoad ? "eager" : "lazy"}
@@ -149,7 +114,7 @@ export function MilagresExperiencesEditorial() {
                       onError={(event) => {
                         event.currentTarget.style.visibility = "hidden";
                       }}
-                      className="experience-slide-img pointer-events-none h-full w-full object-cover"
+                      className="experience-slide-img pointer-events-none h-full w-full select-none object-cover"
                       style={objectStyle}
                     />
                   </div>
@@ -159,39 +124,24 @@ export function MilagresExperiencesEditorial() {
           </div>
         </div>
 
-        {scrollBar.metrics.visible ? (
-          <div className="section-shell mt-8 flex justify-center px-4 sm:px-5 md:px-6">
-            <div
-              ref={scrollBar.railRef}
-              {...scrollBar.railProps}
-              className="relative h-3 w-full max-w-[min(100%,18rem)] cursor-pointer touch-none sm:max-w-[20rem] md:max-w-[22rem]"
-              role="scrollbar"
-              aria-controls="experiencias-galeria"
-              aria-orientation="horizontal"
-              aria-valuenow={scrollBar.scrollPercent}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-label="Posição da galeria Um dia em Milagres"
-            >
-              <div
-                className="pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-petroleum/15"
-                aria-hidden
-              />
-              <div
-                {...scrollBar.thumbProps}
-                data-exp-thumb
-                className="absolute top-1/2 h-[3px] min-w-[2.75rem] -translate-y-1/2 cursor-grab rounded-full bg-petroleum/40 transition-[background-color,height] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:h-1 hover:bg-sepia/55 active:cursor-grabbing active:bg-sepia/65"
-                style={{
-                  left: `${scrollBar.metrics.thumbLeft * 100}%`,
-                  width: `${scrollBar.metrics.thumbWidth * 100}%`,
-                }}
-              />
-            </div>
-          </div>
-        ) : null}
+        <div className="section-shell mt-6 px-4 sm:mt-7 sm:px-5 md:px-6">
+          <EditorialCarouselNav
+            scrollBar={scrollBar}
+            controlsId="experiencias-galeria"
+            ariaLabel="Posição da galeria Um dia em Milagres"
+            onPrev={goPrev}
+            onNext={goNext}
+            canPrev={canGoPrev}
+            canNext={canGoNext}
+          />
+        </div>
       </div>
 
-      <div className="section-shell mt-[clamp(1.75rem,4.5vh,3rem)] px-4 text-center sm:px-5 md:px-6">
+      <div
+        className="section-shell mt-[clamp(1.25rem,3vh,2rem)] px-4 text-center sm:px-5 md:px-6"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         <p className="font-sans text-[0.625rem] font-semibold uppercase tracking-[0.22em] text-sepia/90">
           {active.moment}
         </p>
@@ -201,34 +151,6 @@ export function MilagresExperiencesEditorial() {
         <p className="mx-auto mt-3 max-w-[32ch] font-sans text-[clamp(0.875rem,1.25vw,0.9875rem)] font-normal leading-[1.7] tracking-[0.01em] text-stone-600">
           {active.support}
         </p>
-
-        <div className="mt-8 flex flex-col items-center gap-5 sm:flex-row sm:justify-center sm:gap-10">
-          <p
-            className="font-sans text-[0.6875rem] font-medium tabular-nums tracking-[0.18em] text-petroleum/55"
-            aria-live="polite"
-            aria-atomic="true"
-          >
-            {indexLabel} / {totalLabel}
-          </p>
-          <div className="flex items-center gap-8">
-            <button
-              type="button"
-              onClick={goPrev}
-              className={navControlClass}
-              aria-label="Experiência anterior"
-            >
-              Anterior
-            </button>
-            <button
-              type="button"
-              onClick={goNext}
-              className={navControlClass}
-              aria-label="Próxima experiência"
-            >
-              Próximo
-            </button>
-          </div>
-        </div>
       </div>
     </section>
   );
