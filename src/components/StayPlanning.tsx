@@ -7,7 +7,7 @@ const ESTADIA_TITLE_SHADOW =
   "[text-shadow:0_2px_10px_rgba(0,0,0,0.28),0_1px_3px_rgba(0,0,0,0.18)]";
 
 const ESTADIA_CAPTION_SHADOW =
-  "[text-shadow:0_2px_10px_rgba(0,0,0,0.26),0_1px_4px_rgba(0,0,0,0.16)]";
+  "[text-shadow:0_1px_10px_rgba(0,0,0,0.34),0_1px_3px_rgba(0,0,0,0.22)]";
 
 const CHAMPAGNE = "#F1E6D2";
 
@@ -49,7 +49,7 @@ export function StayPlanning() {
       </div>
 
       <div
-        className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(to_right,rgba(15,36,40,0.32)_0%,rgba(15,36,40,0.13)_22%,rgba(15,36,40,0.04)_38%,transparent_52%)] sm:bg-[linear-gradient(to_right,rgba(15,36,40,0.28)_0%,rgba(15,36,40,0.1)_20%,transparent_44%)] md:bg-[linear-gradient(to_right,rgba(15,36,40,0.26)_0%,rgba(15,36,40,0.09)_18%,transparent_40%)]"
+        className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(to_right,rgba(15,36,40,0.38)_0%,rgba(15,36,40,0.16)_22%,rgba(15,36,40,0.06)_38%,transparent_52%)] sm:bg-[linear-gradient(to_right,rgba(15,36,40,0.34)_0%,rgba(15,36,40,0.12)_20%,transparent_44%)] md:bg-[linear-gradient(to_right,rgba(15,36,40,0.32)_0%,rgba(15,36,40,0.11)_18%,transparent_40%)]"
         aria-hidden
       />
 
@@ -80,7 +80,7 @@ export function StayPlanning() {
                     {block.title}
                   </h3>
                   <p
-                    className={`mt-6 max-w-[22ch] font-sans text-[clamp(0.875rem,1.42vw,1rem)] font-light leading-[1.85] tracking-[0.025em] text-[#F1E6D2] sm:mt-7 ${ESTADIA_CAPTION_SHADOW}`}
+                    className={`mt-6 max-w-[22ch] font-sans text-[clamp(0.875rem,1.42vw,1rem)] font-light leading-[1.85] tracking-[0.025em] text-[rgba(248,244,237,0.94)] sm:mt-7 ${ESTADIA_CAPTION_SHADOW}`}
                   >
                     {block.lines.map((line, lineIndex) => (
                       <span key={line}>

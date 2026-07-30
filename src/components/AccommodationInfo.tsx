@@ -105,20 +105,15 @@ export function AccommodationInfo() {
     >
       <div className="section-shell">
         <div className={`reveal-item mx-auto max-w-3xl ${revealDelay(1)}`}>
-            <header className="mb-10 max-w-xl sm:mb-12">
-              <p className="mb-4 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-sepia/90">
+            <header className="mb-6 sm:mb-7">
+              <p className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-sepia/90">
                 Informações da hospedagem
               </p>
               <span
-                className="mb-5 block h-px w-9"
+                className="mt-4 block h-px w-9"
                 style={{ backgroundColor: CHAMPAGNE }}
                 aria-hidden
               />
-              <h2 className="section-title text-petroleum">Tudo preparado para a sua estadia</h2>
-              <p className="section-lead mt-6 max-w-[42ch] leading-[1.74] text-stone-600/95">
-                Da chegada ao check-out, cada detalhe é pensado para que você aproveite Milagres com
-                tranquilidade, conforto e uma experiência acolhedora do início ao fim.
-              </p>
             </header>
 
             <div className="border-t border-stone-200/40">
