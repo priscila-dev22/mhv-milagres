@@ -111,7 +111,7 @@ export function MilagresExperiencesEditorial() {
             role="region"
             aria-roledescription="carrossel"
             aria-label="Galeria Um dia em Milagres"
-            className="experience-gallery flex w-full max-w-[100vw] cursor-grab select-none touch-pan-x touch-pan-y snap-x snap-mandatory gap-3 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] active:cursor-grabbing sm:gap-5 md:gap-6 lg:gap-6 lg:px-[calc((100%-min(58vw,56rem))/2)] [&::-webkit-scrollbar]:hidden max-lg:px-[calc((100%-84vw)/2)] max-[389px]:px-[calc((100%-82vw)/2)]"
+            className="experience-gallery flex w-full max-w-[100vw] cursor-grab select-none touch-pan-y snap-x snap-mandatory gap-3 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] active:cursor-grabbing sm:gap-5 md:gap-6 lg:gap-6 lg:px-[calc((100%-min(58vw,56rem))/2)] [&::-webkit-scrollbar]:hidden max-lg:px-[calc((100%-84vw)/2)] max-[389px]:px-[calc((100%-82vw)/2)]"
           >
             {gallerySlides.map(({ experience, extendedIndex, isClone, eagerLoad }) => {
               const visualRole = getExperienceSlideVisualRole(
@@ -136,7 +136,7 @@ export function MilagresExperiencesEditorial() {
                   aria-hidden={isClone ? true : undefined}
                   className="experience-slide shrink-0 snap-center w-[82vw] min-[390px]:w-[84vw] md:w-[58vw] lg:w-[58vw] lg:max-w-[56rem] xl:w-[56vw] xl:max-w-[52rem]"
                 >
-                  <div className="experience-slide-media overflow-hidden rounded-sm aspect-[4/5] max-h-[min(70vh,26.5rem)] sm:aspect-[5/4] sm:max-h-[min(68vh,28rem)] md:aspect-[3/2] md:max-h-none lg:h-[clamp(20rem,58vh,68vh)] lg:max-h-[68vh] lg:aspect-auto">
+                  <div className="experience-slide-media overflow-hidden rounded-sm bg-stone-200/35 aspect-[4/5] max-h-[min(70vh,26.5rem)] sm:aspect-[5/4] sm:max-h-[min(68vh,28rem)] md:aspect-[3/2] md:max-h-none lg:h-[clamp(20rem,58vh,68vh)] lg:max-h-[68vh] lg:aspect-auto">
                     <img
                       src={experience.image}
                       alt={isClone ? "" : experience.alt}
@@ -146,6 +146,9 @@ export function MilagresExperiencesEditorial() {
                       decoding="async"
                       draggable={false}
                       onDragStart={(event) => event.preventDefault()}
+                      onError={(event) => {
+                        event.currentTarget.style.visibility = "hidden";
+                      }}
                       className="experience-slide-img pointer-events-none h-full w-full object-cover"
                       style={objectStyle}
                     />

@@ -15,7 +15,7 @@ function extendedToReal(extendedIndex: number, slideCount: number) {
   return extendedIndex - 1;
 }
 
-const SNAP_THRESHOLD_RATIO = 0.2;
+const SNAP_THRESHOLD_RATIO = 0.22;
 
 function closestExtendedToCenter(
   gallery: HTMLDivElement,
@@ -52,7 +52,13 @@ export function useExperienceCarousel(
     useState(initialExtended);
   const focusedExtendedRef = useRef(initialExtended);
   const isDraggingRef = useRef(false);
-  const dragState = useRef({ startX: 0, scrollLeft: 0, pointerId: -1 });
+  const dragState = useRef({
+    startX: 0,
+    startY: 0,
+    scrollLeft: 0,
+    pointerId: -1,
+    axis: null as "x" | "y" | null,
+  });
   const gestureStartExtendedRef = useRef(initialExtended);
   const pendingSnapExtendedRef = useRef<number | null>(null);
   const programmaticNavRef = useRef(false);
@@ -443,28 +449,70 @@ export function useExperienceCarousel(
 
     pendingSnapExtendedRef.current = null;
     programmaticNavRef.current = false;
-    gestureStartExtendedRef.current = focusedExtendedRef.current;
-    isDraggingRef.current = true;
-    gallery.classList.add("experience-gallery--dragging");
     dragState.current = {
       startX: event.clientX,
+      startY: event.clientY,
       scrollLeft: gallery.scrollLeft,
       pointerId: event.pointerId,
+      axis: null,
     };
     gallery.setPointerCapture(event.pointerId);
   }, []);
 
-  const onPointerMove = useCallback((event: ReactPointerEvent<HTMLDivElement>) => {
-    const gallery = galleryRef.current;
-    const state = dragState.current;
-    if (!gallery || state.pointerId !== event.pointerId) return;
+  const cancelHorizontalDrag = useCallback(
+    (gallery: HTMLDivElement, pointerId: number) => {
+      dragState.current.pointerId = -1;
+      dragState.current.axis = null;
+      isDraggingRef.current = false;
+      if (dragVisualRaf.current !== null) {
+        window.cancelAnimationFrame(dragVisualRaf.current);
+        dragVisualRaf.current = null;
+      }
+      gallery.classList.remove("experience-gallery--dragging");
+      try {
+        gallery.releasePointerCapture(pointerId);
+      } catch {
+        /* already released */
+      }
+      setFocusedExtendedIndex(focusedExtendedRef.current);
+    },
+    [],
+  );
 
-    event.preventDefault();
-    const deltaX = event.clientX - state.startX;
-    gallery.scrollLeft = state.scrollLeft - deltaX;
-    scrollBar.updateMetrics();
-    scheduleVisualDuringDrag();
-  }, [scheduleVisualDuringDrag, scrollBar]);
+  const onPointerMove = useCallback(
+    (event: ReactPointerEvent<HTMLDivElement>) => {
+      const gallery = galleryRef.current;
+      const state = dragState.current;
+      if (!gallery || state.pointerId !== event.pointerId) return;
+
+      const deltaX = event.clientX - state.startX;
+      const deltaY = event.clientY - state.startY;
+
+      if (state.axis === null) {
+        const absX = Math.abs(deltaX);
+        const absY = Math.abs(deltaY);
+        if (absX < 10 && absY < 10) return;
+
+        if (absY > absX * 1.15) {
+          cancelHorizontalDrag(gallery, event.pointerId);
+          return;
+        }
+
+        state.axis = "x";
+        gestureStartExtendedRef.current = focusedExtendedRef.current;
+        isDraggingRef.current = true;
+        gallery.classList.add("experience-gallery--dragging");
+      }
+
+      if (state.axis !== "x") return;
+
+      event.preventDefault();
+      gallery.scrollLeft = state.scrollLeft - deltaX;
+      scrollBar.updateMetrics();
+      scheduleVisualDuringDrag();
+    },
+    [cancelHorizontalDrag, scheduleVisualDuringDrag, scrollBar],
+  );
 
   const endDrag = useCallback(
     (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -472,15 +520,32 @@ export function useExperienceCarousel(
       const state = dragState.current;
       if (!gallery || state.pointerId !== event.pointerId) return;
 
-      dragState.current.pointerId = -1;
+      const wasHorizontal = state.axis === "x";
+
+      dragState.current = {
+        startX: 0,
+        startY: 0,
+        scrollLeft: 0,
+        pointerId: -1,
+        axis: null,
+      };
       isDraggingRef.current = false;
       if (dragVisualRaf.current !== null) {
         window.cancelAnimationFrame(dragVisualRaf.current);
         dragVisualRaf.current = null;
       }
       gallery.classList.remove("experience-gallery--dragging");
-      gallery.releasePointerCapture(event.pointerId);
-      beginGestureSnap();
+      try {
+        gallery.releasePointerCapture(event.pointerId);
+      } catch {
+        /* already released */
+      }
+
+      if (wasHorizontal) {
+        beginGestureSnap();
+      } else {
+        setFocusedExtendedIndex(focusedExtendedRef.current);
+      }
       scrollBar.updateMetrics();
     },
     [beginGestureSnap, scrollBar],

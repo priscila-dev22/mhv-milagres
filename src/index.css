@@ -191,6 +191,7 @@
   .experience-gallery {
     cursor: grab;
     scroll-behavior: auto;
+    touch-action: pan-y pinch-zoom;
     -webkit-user-select: none;
     user-select: none;
   }
