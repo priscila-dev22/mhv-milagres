@@ -25,7 +25,7 @@ export function EveningAtMilagresEditorial() {
           height={IMAGE_HEIGHT}
           loading="lazy"
           decoding="async"
-          className="editorial-sunset-media pointer-events-none absolute inset-0 h-full w-full object-cover object-[48%_40%] sm:object-[50%_38%] md:object-[50%_36%] lg:object-[50%_35%]"
+          className="editorial-sunset-media pointer-events-none absolute inset-0 h-full w-full object-cover object-[56%_34%] sm:object-[54%_32%] md:object-[53%_31%] lg:object-[52%_30%] xl:object-[51%_29%]"
         />
       </div>
 
@@ -40,19 +40,19 @@ export function EveningAtMilagresEditorial() {
 
       <div className="section-shell absolute inset-0 z-[2] flex items-start pt-[clamp(2.75rem,10vh,4.5rem)] sm:pt-[clamp(3.25rem,11vh,5rem)]">
         <div className="max-w-[17.5rem] sm:max-w-[20rem] md:max-w-[22rem] lg:max-w-[23rem]">
-          <p className="editorial-sunset-item font-sans text-[0.625rem] font-medium uppercase tracking-[0.26em] text-[#F1E6D2]/88 sm:text-[0.6875rem] sm:tracking-[0.28em] [text-shadow:0_1px_8px_rgba(0,0,0,0.22)]">
+          <p className="editorial-sunset-item font-sans text-[0.625rem] font-medium uppercase tracking-[0.26em] text-[rgba(248,244,237,0.65)] sm:text-[0.6875rem] sm:tracking-[0.28em] [text-shadow:0_1px_8px_rgba(0,0,0,0.22)]">
             FIM DE TARDE EM MILAGRES
           </p>
 
-          <h2 className="editorial-sunset-item editorial-sunset-delay-1 mt-[clamp(1.75rem,4vh,2.5rem)] font-serif text-[clamp(1.875rem,4.6vw,3.25rem)] font-medium leading-[1.08] tracking-[-0.02em] text-[#FAFAF8] [text-shadow:0_2px_12px_rgba(0,0,0,0.28),0_1px_3px_rgba(0,0,0,0.18)]">
+          <h2 className="editorial-sunset-item editorial-sunset-delay-1 mt-[clamp(1.75rem,4vh,2.5rem)] font-serif text-[clamp(1.875rem,4.6vw,3.25rem)] font-medium leading-[1.08] tracking-[-0.02em] text-[#F8F4ED] [text-shadow:0_2px_12px_rgba(0,0,0,0.28),0_1px_3px_rgba(0,0,0,0.18)]">
             Os dias terminam assim.
           </h2>
 
-          <p className="editorial-sunset-item editorial-sunset-delay-2 mt-[clamp(1.25rem,3vh,1.75rem)] font-sans text-[clamp(0.875rem,1.35vw,1rem)] font-normal leading-[1.75] tracking-[0.015em] text-[#F8F6F2]/78 [text-shadow:0_1px_10px_rgba(0,0,0,0.24)]">
+          <p className="editorial-sunset-item editorial-sunset-delay-2 mt-[clamp(1.25rem,3vh,1.75rem)] font-sans text-[clamp(0.875rem,1.35vw,1rem)] font-normal leading-[1.75] tracking-[0.015em] text-[rgba(248,244,237,0.82)] [text-shadow:0_1px_10px_rgba(0,0,0,0.24)]">
             Quando o sol começa a desaparecer, Milagres ganha um novo ritmo.
           </p>
 
-          <p className="editorial-sunset-item editorial-sunset-delay-3 mt-[clamp(1.5rem,3.5vh,2rem)] font-sans text-[clamp(0.8125rem,1.2vw,0.9375rem)] font-light leading-[1.85] tracking-[0.06em] text-[#E8D9B5]/82 [text-shadow:0_1px_8px_rgba(0,0,0,0.2)]">
+          <p className="editorial-sunset-item editorial-sunset-delay-3 mt-[clamp(1.5rem,3.5vh,2rem)] font-sans text-[clamp(0.8125rem,1.2vw,0.9375rem)] font-light leading-[1.85] tracking-[0.06em] text-[rgba(248,244,237,0.82)] [text-shadow:0_1px_8px_rgba(0,0,0,0.2)]">
             Silêncio. Água. Brisa. Tempo.
           </p>
         </div>
