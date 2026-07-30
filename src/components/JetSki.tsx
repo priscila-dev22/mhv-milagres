@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { useReveal } from "../hooks/useReveal";
 
+const JETSKI_IMAGE = "/media/jetski-bg.jpg";
+
 const JETSKI_WHATSAPP_NUMBER: string = "5582993623883";
 
 const JETSKI_INSTAGRAM_URL: string = "https://www.instagram.com/pri.ribe/";
@@ -58,7 +60,23 @@ export function JetSki() {
       className={`jetski-section scroll-mt-[4.5rem] overflow-hidden bg-sand pb-[clamp(4rem,9vh,6.5rem)] pt-[clamp(4rem,9vh,6.5rem)] ${visible ? "jetski-section-visible" : ""}`}
     >
       <div className="section-shell">
-        <div className="jetski-sheet mx-auto w-full max-w-[36rem] xl:max-w-[40rem]">
+        <div className="flex flex-col gap-[clamp(2.5rem,6vh,3.5rem)] lg:flex-row lg:items-start lg:gap-14 xl:gap-20">
+          <figure className="jetski-media jetski-media-reveal mx-auto w-full max-w-[min(100%,22rem)] shrink-0 sm:max-w-[24rem] lg:mx-0 lg:max-w-[min(100%,38%)] xl:max-w-[20rem]">
+            <div className="overflow-hidden rounded-sm border border-stone-200/40 bg-stone-200/15">
+              <img
+                src={JETSKI_IMAGE}
+                alt="Jet Ski na orla de Japaratinga, mar aberto e costa ao fundo"
+                width={2560}
+                height={1600}
+                loading="lazy"
+                decoding="async"
+                draggable={false}
+                className="block aspect-[5/4] w-full object-cover object-center"
+              />
+            </div>
+          </figure>
+
+          <div className="jetski-sheet min-w-0 flex-1 lg:max-w-[36rem] xl:max-w-[40rem]">
             <p className="jetski-copy-item font-sans text-[0.625rem] font-semibold uppercase tracking-[0.26em] text-sepia/90 sm:text-[0.6875rem]">
               Experiência
             </p>
@@ -141,6 +159,7 @@ export function JetSki() {
                 segurança realizado antes de cada saída.
               </FactRow>
             </div>
+          </div>
         </div>
       </div>
     </section>
