@@ -119,7 +119,7 @@ export function ConciergeServices() {
       ref={ref}
       id="concierge"
       aria-labelledby="concierge-titulo"
-      className={`concierge-section scroll-mt-[4.5rem] bg-sand pb-[clamp(5rem,10vw,9.375rem)] pt-[clamp(5rem,10vw,9.375rem)] ${visible ? "section-visible" : ""}`}
+      className={`concierge-section scroll-mt-[4.5rem] bg-petroleum pb-[clamp(5rem,10vw,9.375rem)] pt-[clamp(5rem,10vw,9.375rem)] ${visible ? "section-visible" : ""}`}
     >
       <div className="section-shell px-5 md:px-5 lg:px-6">
         <header className="concierge-intro reveal-item lg:flex lg:items-end lg:justify-between lg:gap-12 xl:gap-20">
