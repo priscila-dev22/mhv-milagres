@@ -47,6 +47,11 @@
     @apply mt-4 font-sans text-[clamp(0.9375rem,1.35vw,1.0625rem)] font-normal leading-[1.65] tracking-[0.01em] text-stone-700;
   }
 
+  .gastro-carousel--dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+  }
+
   .card-title {
     @apply font-serif text-[clamp(1.0625rem,1.4vw,1.1875rem)] font-semibold italic leading-snug text-petroleum;
   }
@@ -181,6 +186,16 @@
 
   .experience-gallery-stage {
     perspective: 1200px;
+  }
+
+  .experience-gallery {
+    cursor: grab;
+    scroll-behavior: auto;
+  }
+
+  .experience-gallery.experience-gallery--dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
   }
 
   .experience-slide {

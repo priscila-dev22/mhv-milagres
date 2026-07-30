@@ -7,6 +7,7 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
   type PointerEvent as ReactPointerEvent,
 } from "react";
+import { useCarouselScrollBar } from "./useCarouselScrollBar";
 
 function extendedToReal(extendedIndex: number, slideCount: number) {
   if (extendedIndex === 0) return slideCount - 1;
@@ -35,6 +36,8 @@ export function useExperienceCarousel(
   const programmaticNavRef = useRef(false);
   const loopAdjusting = useRef(false);
   const resizeTimeout = useRef<number | null>(null);
+
+  const scrollBar = useCarouselScrollBar(galleryRef, "[data-exp-thumb]");
 
   const setSlideRef = useCallback((index: number, node: HTMLElement | null) => {
     slideRefs.current[index] = node;
@@ -244,6 +247,14 @@ export function useExperienceCarousel(
 
     gallery.addEventListener("scrollend", onScrollEnd);
 
+    const onWheel = (event: WheelEvent) => {
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      event.preventDefault();
+      gallery.scrollLeft += event.deltaY;
+    };
+
+    gallery.addEventListener("wheel", onWheel, { passive: false });
+
     const onResize = () => {
       if (resizeTimeout.current !== null) {
         window.clearTimeout(resizeTimeout.current);
@@ -257,12 +268,29 @@ export function useExperienceCarousel(
 
     return () => {
       gallery.removeEventListener("scrollend", onScrollEnd);
+      gallery.removeEventListener("wheel", onWheel);
       window.removeEventListener("resize", onResize);
       if (resizeTimeout.current !== null) {
         window.clearTimeout(resizeTimeout.current);
       }
     };
   }, [onScrollEnd, scrollToExtended, syncFromScroll]);
+
+  useEffect(() => {
+    const gallery = galleryRef.current;
+    if (!gallery) return;
+
+    const ro = new ResizeObserver(() => {
+      if (isDraggingRef.current) return;
+      scrollToExtended(focusedExtendedRef.current, "auto");
+      scrollBar.updateMetrics();
+    });
+    ro.observe(gallery);
+    for (const child of gallery.children) {
+      ro.observe(child);
+    }
+    return () => ro.disconnect();
+  }, [scrollBar, scrollToExtended]);
 
   const scrollToRealIndex = useCallback(
     (realIndex: number, behavior: ScrollBehavior = "smooth") => {
@@ -325,12 +353,11 @@ export function useExperienceCarousel(
     const state = dragState.current;
     if (!gallery || state.pointerId !== event.pointerId) return;
 
+    event.preventDefault();
     const deltaX = event.clientX - state.startX;
-    if (Math.abs(deltaX) > 8) {
-      event.preventDefault();
-    }
     gallery.scrollLeft = state.scrollLeft - deltaX;
-  }, []);
+    scrollBar.updateMetrics();
+  }, [scrollBar]);
 
   const endDrag = useCallback(
     (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -343,9 +370,38 @@ export function useExperienceCarousel(
       gallery.classList.remove("experience-gallery--dragging");
       gallery.releasePointerCapture(event.pointerId);
       beginGestureSnap();
+      scrollBar.updateMetrics();
     },
-    [beginGestureSnap],
+    [beginGestureSnap, scrollBar],
   );
+
+  const snapAfterScrollBar = useCallback(() => {
+    window.setTimeout(() => {
+      syncFromScroll(true);
+      scrollToExtended(focusedExtendedRef.current, "smooth");
+      scrollBar.updateMetrics();
+    }, 120);
+  }, [scrollBar, scrollToExtended, syncFromScroll]);
+
+  const scrollBarThumbProps = {
+    ...scrollBar.thumbProps,
+    onPointerUp: (event: ReactPointerEvent<HTMLDivElement>) => {
+      scrollBar.thumbProps.onPointerUp(event);
+      snapAfterScrollBar();
+    },
+    onPointerCancel: (event: ReactPointerEvent<HTMLDivElement>) => {
+      scrollBar.thumbProps.onPointerCancel(event);
+      snapAfterScrollBar();
+    },
+  };
+
+  const scrollBarRailProps = {
+    ...scrollBar.railProps,
+    onPointerDown: (event: ReactPointerEvent<HTMLDivElement>) => {
+      scrollBar.railProps.onPointerDown(event);
+      window.setTimeout(() => snapAfterScrollBar(), 200);
+    },
+  };
 
   return {
     galleryRef,
@@ -355,6 +411,11 @@ export function useExperienceCarousel(
     scrollToRealIndex,
     goPrev,
     goNext,
+    scrollBar: {
+      ...scrollBar,
+      thumbProps: scrollBarThumbProps,
+      railProps: scrollBarRailProps,
+    },
     galleryProps: {
       onKeyDown: onGalleryKeyDown,
       onPointerDown,

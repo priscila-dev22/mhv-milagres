@@ -36,7 +36,11 @@ function buildGallerySlides(): GallerySlide[] {
     experience,
     extendedIndex: index + 1,
     isClone: false,
-    eagerLoad: index <= 1 || experience.id === "lua",
+    eagerLoad:
+      index <= 1 ||
+      experience.id === "lua" ||
+      experience.id === "fim-de-tarde" ||
+      experience.id === "casa-noite",
   }));
   const tailClone: GallerySlide = {
     experience: milagresExperiences[0]!,
@@ -58,6 +62,7 @@ export function MilagresExperiencesEditorial() {
     goPrev,
     goNext,
     galleryProps,
+    scrollBar,
   } = useExperienceCarousel(
     milagresExperiences.length,
     milagresExperienceInitialRealIndex,
@@ -106,7 +111,7 @@ export function MilagresExperiencesEditorial() {
             role="region"
             aria-roledescription="carrossel"
             aria-label="Galeria Um dia em Milagres"
-            className="experience-gallery flex w-full max-w-[100vw] touch-pan-x touch-pan-y snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-5 md:gap-6 lg:gap-6 [&::-webkit-scrollbar]:hidden max-lg:px-[calc((100%-84vw)/2)] max-[389px]:px-[calc((100%-82vw)/2)] lg:px-0"
+            className="experience-gallery flex w-full max-w-[100vw] cursor-grab touch-pan-x touch-pan-y snap-x snap-mandatory gap-3 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] active:cursor-grabbing sm:gap-5 md:gap-6 lg:gap-6 lg:px-[calc((100%-min(58vw,56rem))/2)] [&::-webkit-scrollbar]:hidden max-lg:px-[calc((100%-84vw)/2)] max-[389px]:px-[calc((100%-82vw)/2)]"
           >
             {gallerySlides.map(({ experience, extendedIndex, isClone, eagerLoad }) => {
               const visualRole = getExperienceSlideVisualRole(
@@ -149,6 +154,37 @@ export function MilagresExperiencesEditorial() {
             })}
           </div>
         </div>
+
+        {scrollBar.metrics.visible ? (
+          <div className="section-shell mt-8 flex justify-center px-4 sm:px-5 md:px-6">
+            <div
+              ref={scrollBar.railRef}
+              {...scrollBar.railProps}
+              className="relative h-3 w-full max-w-[min(100%,18rem)] cursor-pointer touch-none sm:max-w-[20rem] md:max-w-[22rem]"
+              role="scrollbar"
+              aria-controls="experiencias-galeria"
+              aria-orientation="horizontal"
+              aria-valuenow={scrollBar.scrollPercent}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label="Posição da galeria Um dia em Milagres"
+            >
+              <div
+                className="pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-petroleum/15"
+                aria-hidden
+              />
+              <div
+                {...scrollBar.thumbProps}
+                data-exp-thumb
+                className="absolute top-1/2 h-[3px] min-w-[2.75rem] -translate-y-1/2 cursor-grab rounded-full bg-petroleum/40 transition-[background-color,height] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:h-1 hover:bg-sepia/55 active:cursor-grabbing active:bg-sepia/65"
+                style={{
+                  left: `${scrollBar.metrics.thumbLeft * 100}%`,
+                  width: `${scrollBar.metrics.thumbWidth * 100}%`,
+                }}
+              />
+            </div>
+          </div>
+        ) : null}
       </div>
 
       <div className="section-shell mt-[clamp(1.75rem,4.5vh,3rem)] px-4 text-center sm:px-5 md:px-6">

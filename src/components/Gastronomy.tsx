@@ -97,7 +97,7 @@ export function Gastronomy() {
             <div
               ref={trackRef}
               {...trackProps}
-              className={`gastro-carousel flex cursor-grab snap-x snap-mandatory gap-5 overflow-x-auto pb-1 pt-0.5 [-ms-overflow-style:none] [scrollbar-width:none] active:cursor-grabbing sm:gap-6 md:gap-7 [&::-webkit-scrollbar]:hidden ${revealDelay(2)} reveal-item`}
+              className={`gastro-carousel flex cursor-grab touch-pan-x touch-pan-y snap-x snap-mandatory gap-5 overflow-x-auto pb-1 pt-0.5 [-ms-overflow-style:none] [scrollbar-width:none] active:cursor-grabbing sm:gap-6 md:gap-7 [&::-webkit-scrollbar]:hidden ${revealDelay(2)} reveal-item`}
               id="gastronomia-carrossel"
               aria-label="Carrossel de restaurantes"
             >
