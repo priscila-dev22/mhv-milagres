@@ -72,7 +72,7 @@ const cardLinkClass =
 
 export function Gastronomy() {
   const { ref, visible } = useReveal<HTMLElement>();
-  const { trackRef, trackProps } = useHorizontalScrollCarousel();
+  const { trackRef, trackProps, scrollBar } = useHorizontalScrollCarousel();
 
   return (
     <section
@@ -120,6 +120,7 @@ export function Gastronomy() {
               ref={trackRef}
               {...trackProps}
               className={`gastro-carousel flex cursor-grab snap-x snap-mandatory gap-5 overflow-x-auto pb-1 pt-0.5 [-ms-overflow-style:none] [scrollbar-width:none] active:cursor-grabbing sm:gap-6 md:gap-7 [&::-webkit-scrollbar]:hidden ${revealDelay(2)} reveal-item`}
+              id="gastronomia-carrossel"
               aria-label="Carrossel de restaurantes"
             >
               {restaurants.map((restaurant) => (
@@ -165,6 +166,35 @@ export function Gastronomy() {
                 </article>
               ))}
             </div>
+
+            {scrollBar.metrics.visible ? (
+              <div
+                ref={scrollBar.railRef}
+                {...scrollBar.railProps}
+                className="gastro-scroll-rail relative mt-8 h-3 w-full max-w-[min(100%,18rem)] cursor-pointer touch-none sm:max-w-[20rem] md:max-w-[22rem]"
+                role="scrollbar"
+                aria-controls="gastronomia-carrossel"
+                aria-orientation="horizontal"
+                aria-valuenow={scrollBar.scrollPercent}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label="Posição do carrossel de restaurantes"
+              >
+                <div
+                  className="pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-petroleum/15"
+                  aria-hidden
+                />
+                <div
+                  {...scrollBar.thumbProps}
+                  data-gastro-thumb
+                  className="absolute top-1/2 h-[3px] min-w-[2.75rem] -translate-y-1/2 cursor-grab rounded-full bg-petroleum/40 transition-[background-color,height] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:h-1 hover:bg-sepia/55 active:cursor-grabbing active:bg-sepia/65"
+                  style={{
+                    left: `${scrollBar.metrics.thumbLeft * 100}%`,
+                    width: `${scrollBar.metrics.thumbWidth * 100}%`,
+                  }}
+                />
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
