@@ -191,6 +191,8 @@
   .experience-gallery {
     cursor: grab;
     scroll-behavior: auto;
+    -webkit-user-select: none;
+    user-select: none;
   }
 
   .experience-gallery.experience-gallery--dragging {

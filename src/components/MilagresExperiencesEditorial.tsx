@@ -40,7 +40,7 @@ function buildGallerySlides(): GallerySlide[] {
       index <= 1 ||
       experience.id === "lua" ||
       experience.id === "fim-de-tarde" ||
-      experience.id === "casa-noite",
+      experience.id === "chuveiro",
   }));
   const tailClone: GallerySlide = {
     experience: milagresExperiences[0]!,
@@ -111,7 +111,7 @@ export function MilagresExperiencesEditorial() {
             role="region"
             aria-roledescription="carrossel"
             aria-label="Galeria Um dia em Milagres"
-            className="experience-gallery flex w-full max-w-[100vw] cursor-grab touch-pan-x touch-pan-y snap-x snap-mandatory gap-3 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] active:cursor-grabbing sm:gap-5 md:gap-6 lg:gap-6 lg:px-[calc((100%-min(58vw,56rem))/2)] [&::-webkit-scrollbar]:hidden max-lg:px-[calc((100%-84vw)/2)] max-[389px]:px-[calc((100%-82vw)/2)]"
+            className="experience-gallery flex w-full max-w-[100vw] cursor-grab select-none touch-pan-x touch-pan-y snap-x snap-mandatory gap-3 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] active:cursor-grabbing sm:gap-5 md:gap-6 lg:gap-6 lg:px-[calc((100%-min(58vw,56rem))/2)] [&::-webkit-scrollbar]:hidden max-lg:px-[calc((100%-84vw)/2)] max-[389px]:px-[calc((100%-82vw)/2)]"
           >
             {gallerySlides.map(({ experience, extendedIndex, isClone, eagerLoad }) => {
               const visualRole = getExperienceSlideVisualRole(
@@ -145,7 +145,8 @@ export function MilagresExperiencesEditorial() {
                       loading={eagerLoad ? "eager" : "lazy"}
                       decoding="async"
                       draggable={false}
-                      className="experience-slide-img h-full w-full object-cover"
+                      onDragStart={(event) => event.preventDefault()}
+                      className="experience-slide-img pointer-events-none h-full w-full object-cover"
                       style={objectStyle}
                     />
                   </div>

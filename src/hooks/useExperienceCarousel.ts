@@ -15,7 +15,29 @@ function extendedToReal(extendedIndex: number, slideCount: number) {
   return extendedIndex - 1;
 }
 
-const SNAP_THRESHOLD_RATIO = 0.14;
+const SNAP_THRESHOLD_RATIO = 0.2;
+
+function closestExtendedToCenter(
+  gallery: HTMLDivElement,
+  slideRefs: (HTMLElement | null)[],
+  slideCount: number,
+) {
+  const center = gallery.scrollLeft + gallery.clientWidth / 2;
+  let closest = 0;
+  let minDistance = Number.POSITIVE_INFINITY;
+
+  slideRefs.forEach((slide, index) => {
+    if (!slide) return;
+    const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+    const distance = Math.abs(center - slideCenter);
+    if (distance < minDistance) {
+      minDistance = distance;
+      closest = index;
+    }
+  });
+
+  return Math.min(Math.max(closest, 0), slideCount + 1);
+}
 
 export function useExperienceCarousel(
   slideCount: number,
@@ -36,6 +58,8 @@ export function useExperienceCarousel(
   const programmaticNavRef = useRef(false);
   const loopAdjusting = useRef(false);
   const resizeTimeout = useRef<number | null>(null);
+  const dragVisualRaf = useRef<number | null>(null);
+  const wheelSnapTimeout = useRef<number | null>(null);
 
   const scrollBar = useCarouselScrollBar(galleryRef, "[data-exp-thumb]");
 
@@ -132,11 +156,80 @@ export function useExperienceCarousel(
       best = start;
     }
 
+    const startSlide = slideRefs.current[start];
+    const candidateSlide = slideRefs.current[best];
+    if (
+      best !== start &&
+      startSlide &&
+      candidateSlide &&
+      scrollMoved >= threshold
+    ) {
+      const startCenter = startSlide.offsetLeft + startSlide.offsetWidth / 2;
+      const candidateCenter =
+        candidateSlide.offsetLeft + candidateSlide.offsetWidth / 2;
+      const midpoint = (startCenter + candidateCenter) / 2;
+      if (best > start && center < midpoint) best = start;
+      if (best < start && center > midpoint) best = start;
+    }
+
     if (best < start - 1) best = start - 1;
     if (best > start + 1) best = start + 1;
 
     return best;
   }, [slideCount]);
+
+  const updateVisualDuringDrag = useCallback(() => {
+    if (!isDraggingRef.current || loopAdjusting.current) return;
+
+    const gallery = galleryRef.current;
+    if (!gallery) return;
+
+    const closest = closestExtendedToCenter(
+      gallery,
+      slideRefs.current,
+      slideCount,
+    );
+    setFocusedExtendedIndex(closest);
+  }, [slideCount]);
+
+  const scheduleVisualDuringDrag = useCallback(() => {
+    if (dragVisualRaf.current !== null) return;
+    dragVisualRaf.current = window.requestAnimationFrame(() => {
+      dragVisualRaf.current = null;
+      updateVisualDuringDrag();
+    });
+  }, [updateVisualDuringDrag]);
+
+  const snapToOneSlideFromCommitted = useCallback(
+    (behavior: ScrollBehavior = "smooth") => {
+      const gallery = galleryRef.current;
+      if (!gallery) return;
+
+      const start = focusedExtendedRef.current;
+      const center = gallery.scrollLeft + gallery.clientWidth / 2;
+      const candidates = [start - 1, start, start + 1].filter(
+        (i) => i >= 0 && i <= slideCount + 1,
+      );
+
+      let best = start;
+      let minDistance = Number.POSITIVE_INFINITY;
+
+      for (const index of candidates) {
+        const slide = slideRefs.current[index];
+        if (!slide) continue;
+        const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+        const distance = Math.abs(center - slideCenter);
+        if (distance < minDistance) {
+          minDistance = distance;
+          best = index;
+        }
+      }
+
+      pendingSnapExtendedRef.current = best;
+      scrollToExtended(best, behavior);
+    },
+    [scrollToExtended, slideCount],
+  );
 
   const syncFromScroll = useCallback(
     (withLoopJump = false) => {
@@ -251,6 +344,16 @@ export function useExperienceCarousel(
       if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
       event.preventDefault();
       gallery.scrollLeft += event.deltaY;
+      scrollBar.updateMetrics();
+
+      if (wheelSnapTimeout.current !== null) {
+        window.clearTimeout(wheelSnapTimeout.current);
+      }
+      wheelSnapTimeout.current = window.setTimeout(() => {
+        wheelSnapTimeout.current = null;
+        if (isDraggingRef.current) return;
+        snapToOneSlideFromCommitted("smooth");
+      }, 140);
     };
 
     gallery.addEventListener("wheel", onWheel, { passive: false });
@@ -273,8 +376,11 @@ export function useExperienceCarousel(
       if (resizeTimeout.current !== null) {
         window.clearTimeout(resizeTimeout.current);
       }
+      if (wheelSnapTimeout.current !== null) {
+        window.clearTimeout(wheelSnapTimeout.current);
+      }
     };
-  }, [onScrollEnd, scrollToExtended, syncFromScroll]);
+  }, [onScrollEnd, scrollBar, scrollToExtended, snapToOneSlideFromCommitted, syncFromScroll]);
 
   useEffect(() => {
     const gallery = galleryRef.current;
@@ -357,7 +463,8 @@ export function useExperienceCarousel(
     const deltaX = event.clientX - state.startX;
     gallery.scrollLeft = state.scrollLeft - deltaX;
     scrollBar.updateMetrics();
-  }, [scrollBar]);
+    scheduleVisualDuringDrag();
+  }, [scheduleVisualDuringDrag, scrollBar]);
 
   const endDrag = useCallback(
     (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -367,6 +474,10 @@ export function useExperienceCarousel(
 
       dragState.current.pointerId = -1;
       isDraggingRef.current = false;
+      if (dragVisualRaf.current !== null) {
+        window.cancelAnimationFrame(dragVisualRaf.current);
+        dragVisualRaf.current = null;
+      }
       gallery.classList.remove("experience-gallery--dragging");
       gallery.releasePointerCapture(event.pointerId);
       beginGestureSnap();
