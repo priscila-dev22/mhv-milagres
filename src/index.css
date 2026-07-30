@@ -277,6 +277,189 @@
       object-position: var(--exp-pos-lg);
     }
   }
+
+  .tours-header-item {
+    @apply translate-y-4 opacity-0 transition-[opacity,transform] duration-[900ms] ease-[cubic-bezier(0.25,0.1,0.25,1)];
+  }
+
+  .tours-section-visible .tours-header-item {
+    @apply translate-y-0 opacity-100;
+  }
+
+  .tours-header-delay-1 {
+    transition-delay: 90ms;
+  }
+
+  .tours-header-delay-2 {
+    transition-delay: 180ms;
+  }
+
+  .tours-header-delay-3 {
+    transition-delay: 270ms;
+  }
+
+  .tours-gallery-reveal {
+    @apply translate-y-4 opacity-0 transition-[opacity,transform] duration-[950ms] ease-[cubic-bezier(0.25,0.1,0.25,1)];
+    transition-delay: 220ms;
+  }
+
+  .tours-section-visible .tours-gallery-reveal {
+    @apply translate-y-0 opacity-100;
+  }
+
+  .tours-gallery-stage {
+    perspective: 1400px;
+  }
+
+  .tours-gallery {
+    scroll-behavior: auto;
+  }
+
+  .tours-slide {
+    transform-origin: center bottom;
+    transition:
+      transform 520ms cubic-bezier(0.25, 0.1, 0.25, 1),
+      opacity 520ms cubic-bezier(0.25, 0.1, 0.25, 1);
+    will-change: transform, opacity;
+  }
+
+  .experience-gallery--dragging .tours-slide {
+    transition: none;
+  }
+
+  .tours-slide--tall {
+    width: min(78vw, 20rem);
+  }
+
+  .tours-slide--wide {
+    width: min(88vw, 26rem);
+  }
+
+  .tours-slide--narrow {
+    width: min(72vw, 17.5rem);
+  }
+
+  .tours-slide--standard {
+    width: min(84vw, 22.5rem);
+  }
+
+  @media (min-width: 768px) {
+    .tours-slide--tall {
+      width: min(52vw, 22rem);
+    }
+
+    .tours-slide--wide {
+      width: min(58vw, 28rem);
+    }
+
+    .tours-slide--narrow {
+      width: min(48vw, 19rem);
+    }
+
+    .tours-slide--standard {
+      width: min(54vw, 24rem);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tours-slide--tall {
+      width: min(42vw, 21rem);
+    }
+
+    .tours-slide--wide {
+      width: min(48vw, 27rem);
+    }
+
+    .tours-slide--narrow {
+      width: min(38vw, 18rem);
+    }
+
+    .tours-slide--standard {
+      width: min(44vw, 23rem);
+    }
+  }
+
+  .tours-slide--tall .tours-slide-media {
+    aspect-ratio: 3 / 4;
+    max-height: min(68vh, 28rem);
+  }
+
+  .tours-slide--wide .tours-slide-media {
+    aspect-ratio: 5 / 4;
+    max-height: min(62vh, 24rem);
+  }
+
+  .tours-slide--narrow .tours-slide-media {
+    aspect-ratio: 4 / 5;
+    max-height: min(66vh, 26.5rem);
+  }
+
+  .tours-slide--standard .tours-slide-media {
+    aspect-ratio: 4 / 5;
+    max-height: min(64vh, 25rem);
+  }
+
+  @media (min-width: 1024px) {
+    .tours-slide--tall .tours-slide-media {
+      max-height: min(58vh, 26rem);
+    }
+
+    .tours-slide--wide .tours-slide-media {
+      max-height: min(52vh, 22rem);
+    }
+
+    .tours-slide--narrow .tours-slide-media {
+      max-height: min(56vh, 24rem);
+    }
+
+    .tours-slide--standard .tours-slide-media {
+      max-height: min(54vh, 23rem);
+    }
+  }
+
+  .tours-slide[data-role="active"] {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+
+  .tours-slide[data-role="prev"] {
+    opacity: 0.88;
+    transform: rotate(1.25deg) scale(0.95);
+  }
+
+  .tours-slide[data-role="next"] {
+    opacity: 0.88;
+    transform: rotate(-1.25deg) scale(0.95);
+  }
+
+  .tours-slide[data-role="far"] {
+    opacity: 0.62;
+    transform: rotate(0deg) scale(0.92);
+  }
+
+  @media (max-width: 1023px) {
+    .tours-gallery-stage {
+      perspective: none;
+    }
+
+    .tours-slide[data-role="prev"] {
+      transform: rotate(0.75deg) scale(0.96);
+    }
+
+    .tours-slide[data-role="next"] {
+      transform: rotate(-0.75deg) scale(0.96);
+    }
+  }
+
+  .tours-slide-img {
+    object-position: var(--tour-pos);
+  }
+
+  @media (min-width: 768px) {
+    .tours-slide-img {
+      object-position: var(--tour-pos-md);
+    }
+  }
 }
 
 /* Hero entrance animations */
@@ -361,13 +544,16 @@
   }
 
   .experience-header-item,
-  .experience-gallery-reveal {
+  .experience-gallery-reveal,
+  .tours-header-item,
+  .tours-gallery-reveal {
     opacity: 1;
     transform: none;
     transition: none;
   }
 
-  .experience-slide {
+  .experience-slide,
+  .tours-slide {
     transform: none !important;
     opacity: 1 !important;
   }
