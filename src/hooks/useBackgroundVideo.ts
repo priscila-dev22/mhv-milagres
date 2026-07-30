@@ -30,7 +30,7 @@ export function useBackgroundVideoSrc(desktopSrc: string, mobileSrc: string) {
   return isMobile ? mobileSrc : desktopSrc;
 }
 
-export function useBackgroundVideoPlayback(videoSrc: string) {
+export function useBackgroundVideoPlayback(videoSrc?: string) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const ensurePlayback = useCallback(async (video: HTMLVideoElement) => {
@@ -51,10 +51,22 @@ export function useBackgroundVideoPlayback(videoSrc: string) {
     const video = videoRef.current;
     if (!video) return;
 
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "true");
+
     const applySrc = () => {
-      if (video.getAttribute("data-video-src") !== videoSrc) {
-        video.setAttribute("data-video-src", videoSrc);
-        video.src = videoSrc;
+      if (videoSrc) {
+        if (video.getAttribute("data-video-src") !== videoSrc) {
+          video.setAttribute("data-video-src", videoSrc);
+          video.src = videoSrc;
+          video.load();
+        }
+      } else if (video.querySelector("source")) {
+        video.removeAttribute("data-video-src");
+        video.removeAttribute("src");
         video.load();
       }
       void ensurePlayback(video);

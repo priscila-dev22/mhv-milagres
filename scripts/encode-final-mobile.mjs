@@ -12,7 +12,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
 const videosDir = path.join(root, "public", "media", "videos");
 
-const source = process.argv[2] ?? path.join(videosDir, "n d.mp4");
+const source =
+  process.argv[2] ??
+  (fs.existsSync(path.join(videosDir, "final.mp4"))
+    ? path.join(videosDir, "final.mp4")
+    : path.join(videosDir, "n d.mp4"));
 const output = path.join(videosDir, "final.mobile.mp4");
 const tempOut = path.join(videosDir, "final.mobile.encode.mp4");
 
@@ -31,7 +35,7 @@ const args = [
   "-i",
   source,
   "-vf",
-  "scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:color=black",
+  "scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:color=black,fps=30",
   "-c:v",
   "libx264",
   "-preset",
@@ -43,7 +47,9 @@ const args = [
   "-bufsize",
   "4400k",
   "-profile:v",
-  "main",
+  "high",
+  "-level",
+  "3.1",
   "-pix_fmt",
   "yuv420p",
   "-an",

@@ -3,8 +3,10 @@ import {
   useBackgroundVideoSrc,
 } from "../hooks/useBackgroundVideo";
 
-const FOOTER_VIDEO_DESKTOP = "/media/videos/final.mp4";
-const FOOTER_VIDEO_MOBILE = "/media/videos/final.mobile.mp4";
+/** Bump in production when replacing final / final.mobile mp4 (cache bust CDN). */
+const FOOTER_VIDEO_CACHE_BUST = import.meta.env.DEV ? String(Date.now()) : "2";
+const FOOTER_VIDEO_DESKTOP = `/media/videos/final.mp4?v=${FOOTER_VIDEO_CACHE_BUST}`;
+const FOOTER_VIDEO_MOBILE = `/media/videos/final.mobile.mp4?v=${FOOTER_VIDEO_CACHE_BUST}`;
 
 const footerLinks = [
   {
