@@ -178,6 +178,49 @@
   .editorial-sunset-visible .editorial-sunset-media {
     animation: editorial-sunset-kenburns 32s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
   }
+
+  .experience-header-item {
+    @apply translate-y-4 opacity-0 transition-[opacity,transform] duration-[900ms] ease-[cubic-bezier(0.25,0.1,0.25,1)];
+  }
+
+  .experience-section-visible .experience-header-item {
+    @apply translate-y-0 opacity-100;
+  }
+
+  .experience-header-delay-1 {
+    transition-delay: 90ms;
+  }
+
+  .experience-header-delay-2 {
+    transition-delay: 180ms;
+  }
+
+  .experience-header-delay-3 {
+    transition-delay: 270ms;
+  }
+
+  .experience-gallery-reveal {
+    @apply translate-y-4 opacity-0 transition-[opacity,transform] duration-[950ms] ease-[cubic-bezier(0.25,0.1,0.25,1)];
+    transition-delay: 320ms;
+  }
+
+  .experience-section-visible .experience-gallery-reveal {
+    @apply translate-y-0 opacity-100;
+  }
+
+  .experience-gallery {
+    scroll-padding-inline: 50%;
+  }
+
+  .experience-slide-img {
+    object-position: var(--exp-pos);
+  }
+
+  @media (min-width: 768px) {
+    .experience-slide-img {
+      object-position: var(--exp-pos-md);
+    }
+  }
 }
 
 /* Hero entrance animations */
@@ -279,6 +322,18 @@
   .editorial-sunset-visible .editorial-sunset-media {
     animation: none;
     transform: none;
+  }
+
+  .experience-header-item,
+  .experience-gallery-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .experience-slide {
+    transform: none !important;
+    opacity: 1 !important;
   }
 
   .luxe-card-hover:hover {

@@ -5,7 +5,7 @@ import { EveningAtMilagresEditorial } from "./components/EveningAtMilagresEditor
 import { Gastronomy } from "./components/Gastronomy";
 import { GastronomyChapterTransition } from "./components/GastronomyChapterTransition";
 import { Hero } from "./components/Hero";
-import { HospitalityEditorial } from "./components/HospitalityEditorial";
+import { MilagresExperiencesEditorial } from "./components/MilagresExperiencesEditorial";
 import { JetSki } from "./components/JetSki";
 import { RouteMap } from "./components/RouteMap";
 import { StayPlanning } from "./components/StayPlanning";
@@ -23,7 +23,7 @@ export default function App() {
       <main id="conteudo-principal" className="overflow-x-hidden" tabIndex={-1}>
         <Hero />
         <StayPlanning />
-        <HospitalityEditorial />
+        <MilagresExperiencesEditorial />
         <EveningAtMilagresEditorial />
         <AccommodationInfo />
         <GastronomyChapterTransition />
