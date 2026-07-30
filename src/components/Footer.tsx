@@ -36,7 +36,7 @@ export function Footer() {
   return (
     <footer
       ref={ref}
-      className={`footer-video-section relative isolate overflow-hidden border-t border-white/8 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-[clamp(3rem,8vh,4.5rem)] text-sand md:px-5 lg:px-6 ${visible ? "section-visible" : ""}`}
+      className={`footer-video-section relative isolate flex min-h-[clamp(22rem,68vh,34rem)] flex-col justify-end overflow-hidden border-t border-white/8 pb-[max(2.75rem,env(safe-area-inset-bottom))] pt-[clamp(4.5rem,14vh,8rem)] text-sand sm:min-h-[clamp(26rem,72vh,40rem)] md:px-5 lg:min-h-[clamp(28rem,78vh,44rem)] lg:px-6 lg:pt-[clamp(5rem,16vh,9rem)] ${visible ? "section-visible" : ""}`}
     >
       <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden>
         <video

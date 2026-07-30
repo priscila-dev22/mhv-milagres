@@ -1,5 +1,6 @@
+import { EditorialCarouselNav } from "./EditorialCarouselNav";
 import { useReveal } from "../hooks/useReveal";
-import { useHorizontalScrollCarousel } from "../hooks/useHorizontalScrollCarousel";
+import { useHorizontalStepCarousel } from "../hooks/useHorizontalScrollCarousel";
 import { revealDelay } from "../utils/revealDelay";
 
 type Restaurant = {
@@ -70,7 +71,18 @@ const cardLinkClass =
 
 export function Gastronomy() {
   const { ref, visible } = useReveal<HTMLElement>();
-  const { trackRef, trackProps, scrollBar } = useHorizontalScrollCarousel();
+  const {
+    trackRef,
+    trackProps,
+    scrollBar,
+    setSlideRef,
+    goPrev,
+    goNext,
+    canGoPrev,
+    canGoNext,
+  } = useHorizontalStepCarousel(restaurants.length, {
+    thumbSelector: "[data-gastro-thumb]",
+  });
 
   return (
     <section
@@ -101,9 +113,10 @@ export function Gastronomy() {
               id="gastronomia-carrossel"
               aria-label="Carrossel de restaurantes"
             >
-              {restaurants.map((restaurant) => (
+              {restaurants.map((restaurant, index) => (
                 <article
                   key={restaurant.name}
+                  ref={(node) => setSlideRef(index, node)}
                   className="w-[min(76vw,17.25rem)] shrink-0 snap-start sm:w-[18.5rem] md:w-[20rem] lg:w-[21.5rem] xl:w-[22.5rem]"
                 >
                   <div className="aspect-[4/5] overflow-hidden bg-stone-200/40">
@@ -150,34 +163,17 @@ export function Gastronomy() {
               ))}
             </div>
 
-            {scrollBar.metrics.visible ? (
-              <div
-                ref={scrollBar.railRef}
-                {...scrollBar.railProps}
-                className="gastro-scroll-rail relative mt-8 h-3 w-full max-w-[min(100%,18rem)] cursor-pointer touch-none sm:max-w-[20rem] md:max-w-[22rem]"
-                role="scrollbar"
-                aria-controls="gastronomia-carrossel"
-                aria-orientation="horizontal"
-                aria-valuenow={scrollBar.scrollPercent}
-                aria-valuemin={0}
-                aria-valuemax={100}
-                aria-label="Posição do carrossel de restaurantes"
-              >
-                <div
-                  className="pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-petroleum/15"
-                  aria-hidden
-                />
-                <div
-                  {...scrollBar.thumbProps}
-                  data-gastro-thumb
-                  className="absolute top-1/2 h-[3px] min-w-[2.75rem] -translate-y-1/2 cursor-grab rounded-full bg-petroleum/40 transition-[background-color,height] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:h-1 hover:bg-sepia/55 active:cursor-grabbing active:bg-sepia/65"
-                  style={{
-                    left: `${scrollBar.metrics.thumbLeft * 100}%`,
-                    width: `${scrollBar.metrics.thumbWidth * 100}%`,
-                  }}
-                />
-              </div>
-            ) : null}
+            <div className="mt-8">
+              <EditorialCarouselNav
+                scrollBar={scrollBar}
+                controlsId="gastronomia-carrossel"
+                ariaLabel="Posição do carrossel de restaurantes"
+                onPrev={goPrev}
+                onNext={goNext}
+                canPrev={canGoPrev}
+                canNext={canGoNext}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -252,6 +252,110 @@ export function useHorizontalSnapCarousel(
   };
 }
 
+/** Carrossel com snap-start — avança um card por clique (Gastronomia). */
+export function useHorizontalStepCarousel(
+  slideCount: number,
+  options: HorizontalScrollCarouselOptions = {},
+) {
+  const carousel = useHorizontalScrollCarousel(options);
+  const slideRefs = useRef<(HTMLElement | null)[]>([]);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeIndexRef = useRef(0);
+
+  const setSlideRef = useCallback((index: number, node: HTMLElement | null) => {
+    slideRefs.current[index] = node;
+  }, []);
+
+  const scrollToIndex = useCallback(
+    (index: number, behavior: ScrollBehavior = "smooth") => {
+      const track = carousel.trackRef.current;
+      const clamped = Math.min(Math.max(index, 0), slideCount - 1);
+      const slide = slideRefs.current[clamped];
+      if (!track || !slide) return;
+
+      const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+      const target = Math.min(Math.max(0, slide.offsetLeft), maxScroll);
+
+      track.scrollTo({ left: target, behavior });
+    },
+    [carousel.trackRef, slideCount],
+  );
+
+  const syncActiveFromScroll = useCallback(() => {
+    const track = carousel.trackRef.current;
+    if (!track) return;
+
+    const scrollPos = track.scrollLeft;
+    let closest = 0;
+    let minDistance = Number.POSITIVE_INFINITY;
+
+    slideRefs.current.forEach((slide, index) => {
+      if (!slide) return;
+      const distance = Math.abs(slide.offsetLeft - scrollPos);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closest = index;
+      }
+    });
+
+    activeIndexRef.current = closest;
+    setActiveIndex(closest);
+    carousel.scrollBar.updateMetrics();
+  }, [carousel.scrollBar, carousel.trackRef]);
+
+  useEffect(() => {
+    const track = carousel.trackRef.current;
+    if (!track) return;
+
+    let raf: number | null = null;
+    const onScroll = () => {
+      if (raf !== null) return;
+      raf = window.requestAnimationFrame(() => {
+        raf = null;
+        syncActiveFromScroll();
+      });
+    };
+
+    track.addEventListener("scroll", onScroll, { passive: true });
+    return () => track.removeEventListener("scroll", onScroll);
+  }, [carousel.trackRef, syncActiveFromScroll]);
+
+  useEffect(() => {
+    const track = carousel.trackRef.current;
+    if (!track) return;
+
+    const ro = new ResizeObserver(() => {
+      scrollToIndex(activeIndexRef.current, "auto");
+    });
+    ro.observe(track);
+    for (const child of track.children) {
+      ro.observe(child);
+    }
+    return () => ro.disconnect();
+  }, [carousel.trackRef, scrollToIndex]);
+
+  const goPrev = useCallback(() => {
+    scrollToIndex(activeIndexRef.current - 1);
+  }, [scrollToIndex]);
+
+  const goNext = useCallback(() => {
+    scrollToIndex(activeIndexRef.current + 1);
+  }, [scrollToIndex]);
+
+  const canGoPrev = activeIndex > 0;
+  const canGoNext = activeIndex < slideCount - 1;
+
+  return {
+    ...carousel,
+    activeIndex,
+    setSlideRef,
+    goPrev,
+    goNext,
+    canGoPrev,
+    canGoNext,
+  };
+}
+
 export type SlideVisualRole = "active" | "prev" | "next" | "far";
 
 export function getSnapSlideVisualRole(

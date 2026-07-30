@@ -96,6 +96,7 @@ export function EditorialCarouselNav({
         <div
           {...scrollBar.thumbProps}
           data-carousel-thumb
+          data-gastro-thumb
           className="absolute top-1/2 h-[3px] min-w-[2rem] -translate-y-1/2 cursor-grab rounded-full bg-petroleum/40 transition-[background-color,height] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:h-1 hover:bg-sepia/55 active:cursor-grabbing active:bg-sepia/65"
           style={{
             left: `${scrollBar.metrics.thumbLeft * 100}%`,
