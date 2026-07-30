@@ -3,6 +3,7 @@ import { ConciergeServices } from "./components/ConciergeServices";
 import { Footer } from "./components/Footer";
 import { Gastronomy } from "./components/Gastronomy";
 import { Hero } from "./components/Hero";
+import { HospitalityEditorial } from "./components/HospitalityEditorial";
 import { JetSki } from "./components/JetSki";
 import { RouteMap } from "./components/RouteMap";
 import { StayPlanning } from "./components/StayPlanning";
@@ -20,6 +21,7 @@ export default function App() {
       <main id="conteudo-principal" className="overflow-x-hidden" tabIndex={-1}>
         <Hero />
         <StayPlanning />
+        <HospitalityEditorial />
         <AccommodationInfo />
         <Gastronomy />
         <ToursMosaic />

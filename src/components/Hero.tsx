@@ -1,74 +1,25 @@
-import { useCallback, useEffect, useRef, useState, type SyntheticEvent } from "react";
+import { useEffect, useRef, useState, type SyntheticEvent } from "react";
+import {
+  useBackgroundVideoPlayback,
+  useBackgroundVideoSrc,
+} from "../hooks/useBackgroundVideo";
 
-/** Cache-bust: bump `v` in production when replacing public/media/videos/hero.mp4 */
+/** Cache-bust: bump `v` in production when replacing hero / hero.mobile mp4 */
 const HERO_VIDEO_CACHE_BUST = import.meta.env.DEV ? String(Date.now()) : "2";
-const HERO_VIDEO_SRC = `/media/videos/hero.mp4?v=${HERO_VIDEO_CACHE_BUST}`;
-
-function logHeroVideoState(label: string, video: HTMLVideoElement) {
-  console.info(`[Hero] ${label}:`, {
-    currentSrc: video.currentSrc,
-    paused: video.paused,
-    ended: video.ended,
-    readyState: video.readyState,
-    videoWidth: video.videoWidth,
-    videoHeight: video.videoHeight,
-    duration: video.duration,
-    currentTime: video.currentTime,
-    autoplay: video.autoplay,
-    muted: video.muted,
-    loop: video.loop,
-    playsInline: video.playsInline,
-  });
-}
+const HERO_VIDEO_DESKTOP = `/media/videos/hero.mp4?v=${HERO_VIDEO_CACHE_BUST}`;
+const HERO_VIDEO_MOBILE = `/media/videos/hero.mobile.mp4?v=${HERO_VIDEO_CACHE_BUST}`;
 
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const playbackCheckRef = useRef<number | null>(null);
+  const heroVideoSrc = useBackgroundVideoSrc(HERO_VIDEO_DESKTOP, HERO_VIDEO_MOBILE);
+  const { videoRef, onVideoReady } = useBackgroundVideoPlayback(heroVideoSrc);
   const [parallaxY, setParallaxY] = useState(0);
   const [reduceMotion, setReduceMotion] = useState(false);
-
-  const ensureHeroVideoPlayback = useCallback(async (video: HTMLVideoElement) => {
-    video.muted = true;
-    try {
-      await video.play();
-    } catch (error) {
-      console.error("[Hero] Autoplay bloqueado:", error);
-    }
-  }, []);
-
-  const handleHeroVideoLoaded = useCallback(
-    (event: SyntheticEvent<HTMLVideoElement, Event>) => {
-      const video = event.currentTarget;
-      void ensureHeroVideoPlayback(video);
-      logHeroVideoState("Vídeo carregado (loadedData)", video);
-
-      if (playbackCheckRef.current !== null) {
-        window.clearTimeout(playbackCheckRef.current);
-      }
-
-      const startTime = video.currentTime;
-      playbackCheckRef.current = window.setTimeout(() => {
-        logHeroVideoState("Verificação após 3s", video);
-        if (video.currentTime <= startTime) {
-          console.warn("[Hero] currentTime não avançou — vídeo pode estar pausado.");
-        }
-      }, 3000);
-    },
-    [ensureHeroVideoPlayback],
-  );
-
-  const handleHeroVideoCanPlay = useCallback(
-    (event: SyntheticEvent<HTMLVideoElement, Event>) => {
-      void ensureHeroVideoPlayback(event.currentTarget);
-    },
-    [ensureHeroVideoPlayback],
-  );
 
   function handleHeroVideoError(event: SyntheticEvent<HTMLVideoElement, Event>) {
     console.error(
       "[Hero] Falha ao carregar vídeo:",
-      event.currentTarget.currentSrc || HERO_VIDEO_SRC,
+      event.currentTarget.currentSrc || heroVideoSrc,
       event.currentTarget.error,
     );
   }
@@ -105,9 +56,6 @@ export function Hero() {
       window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(rafId);
       motionQuery.removeEventListener("change", onMotionChange);
-      if (playbackCheckRef.current !== null) {
-        window.clearTimeout(playbackCheckRef.current);
-      }
     };
   }, []);
 
@@ -128,7 +76,6 @@ export function Hero() {
       >
         <video
           ref={videoRef}
-          src={HERO_VIDEO_SRC}
           autoPlay
           muted
           loop
@@ -137,12 +84,10 @@ export function Hero() {
           aria-hidden="true"
           tabIndex={-1}
           onError={handleHeroVideoError}
-          onLoadedData={handleHeroVideoLoaded}
-          onCanPlay={handleHeroVideoCanPlay}
+          onLoadedData={onVideoReady}
+          onCanPlay={onVideoReady}
           className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-center opacity-100 [filter:none]"
-        >
-          <source src={HERO_VIDEO_SRC} type="video/mp4" />
-        </video>
+        />
       </div>
 
       <div

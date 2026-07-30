@@ -1,26 +1,19 @@
-import { useCallback, type SyntheticEvent } from "react";
 import { useReveal } from "../hooks/useReveal";
+import {
+  useBackgroundVideoPlayback,
+  useBackgroundVideoSrc,
+} from "../hooks/useBackgroundVideo";
 
-const FOOTER_VIDEO_SRC = "/media/videos/final.mp4";
+const FOOTER_VIDEO_DESKTOP = "/media/videos/final.mp4";
+const FOOTER_VIDEO_MOBILE = "/media/videos/final.mobile.mp4";
 
 export function Footer() {
   const { ref, visible } = useReveal<HTMLElement>();
-
-  const ensureFooterVideoPlayback = useCallback(async (video: HTMLVideoElement) => {
-    video.muted = true;
-    try {
-      await video.play();
-    } catch {
-      /* autoplay policy */
-    }
-  }, []);
-
-  const handleFooterVideoCanPlay = useCallback(
-    (event: SyntheticEvent<HTMLVideoElement, Event>) => {
-      void ensureFooterVideoPlayback(event.currentTarget);
-    },
-    [ensureFooterVideoPlayback],
+  const footerVideoSrc = useBackgroundVideoSrc(
+    FOOTER_VIDEO_DESKTOP,
+    FOOTER_VIDEO_MOBILE,
   );
+  const { videoRef, onVideoReady } = useBackgroundVideoPlayback(footerVideoSrc);
 
   return (
     <footer
@@ -29,7 +22,7 @@ export function Footer() {
     >
       <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden>
         <video
-          src={FOOTER_VIDEO_SRC}
+          ref={videoRef}
           autoPlay
           muted
           loop
@@ -37,12 +30,10 @@ export function Footer() {
           preload="auto"
           aria-hidden="true"
           tabIndex={-1}
-          onLoadedData={handleFooterVideoCanPlay}
-          onCanPlay={handleFooterVideoCanPlay}
+          onLoadedData={onVideoReady}
+          onCanPlay={onVideoReady}
           className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-center opacity-100 [filter:none]"
-        >
-          <source src={FOOTER_VIDEO_SRC} type="video/mp4" />
-        </video>
+        />
       </div>
 
       <div

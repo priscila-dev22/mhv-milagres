@@ -2,8 +2,6 @@ import { useId, useState } from "react";
 import { useReveal } from "../hooks/useReveal";
 import { revealDelay } from "../utils/revealDelay";
 
-const HOSPEDAGEM_IMAGE_SRC = "/media/images/mesa-posta.jpg";
-
 const CHAMPAGNE = "#E8D9B5";
 
 const hospitalityItems = [
@@ -106,21 +104,7 @@ export function AccommodationInfo() {
       className={`section-band section-pad scroll-mt-[4.5rem] ${visible ? "section-visible" : ""}`}
     >
       <div className="section-shell">
-        <div className="flex flex-col gap-12 lg:flex-row lg:items-stretch lg:gap-16 xl:gap-20">
-          <figure
-            className={`reveal-item order-1 w-full shrink-0 lg:order-none lg:w-[45%] ${revealDelay(1)}`}
-          >
-            <div className="overflow-hidden rounded-2xl shadow-[0_8px_32px_rgba(23,52,58,0.07)]">
-              <img
-                src={HOSPEDAGEM_IMAGE_SRC}
-                alt="Mesa posta com frutas, louças e taças — hospitalidade MHV Milagres"
-                decoding="async"
-                className="aspect-[5/6] w-full object-cover object-[50%_42%] sm:aspect-[4/5] sm:object-[50%_40%] lg:aspect-auto lg:min-h-[min(100%,38rem)] lg:h-full lg:object-[52%_center]"
-              />
-            </div>
-          </figure>
-
-          <div className={`reveal-item order-2 flex min-w-0 flex-1 flex-col lg:order-none ${revealDelay(2)}`}>
+        <div className={`reveal-item mx-auto max-w-3xl ${revealDelay(1)}`}>
             <header className="mb-10 max-w-xl sm:mb-12">
               <p className="mb-4 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-sepia/90">
                 Informações da hospedagem
@@ -150,7 +134,6 @@ export function AccommodationInfo() {
                 />
               ))}
             </div>
-          </div>
         </div>
       </div>
     </section>
