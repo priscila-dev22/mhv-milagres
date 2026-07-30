@@ -1,101 +1,133 @@
-import { useState } from "react";
+import type { CSSProperties } from "react";
 import {
-  getTourDisplayRank,
-  milagresTours,
+  getTourOptionContactHref,
+  milagresCollageImages,
+  milagresTourOptions,
+  tourOptionHasContact,
+  type MilagresTourOption,
 } from "../data/milagresTours";
 import { useReveal } from "../hooks/useReveal";
 
-const exploreLinkClass =
-  "mt-8 inline-block font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-petroleum/85 underline-offset-[5px] transition-[color,border-color] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:text-sepia focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-petroleum/40 border-b border-petroleum/22 pb-0.5 hover:border-sepia/45";
+const tourLinkClass =
+  "mt-1 block font-sans text-[0.6875rem] font-normal tracking-[0.02em] text-petroleum/80 underline-offset-[3px] transition-colors duration-300 hover:text-sepia hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/45";
+
+function TourOptionInline({ option }: { option: MilagresTourOption }) {
+  const href = tourOptionHasContact(option)
+    ? getTourOptionContactHref(option)
+    : undefined;
+  const linkLabel =
+    option.contactLabel?.trim() ||
+    (option.partnerName?.trim()
+      ? `Falar com ${option.partnerName.trim()}`
+      : "Ver indicação");
+
+  return (
+    <span className="tours-option-entry inline-flex max-w-full flex-col items-start">
+      <span className="font-sans text-[clamp(0.875rem,1.25vw,1rem)] font-normal leading-snug tracking-[0.02em] text-petroleum/90">
+        {option.label}
+      </span>
+      {href ? (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={tourLinkClass}
+          aria-label={`${linkLabel}: ${option.label}`}
+        >
+          {linkLabel}
+        </a>
+      ) : null}
+    </span>
+  );
+}
 
 export function ToursMosaic() {
-  const { ref, visible } = useReveal<HTMLElement>(0.08);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const total = milagresTours.length;
+  const { ref, visible } = useReveal<HTMLElement>(0.06);
 
   return (
     <section
       ref={ref}
       id="passeios"
       aria-labelledby="passeios-titulo"
-      className={`tours-section scroll-mt-[4.5rem] overflow-hidden bg-sand pb-[clamp(3.5rem,8vh,5.5rem)] pt-[clamp(3.75rem,9vh,6rem)] ${visible ? "tours-section-visible" : ""}`}
+      className={`tours-section scroll-mt-[4.5rem] overflow-x-hidden bg-sand pb-[clamp(4rem,10vh,7rem)] pt-[clamp(4.25rem,10vh,7rem)] ${visible ? "tours-section-visible" : ""}`}
     >
       <div className="section-shell">
-        <div className="flex flex-col gap-[clamp(2.75rem,6vh,3.5rem)] lg:flex-row lg:items-start lg:gap-12 xl:gap-16">
-          <header className="tours-header shrink-0 lg:sticky lg:top-[5.5rem] lg:w-[min(100%,20rem)] lg:max-w-[22rem] xl:w-[24rem]">
-            <p className="tours-header-item font-sans text-[0.625rem] font-semibold uppercase tracking-[0.26em] text-sepia/90 sm:text-[0.6875rem]">
-              PASSEIOS
-            </p>
-            <h2
-              id="passeios-titulo"
-              className="tours-header-item tours-header-delay-1 mt-5 font-serif text-[clamp(1.875rem,3.5vw,3.125rem)] font-medium leading-[1.08] tracking-[-0.02em] text-petroleum"
-            >
-              Explore um outro lado de Milagres.
-            </h2>
-            <p className="tours-header-item tours-header-delay-2 mt-5 max-w-[32ch] font-sans text-[clamp(0.9375rem,1.35vw,1.0625rem)] font-normal leading-[1.75] tracking-[0.012em] text-stone-600">
-              Descubra experiências que revelam paisagens, ritmos e momentos
-              completamente diferentes entre si.
-            </p>
-            <a
-              href="#passeios-composicao"
-              className={`tours-header-item tours-header-delay-3 ${exploreLinkClass}`}
-            >
-              Explorar roteiros
-            </a>
-          </header>
-
-          <div
-            id="passeios-composicao"
-            className="tours-editorial-reveal min-w-0 flex-1"
-            aria-label="Composição editorial de passeios"
+        <header className="max-w-[46rem]">
+          <p className="tours-header-item font-sans text-[0.625rem] font-semibold uppercase tracking-[0.26em] text-sepia/90 sm:text-[0.6875rem]">
+            Passeios
+          </p>
+          <h2
+            id="passeios-titulo"
+            className="tours-header-item tours-header-delay-1 mt-5 font-serif text-[clamp(1.875rem,3.8vw,3.25rem)] font-medium leading-[1.08] tracking-[-0.02em] text-petroleum sm:mt-6"
           >
-            <div
-              className="tours-editorial-stage relative mx-auto w-full max-w-[42rem] lg:max-w-none"
-              data-active-count={total}
-            >
-              {milagresTours.map((tour, index) => {
-                const rank = getTourDisplayRank(index, activeIndex, total);
-                const isFeatured = index === activeIndex;
+            Milagres também se revela pelo caminho.
+          </h2>
+          <p className="tours-header-item tours-header-delay-2 mt-5 max-w-[44ch] font-sans text-[clamp(0.9375rem,1.35vw,1.0625rem)] font-normal leading-[1.75] tracking-[0.012em] text-stone-600 sm:mt-6">
+            Entre o mar, os coqueirais e as paisagens da Rota Ecológica, cada
+            passeio oferece uma forma diferente de conhecer a região.
+          </p>
+        </header>
 
-                return (
-                  <button
-                    key={tour.id}
-                    type="button"
-                    data-rank={rank}
-                    aria-pressed={isFeatured}
-                    aria-label={`${tour.name}. ${tour.description}${isFeatured ? " — em destaque" : ""}`}
-                    onClick={() => setActiveIndex(index)}
-                    className="tours-editorial-piece group absolute overflow-hidden rounded-sm bg-stone-200/30 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/45"
-                  >
-                    <img
-                      src={tour.image}
-                      alt={tour.alt}
-                      loading={index === 0 ? "eager" : "lazy"}
-                      decoding="async"
-                      draggable={false}
-                      className="tours-editorial-img h-full w-full object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] motion-reduce:transition-none motion-reduce:group-hover:scale-100 group-hover:scale-[1.02]"
-                      style={
-                        tour.objectPosition
-                          ? { objectPosition: tour.objectPosition }
-                          : undefined
-                      }
-                    />
-                    <div
-                      className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-petroleum/55 via-petroleum/20 to-transparent px-3 pb-3 pt-10 sm:px-4 sm:pb-4 sm:pt-12"
-                      aria-hidden
-                    />
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0 px-3 pb-3 sm:px-4 sm:pb-4">
-                      <p className="font-sans text-[0.625rem] font-semibold uppercase tracking-[0.18em] text-[rgba(248,244,237,0.92)] sm:text-[0.6875rem]">
-                        {tour.name}
-                      </p>
-                      <p className="mt-1 font-sans text-[0.75rem] font-normal leading-snug tracking-[0.01em] text-[rgba(248,244,237,0.88)] sm:text-[0.8125rem] sm:leading-relaxed">
-                        {tour.description}
-                      </p>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+        <ul
+          className="tours-header-item tours-header-delay-3 mt-[clamp(2rem,5vh,3.25rem)] flex max-w-[52rem] list-none flex-wrap items-baseline gap-x-[0.5rem] gap-y-[0.85rem] p-0 sm:gap-x-[0.65rem] sm:gap-y-3 md:gap-x-[0.75rem] lg:max-w-[58rem] lg:gap-x-[0.85rem]"
+          aria-label="Opções de passeios"
+        >
+          {milagresTourOptions.flatMap((option, index) => {
+            const items = [
+              <li key={option.id} className="list-none">
+                <TourOptionInline option={option} />
+              </li>,
+            ];
+            if (index > 0) {
+              items.unshift(
+                <li
+                  key={`sep-${option.id}`}
+                  className="tours-option-sep shrink-0 list-none select-none font-sans text-[0.45rem] leading-none text-stone-400/90 sm:text-[0.5rem]"
+                  aria-hidden
+                >
+                  ●
+                </li>,
+              );
+            }
+            return items;
+          })}
+        </ul>
+
+        <div
+          id="passeios-composicao"
+          className="tours-collage-reveal mt-[clamp(3rem,8vh,5.5rem)] w-full min-w-0"
+          aria-label="Colagem fotográfica de passeios em Milagres"
+        >
+          <div className="tours-collage mx-auto w-full max-w-[72rem]">
+            {milagresCollageImages.map((image, index) => (
+              <figure
+                key={image.id}
+                data-slot={image.slot}
+                className={`tours-collage-piece tours-collage-delay-${Math.min(index + 1, 7)} min-h-0 min-w-0 ${image.className ?? ""}`}
+                style={
+                  image.aspectRatio
+                    ? ({ ["--tours-aspect" as string]: image.aspectRatio } as CSSProperties)
+                    : undefined
+                }
+              >
+                <div className="tours-collage-frame h-full w-full overflow-hidden rounded-sm bg-stone-200/20">
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    width={image.width}
+                    height={image.height}
+                    loading={index < 2 ? "eager" : "lazy"}
+                    decoding="async"
+                    draggable={false}
+                    className="tours-collage-img block h-full w-full object-cover motion-reduce:transition-none"
+                    style={{
+                      objectPosition: image.objectPosition ?? "50% 50%",
+                      aspectRatio: image.aspectRatio,
+                    }}
+                  />
+                </div>
+              </figure>
+            ))}
           </div>
         </div>
       </div>
