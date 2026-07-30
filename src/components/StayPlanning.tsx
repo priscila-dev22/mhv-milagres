@@ -1,7 +1,7 @@
 import { useReveal } from "../hooks/useReveal";
 import { revealDelay } from "../utils/revealDelay";
 
-const ESTADIA_BG_SRC = "/media/images/estadia/estadia.jpg?v=2";
+const ESTADIA_BG_SRC = "/media/images/estadia/estadia.jpg?v=3";
 
 const ESTADIA_TITLE_SHADOW =
   "[text-shadow:0_2px_10px_rgba(0,0,0,0.28),0_1px_3px_rgba(0,0,0,0.18)]";
@@ -37,25 +37,25 @@ export function StayPlanning() {
     <section
       ref={ref}
       id="estadia"
-      className={`section-pad relative isolate scroll-mt-[4.5rem] overflow-hidden ${visible ? "section-visible" : ""}`}
+      className={`section-pad relative isolate scroll-mt-[4.5rem] overflow-hidden min-h-[min(100vh,40rem)] sm:min-h-[min(92vh,44rem)] ${visible ? "section-visible" : ""}`}
     >
       <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden>
         <img
           src={ESTADIA_BG_SRC}
           alt=""
           decoding="async"
-          className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-[52%_32%] sm:object-[38%_center] lg:object-[42%_center]"
+          className="pointer-events-none absolute inset-0 z-0 h-full w-full min-h-[28rem] object-cover object-[46%_58%] sm:min-h-[32rem] sm:object-[44%_54%] lg:object-[42%_52%]"
         />
       </div>
 
       <div
-        className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(to_right,rgba(15,36,40,0.34)_0%,rgba(15,36,40,0.14)_22%,rgba(15,36,40,0.04)_38%,transparent_52%)] sm:bg-[linear-gradient(to_right,rgba(15,36,40,0.28)_0%,rgba(15,36,40,0.1)_20%,transparent_42%)]"
+        className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(to_right,rgba(15,36,40,0.36)_0%,rgba(15,36,40,0.15)_24%,rgba(15,36,40,0.05)_40%,transparent_55%)] sm:bg-[linear-gradient(to_right,rgba(15,36,40,0.3)_0%,rgba(15,36,40,0.11)_22%,transparent_46%)]"
         aria-hidden
       />
 
       <div className="section-shell relative z-[2]">
         <div className="max-w-[min(100%,19.5rem)] sm:max-w-[22.5rem] lg:max-w-[24rem]">
-          <header className="reveal-item mb-14 sm:mb-16 lg:mb-20">
+          <header className="reveal-item mb-12 sm:mb-14 lg:mb-[4.25rem]">
             <span
               className="mb-4 block h-[0.5px] w-8 sm:mb-5 sm:w-9"
               style={{ backgroundColor: CHAMPAGNE }}
