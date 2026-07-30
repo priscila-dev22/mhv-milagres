@@ -1,7 +1,10 @@
 import type { CSSProperties } from "react";
 import { useMemo } from "react";
 import { useReveal } from "../hooks/useReveal";
-import { useExperienceCarousel } from "../hooks/useExperienceCarousel";
+import {
+  getExperienceSlideVisualRole,
+  useExperienceCarousel,
+} from "../hooks/useExperienceCarousel";
 import {
   milagresExperiences,
   type MilagresExperience,
@@ -11,7 +14,7 @@ const editorialLinkClass =
   "mt-8 inline-block font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-petroleum/85 underline-offset-[5px] transition-[color,border-color] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:text-sepia focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-petroleum/40 border-b border-petroleum/22 pb-0.5 hover:border-sepia/45";
 
 const navControlClass =
-  "min-h-[44px] font-sans text-[0.625rem] font-medium uppercase tracking-[0.14em] text-petroleum/80 underline-offset-[4px] transition-colors duration-500 hover:text-sepia hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/45 sm:min-h-0";
+  "min-h-[44px] cursor-pointer font-sans text-[0.625rem] font-medium uppercase tracking-[0.14em] text-petroleum/80 underline-offset-[4px] transition-colors duration-500 hover:text-sepia hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum/45 sm:min-h-0";
 
 type GallerySlide = {
   experience: MilagresExperience;
@@ -26,19 +29,19 @@ function buildGallerySlides(): GallerySlide[] {
     experience: milagresExperiences[last]!,
     extendedIndex: 0,
     isClone: true,
-    eagerLoad: false,
+    eagerLoad: true,
   };
   const reals: GallerySlide[] = milagresExperiences.map((experience, index) => ({
     experience,
     extendedIndex: index + 1,
     isClone: false,
-    eagerLoad: index === 0,
+    eagerLoad: index <= 1,
   }));
   const tailClone: GallerySlide = {
     experience: milagresExperiences[0]!,
     extendedIndex: milagresExperiences.length + 1,
     isClone: true,
-    eagerLoad: false,
+    eagerLoad: true,
   };
   return [headClone, ...reals, tailClone];
 }
@@ -53,7 +56,6 @@ export function MilagresExperiencesEditorial() {
     focusedExtendedIndex,
     goPrev,
     goNext,
-    recenterFocused,
     galleryProps,
   } = useExperienceCarousel(milagresExperiences.length);
 
@@ -91,54 +93,57 @@ export function MilagresExperiencesEditorial() {
       </header>
 
       <div className="experience-gallery-reveal mt-[clamp(2.75rem,7vh,4.25rem)] w-full max-w-[100vw] overflow-hidden">
-        <div
-          id="experiencias-galeria"
-          ref={galleryRef}
-          {...galleryProps}
-          tabIndex={0}
-          role="region"
-          aria-roledescription="carrossel"
-          aria-label="Galeria Um dia em Milagres"
-          className="experience-gallery flex w-full max-w-[100vw] cursor-grab snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] active:cursor-grabbing sm:gap-5 md:gap-6 lg:gap-6 [&::-webkit-scrollbar]:hidden max-lg:px-[calc((100%-84vw)/2)] max-[389px]:px-[calc((100%-82vw)/2)] lg:px-0"
-        >
-          {gallerySlides.map(({ experience, extendedIndex, isClone, eagerLoad }) => {
-            const isFocused = extendedIndex === focusedExtendedIndex;
-            const objectStyle = {
-              "--exp-pos": experience.objectPosition,
-              "--exp-pos-md":
-                experience.objectPositionMd ?? experience.objectPosition,
-              "--exp-pos-lg":
-                experience.objectPositionLg ??
-                experience.objectPositionMd ??
-                experience.objectPosition,
-            } as CSSProperties;
+        <div className="experience-gallery-stage">
+          <div
+            id="experiencias-galeria"
+            ref={galleryRef}
+            {...galleryProps}
+            tabIndex={0}
+            role="region"
+            aria-roledescription="carrossel"
+            aria-label="Galeria Um dia em Milagres"
+            className="experience-gallery flex w-full max-w-[100vw] touch-pan-x snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-5 md:gap-6 lg:gap-6 [&::-webkit-scrollbar]:hidden max-lg:px-[calc((100%-84vw)/2)] max-[389px]:px-[calc((100%-82vw)/2)] lg:px-0"
+          >
+            {gallerySlides.map(({ experience, extendedIndex, isClone, eagerLoad }) => {
+              const visualRole = getExperienceSlideVisualRole(
+                extendedIndex,
+                focusedExtendedIndex,
+              );
+              const objectStyle = {
+                "--exp-pos": experience.objectPosition,
+                "--exp-pos-md":
+                  experience.objectPositionMd ?? experience.objectPosition,
+                "--exp-pos-lg":
+                  experience.objectPositionLg ??
+                  experience.objectPositionMd ??
+                  experience.objectPosition,
+              } as CSSProperties;
 
-            return (
-              <figure
-                key={`${experience.id}-${extendedIndex}`}
-                ref={(node) => setSlideRef(extendedIndex, node)}
-                aria-hidden={isClone ? true : undefined}
-                className={`experience-slide shrink-0 snap-center transition-[transform,opacity] duration-[650ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] motion-reduce:transition-none ${
-                  isFocused ? "scale-[1.015] opacity-100" : "scale-100 opacity-[0.68]"
-                } w-[82vw] min-[390px]:w-[84vw] md:w-[58vw] lg:w-[58vw] lg:max-w-[56rem] xl:w-[56vw] xl:max-w-[52rem]`}
-              >
-                <div className="experience-slide-media overflow-hidden rounded-sm bg-stone-200/30 aspect-[4/5] max-h-[min(70vh,26.5rem)] sm:aspect-[5/4] sm:max-h-[min(68vh,28rem)] md:aspect-[3/2] md:max-h-none lg:h-[clamp(20rem,58vh,68vh)] lg:max-h-[68vh] lg:aspect-auto">
-                  <img
-                    src={experience.image}
-                    alt={isClone ? "" : experience.alt}
-                    width={experience.width}
-                    height={experience.height}
-                    loading={eagerLoad ? "eager" : "lazy"}
-                    decoding="async"
-                    draggable={false}
-                    className="experience-slide-img h-full w-full object-cover"
-                    style={objectStyle}
-                    onLoad={() => recenterFocused("auto")}
-                  />
-                </div>
-              </figure>
-            );
-          })}
+              return (
+                <figure
+                  key={`${experience.id}-${extendedIndex}`}
+                  ref={(node) => setSlideRef(extendedIndex, node)}
+                  data-role={visualRole}
+                  aria-hidden={isClone ? true : undefined}
+                  className="experience-slide shrink-0 snap-center w-[82vw] min-[390px]:w-[84vw] md:w-[58vw] lg:w-[58vw] lg:max-w-[56rem] xl:w-[56vw] xl:max-w-[52rem]"
+                >
+                  <div className="experience-slide-media overflow-hidden rounded-sm aspect-[4/5] max-h-[min(70vh,26.5rem)] sm:aspect-[5/4] sm:max-h-[min(68vh,28rem)] md:aspect-[3/2] md:max-h-none lg:h-[clamp(20rem,58vh,68vh)] lg:max-h-[68vh] lg:aspect-auto">
+                    <img
+                      src={experience.image}
+                      alt={isClone ? "" : experience.alt}
+                      width={experience.width}
+                      height={experience.height}
+                      loading={eagerLoad ? "eager" : "lazy"}
+                      decoding="async"
+                      draggable={false}
+                      className="experience-slide-img h-full w-full object-cover"
+                      style={objectStyle}
+                    />
+                  </div>
+                </figure>
+              );
+            })}
+          </div>
         </div>
       </div>
 

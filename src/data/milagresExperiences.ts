@@ -7,11 +7,8 @@ export type MilagresExperience = {
   support: string;
   width: number;
   height: number;
-  /** Mobile (<768px), crop vertical 4:5 */
   objectPosition: string;
-  /** Tablet (768px+) */
   objectPositionMd?: string;
-  /** Desktop (1024px+) */
   objectPositionLg?: string;
 };
 
@@ -20,7 +17,7 @@ export const milagresExperiences: MilagresExperience[] = [
     id: "praia-manha",
     image: "/media/images/experience/praia-manha.jpg",
     alt: "Escada de madeira e placa na praia ao amanhecer, com coqueiros e mar calmo em Milagres",
-    moment: "Manhã",
+    moment: "MANHÃ",
     title: "Começar sem pressa",
     support: "A brisa, o mar e o primeiro silêncio do dia.",
     width: 4032,
@@ -33,7 +30,7 @@ export const milagresExperiences: MilagresExperience[] = [
     id: "cafe-da-manha",
     image: "/media/images/experience/cafe-da-manha.jpg",
     alt: "Mesa posta com frutas frescas, pratos e café da manhã em ambiente acolhedor",
-    moment: "Sabores",
+    moment: "SABORES",
     title: "A manhã à mesa",
     support: "Frutas frescas e pequenos rituais para aproveitar o tempo.",
     width: 1600,
@@ -46,7 +43,7 @@ export const milagresExperiences: MilagresExperience[] = [
     id: "area-gourmet",
     image: "/media/images/experience/area-gourmet.jpg",
     alt: "Área gourmet ao ar livre com mesa preparada para encontros ao entardecer",
-    moment: "Encontros",
+    moment: "ENCONTROS",
     title: "Tempo para compartilhar",
     support: "Ambientes preparados para reunir, celebrar e permanecer.",
     width: 4032,
@@ -59,7 +56,7 @@ export const milagresExperiences: MilagresExperience[] = [
     id: "fim-de-tarde",
     image: "/media/images/experience/fim-de-tarde.jpg",
     alt: "Piscina ao pôr do sol com palmeira, casas e céu alaranjado refletindo na água",
-    moment: "Entardecer",
+    moment: "ENTARDECER",
     title: "Quando o céu muda de cor",
     support: "A luz se reflete na água e Milagres desacelera outra vez.",
     width: 941,
@@ -69,12 +66,25 @@ export const milagresExperiences: MilagresExperience[] = [
     objectPositionLg: "52% 30%",
   },
   {
+    id: "lua",
+    image: "/media/images/experience/lua.jpg",
+    alt: "Lua sobre a paisagem noturna em Milagres, com céu escuro e atmosfera serena",
+    moment: "NOITE",
+    title: "Sob o céu de Milagres",
+    support: "A paisagem muda de tom e o tempo parece passar ainda mais devagar.",
+    width: 1440,
+    height: 1817,
+    objectPosition: "50% 42%",
+    objectPositionMd: "50% 40%",
+    objectPositionLg: "50% 38%",
+  },
+  {
     id: "casa-noite",
     image: "/media/images/experience/casa-noite.jpg",
     alt: "Fachada iluminada da casa à noite com piscina e jardim em Milagres",
-    moment: "Noite",
+    moment: "VOLTAR",
     title: "Voltar para casa",
-    support: "Privacidade e conforto para encerrar o dia no seu ritmo.",
+    support: "Privacidade e conforto para encerrar o dia no seu próprio ritmo.",
     width: 3213,
     height: 5712,
     objectPosition: "50% 38%",
