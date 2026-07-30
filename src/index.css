@@ -684,10 +684,11 @@
   }
 
   .route-map-concierge-cta {
-    @apply inline-flex max-w-full cursor-pointer items-center gap-2.5 self-start border-b-2 border-petroleum/28 pb-1.5 pl-0.5 pr-1 font-sans text-[0.9375rem] font-medium normal-case tracking-[0.015em] text-petroleum transition-[color,border-color] duration-200 ease-out;
+    @apply inline-flex max-w-full cursor-pointer items-center gap-2.5 self-start border-b-2 pb-1.5 pl-0.5 pr-1 font-sans text-[0.9375rem] font-medium normal-case tracking-[0.015em] text-petroleum transition-[color,border-color] duration-200 ease-out;
     min-height: 3rem;
     padding-top: 0.625rem;
     padding-bottom: 0.5rem;
+    border-bottom-color: rgba(23, 52, 58, 0.28);
   }
 
   .route-map-concierge-cta .route-map-arrow {
@@ -705,7 +706,8 @@
 
   @media (hover: hover) {
     .route-map-concierge-cta:hover {
-      @apply border-petroleum/48 text-sepia;
+      @apply text-sepia;
+      border-bottom-color: rgba(23, 52, 58, 0.48);
     }
   }
 
