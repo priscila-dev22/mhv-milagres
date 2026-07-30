@@ -555,7 +555,7 @@
   }
 
   .concierge-service-item {
-    @apply border-t border-stone-200/45 px-0 py-8 transition-[background-color,transform] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] sm:py-10 lg:border-r lg:border-stone-200/45 lg:px-8 lg:py-12 xl:px-10;
+    @apply border-t border-[rgba(241,230,210,0.14)] px-0 py-8 transition-[background-color,transform] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] sm:py-10 lg:border-r lg:border-[rgba(241,230,210,0.14)] lg:px-8 lg:py-12 xl:px-10;
   }
 
   .concierge-service-item:nth-child(2n) {
@@ -568,12 +568,12 @@
 
   @media (hover: hover) {
     .concierge-service-item:hover {
-      @apply bg-stone-100/25;
+      @apply bg-white/5;
       transform: translateY(-2px);
     }
 
     .concierge-service-item:hover .concierge-service-num {
-      @apply text-sepia;
+      @apply text-[rgba(241,230,210,0.95)];
     }
 
     .concierge-service-item:hover .concierge-service-cta-arrow {
@@ -582,7 +582,7 @@
   }
 
   .concierge-service-item:focus-within .concierge-service-num {
-    @apply text-sepia;
+    @apply text-[rgba(241,230,210,0.95)];
   }
 
   @media (hover: hover) {
