@@ -252,6 +252,8 @@ export function useHorizontalSnapCarousel(
   };
 }
 
+const SCROLL_EDGE_PX = 2;
+
 /** Carrossel com snap-start — avança um card por clique (Gastronomia). */
 export function useHorizontalStepCarousel(
   slideCount: number,
@@ -260,6 +262,9 @@ export function useHorizontalStepCarousel(
   const carousel = useHorizontalScrollCarousel(options);
   const slideRefs = useRef<(HTMLElement | null)[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [displayIndex, setDisplayIndex] = useState(0);
+  const [canGoPrev, setCanGoPrev] = useState(false);
+  const [canGoNext, setCanGoNext] = useState(false);
   const activeIndexRef = useRef(0);
 
   const setSlideRef = useCallback((index: number, node: HTMLElement | null) => {
@@ -298,10 +303,31 @@ export function useHorizontalStepCarousel(
       }
     });
 
+    const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+    const measuredCount = slideRefs.current.filter(
+      (slide) => slide != null && slide.offsetWidth > 0,
+    ).length;
+    const catalogMeasured = measuredCount >= slideCount && slideCount > 0;
+    const atStart = scrollPos <= SCROLL_EDGE_PX;
+    const atEnd =
+      catalogMeasured &&
+      (maxScroll <= SCROLL_EDGE_PX || scrollPos >= maxScroll - SCROLL_EDGE_PX);
+
+    let nextDisplay = 0;
+    if (catalogMeasured) {
+      nextDisplay =
+        maxScroll <= SCROLL_EDGE_PX
+          ? slideCount - 1
+          : Math.round((scrollPos / maxScroll) * (slideCount - 1));
+    }
+
     activeIndexRef.current = closest;
     setActiveIndex(closest);
+    setDisplayIndex(nextDisplay);
+    setCanGoPrev(!atStart);
+    setCanGoNext(slideCount > 1 && !atEnd);
     carousel.scrollBar.updateMetrics();
-  }, [carousel.scrollBar, carousel.trackRef]);
+  }, [carousel.scrollBar, carousel.trackRef, slideCount]);
 
   useEffect(() => {
     const track = carousel.trackRef.current;
@@ -320,19 +346,24 @@ export function useHorizontalStepCarousel(
     return () => track.removeEventListener("scroll", onScroll);
   }, [carousel.trackRef, syncActiveFromScroll]);
 
+  useLayoutEffect(() => {
+    syncActiveFromScroll();
+  }, [syncActiveFromScroll, slideCount]);
+
   useEffect(() => {
     const track = carousel.trackRef.current;
     if (!track) return;
 
     const ro = new ResizeObserver(() => {
       scrollToIndex(activeIndexRef.current, "auto");
+      syncActiveFromScroll();
     });
     ro.observe(track);
     for (const child of track.children) {
       ro.observe(child);
     }
     return () => ro.disconnect();
-  }, [carousel.trackRef, scrollToIndex]);
+  }, [carousel.trackRef, scrollToIndex, syncActiveFromScroll]);
 
   const goPrev = useCallback(() => {
     scrollToIndex(activeIndexRef.current - 1);
@@ -342,17 +373,16 @@ export function useHorizontalStepCarousel(
     scrollToIndex(activeIndexRef.current + 1);
   }, [scrollToIndex]);
 
-  const canGoPrev = activeIndex > 0;
-  const canGoNext = activeIndex < slideCount - 1;
-
   return {
     ...carousel,
     activeIndex,
+    displayIndex,
     setSlideRef,
     goPrev,
     goNext,
     canGoPrev,
     canGoNext,
+    scrollToIndex,
   };
 }
 
