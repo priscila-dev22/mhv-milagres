@@ -5,7 +5,7 @@ import { Gastronomy } from "./components/Gastronomy";
 import { GastronomyChapterTransition } from "./components/GastronomyChapterTransition";
 import { Hero } from "./components/Hero";
 import { MilagresExperiencesEditorial } from "./components/MilagresExperiencesEditorial";
-import { JetSki } from "./components/JetSki";
+import { RegionEssentials } from "./components/RegionEssentials";
 import { RouteMap } from "./components/RouteMap";
 import { StayPlanning } from "./components/StayPlanning";
 import { StickyNav } from "./components/StickyNav";
@@ -27,8 +27,8 @@ export default function App() {
         <GastronomyChapterTransition />
         <Gastronomy />
         <ToursMosaic />
-        <JetSki />
         <ConciergeServices />
+        <RegionEssentials />
         <RouteMap />
       </main>
       <Footer />

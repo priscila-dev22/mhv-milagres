@@ -45,20 +45,17 @@ export function StayPlanning() {
         />
       </figure>
 
-      <div className="stay-planning-panel bg-petroleum text-sand">
+      <div className="stay-planning-panel bg-[#817268] text-sand">
         <div className="section-shell px-6 py-8 sm:px-8 sm:py-9 lg:px-6 lg:py-10 xl:px-8">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-10 xl:gap-14">
             <header className="reveal-item min-w-0 shrink-0 lg:max-w-[min(100%,20rem)] xl:max-w-[22rem]">
-              <p className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.26em] text-[rgba(241,230,210,0.88)]">
-                Sua estadia
-              </p>
               <h2
                 id="estadia-titulo"
-                className="mt-3 font-serif text-[clamp(2rem,4.2vw,3.25rem)] font-medium leading-[1.08] tracking-[-0.025em] text-[#F8F4ED] sm:mt-4"
+                className="font-serif text-[clamp(2rem,4.2vw,3.25rem)] font-medium leading-[1.08] tracking-[-0.025em] text-[#F8F4ED]"
               >
                 Planejando sua estadia
               </h2>
-              <p className="mt-4 max-w-[34ch] font-sans text-[clamp(0.9375rem,1.2vw,1.0625rem)] font-normal leading-[1.72] tracking-[0.012em] text-[rgba(241,230,210,0.82)]">
+              <p className="mt-5 max-w-[34ch] font-sans text-[clamp(0.875rem,1.05vw,0.9875rem)] font-normal leading-[1.7] tracking-[0.006em] text-[rgba(241,230,210,0.82)]">
                 Cada detalhe pode ser organizado antes da sua chegada, para que
                 você aproveite Milagres com mais conforto e tranquilidade.
               </p>

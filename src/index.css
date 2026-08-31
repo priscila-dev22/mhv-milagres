@@ -13,8 +13,8 @@
   }
 
   ::selection {
-    background-color: rgba(23, 52, 58, 0.14);
-    color: #17343a;
+    background-color: rgba(69, 43, 49, 0.14);
+    color: #452b31;
   }
 
   :focus {
@@ -22,7 +22,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid rgba(23, 52, 58, 0.5);
+    outline: 2px solid rgba(69, 43, 49, 0.5);
     outline-offset: 2px;
   }
 }
@@ -121,7 +121,7 @@
   }
 
   .section-band {
-    @apply bg-stone-100/35;
+    @apply bg-[#EDE9DF];
   }
 
   .gastro-carousel--dragging {
@@ -136,20 +136,20 @@
   .luxe-card {
     @apply overflow-hidden rounded-2xl border border-stone-200/50 bg-white/60 backdrop-blur-sm;
     box-shadow:
-      0 2px 14px rgba(23, 52, 58, 0.04),
+      0 2px 14px rgba(69, 43, 49, 0.04),
       inset 0 1px 0 rgba(255, 255, 255, 0.5);
   }
 
   .luxe-card-hover {
     @apply transition-[transform,box-shadow,border-color] duration-luxe ease-luxe hover:-translate-y-px hover:border-stone-200/70;
     box-shadow:
-      0 2px 14px rgba(23, 52, 58, 0.04),
+      0 2px 14px rgba(69, 43, 49, 0.04),
       inset 0 1px 0 rgba(255, 255, 255, 0.5);
   }
 
   .luxe-card-hover:hover {
     box-shadow:
-      0 6px 24px rgba(23, 52, 58, 0.07),
+      0 6px 24px rgba(69, 43, 49, 0.07),
       inset 0 1px 0 rgba(255, 255, 255, 0.5);
   }
 
@@ -162,7 +162,7 @@
   }
 
   .btn-pill-primary {
-    @apply btn-pill bg-petroleum px-5 py-2.5 text-sand hover:bg-sepia hover:shadow-[0_4px_14px_rgba(23,52,58,0.1)];
+    @apply btn-pill bg-petroleum px-5 py-2.5 text-sand hover:bg-sepia hover:shadow-[0_4px_14px_rgba(69,43,49,0.1)];
   }
 
   .btn-pill-secondary {
@@ -170,7 +170,7 @@
   }
 
   .btn-pill-light {
-    @apply btn-pill border border-sand/25 bg-sand/95 px-6 py-3 text-[0.6875rem] tracking-[0.14em] text-petroleum shadow-[0_2px_12px_rgba(23,52,58,0.08)] hover:border-sand hover:bg-white;
+    @apply btn-pill border border-sand/25 bg-sand/95 px-6 py-3 text-[0.6875rem] tracking-[0.14em] text-petroleum shadow-[0_2px_12px_rgba(69,43,49,0.08)] hover:border-sand hover:bg-white;
   }
 
   .link-footer {
@@ -205,7 +205,7 @@
   }
 
   .skip-link {
-    @apply absolute left-4 top-4 z-[100] -translate-y-[200%] rounded-full bg-petroleum px-5 py-3 font-sans text-sm font-semibold text-sand transition-transform duration-150 focus:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-sand/50;
+    @apply absolute left-4 top-4 z-[100] -translate-y-[200%] rounded-full bg-wine px-5 py-3 font-sans text-sm font-semibold text-sand transition-transform duration-150 focus:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-sand/50;
   }
 
   .chapter-pause-item {
@@ -345,6 +345,38 @@
     .experience-slide-img {
       object-position: var(--exp-pos-lg);
     }
+  }
+
+  .destination-gallery-stage {
+    perspective: none;
+  }
+
+  .destination-slide {
+    transition:
+      transform 700ms cubic-bezier(0.25, 0.1, 0.25, 1),
+      opacity 700ms cubic-bezier(0.25, 0.1, 0.25, 1);
+    will-change: transform, opacity;
+  }
+
+  .gastro-carousel--dragging .destination-slide,
+  .experience-gallery--dragging .destination-slide {
+    transition: none;
+  }
+
+  .destination-slide[data-role="active"] {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .destination-slide[data-role="prev"],
+  .destination-slide[data-role="next"] {
+    opacity: 0.82;
+    transform: scale(0.97);
+  }
+
+  .destination-slide[data-role="far"] {
+    opacity: 0.58;
+    transform: scale(0.94);
   }
 
   .tours-header-item {
@@ -661,12 +693,12 @@
   }
 
   .concierge-service-item-petroleum {
-    background-color: #17343a;
+    background-color: #452b31;
     border-color: rgba(241, 230, 210, 0.14);
   }
 
   .concierge-service-item-sand {
-    background-color: #f5f0e1;
+    background-color: #f3efe5;
   }
 
   .concierge-service-item-petroleum:nth-child(4n + 1),
@@ -688,7 +720,7 @@
     min-height: 3rem;
     padding-top: 0.625rem;
     padding-bottom: 0.5rem;
-    border-bottom-color: rgba(23, 52, 58, 0.28);
+    border-bottom-color: rgba(69, 43, 49, 0.28);
   }
 
   .route-map-concierge-cta .route-map-arrow {
@@ -707,7 +739,7 @@
   @media (hover: hover) {
     .route-map-concierge-cta:hover {
       @apply text-sepia;
-      border-bottom-color: rgba(23, 52, 58, 0.48);
+      border-bottom-color: rgba(69, 43, 49, 0.48);
     }
   }
 
@@ -735,7 +767,7 @@
 
   .route-map-list {
     scrollbar-width: thin;
-    scrollbar-color: rgba(23, 52, 58, 0.2) transparent;
+    scrollbar-color: rgba(69, 43, 49, 0.2) transparent;
   }
 }
 
@@ -830,7 +862,8 @@
     transition: none;
   }
 
-  .experience-slide {
+  .experience-slide,
+  .destination-slide {
     transform: none !important;
     opacity: 1 !important;
   }

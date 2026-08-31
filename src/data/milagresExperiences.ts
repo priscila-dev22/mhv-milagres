@@ -30,7 +30,7 @@ export const milagresExperiences: MilagresExperience[] = [
     id: "cafe-da-manha",
     image: "/media/images/experience/cafe-da-manha.jpg",
     alt: "Mesa posta com frutas frescas, pratos e café da manhã em ambiente acolhedor",
-    moment: "Dia",
+    moment: "Café da manhã",
     title: "A manhã à mesa",
     support: "Frutas frescas e pequenos rituais para aproveitar o tempo.",
     width: 1600,
@@ -82,7 +82,7 @@ export const milagresExperiences: MilagresExperience[] = [
     id: "chuveiro",
     image: "/media/images/experience/chuveiro.png",
     alt: "Chuveiro ao ar livre à noite em Milagres, entre vegetação e luz suave",
-    moment: "Dia",
+    moment: "Frescor",
     title: "Um instante só seu",
     support:
       "Entre a brisa de Milagres e a tranquilidade da noite, até os momentos mais simples se tornam parte da experiência.",

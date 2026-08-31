@@ -4,7 +4,6 @@ const links = [
   { href: "#hero", label: "Início" },
   { href: "#gastronomia", label: "Gastronomia" },
   { href: "#passeios", label: "Passeios" },
-  { href: "#jetski", label: "Jet Ski" },
   { href: "#concierge", label: "Concierge" },
   { href: "#mapa", label: "Mapa" },
 ];
@@ -89,10 +88,10 @@ export function StickyNav() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-luxe ease-luxe ${
         menuOpen
-          ? "border-b border-stone-200/70 bg-sand shadow-[0_2px_16px_rgba(23,52,58,0.06)] md:border-stone-200/60 md:bg-sand/95 md:backdrop-blur-md"
+          ? "border-b border-stone-200/70 bg-sand shadow-[0_2px_16px_rgba(69,43,49,0.06)] md:border-stone-200/60 md:bg-sand/95 md:backdrop-blur-md"
           : overHero
             ? "border-b border-transparent bg-transparent"
-            : "border-b border-stone-200/60 bg-sand/95 shadow-[0_2px_16px_rgba(23,52,58,0.04)] backdrop-blur-md"
+            : "border-b border-stone-200/60 bg-sand/95 shadow-[0_2px_16px_rgba(69,43,49,0.04)] backdrop-blur-md"
       }`}
     >
       <nav
@@ -152,7 +151,7 @@ export function StickyNav() {
       {menuOpen ? (
         <div
           id="mobile-nav-panel"
-          className="mobile-nav-panel fixed inset-x-0 bottom-0 top-16 z-[60] overflow-y-auto border-t border-stone-200/80 bg-sand shadow-[0_8px_32px_rgba(23,52,58,0.12)] md:hidden motion-reduce:transition-none"
+          className="mobile-nav-panel fixed inset-x-0 bottom-0 top-16 z-[60] overflow-y-auto border-t border-stone-200/80 bg-sand shadow-[0_8px_32px_rgba(69,43,49,0.12)] md:hidden motion-reduce:transition-none"
           role="dialog"
           aria-modal="true"
           aria-label="Menu de navegação"

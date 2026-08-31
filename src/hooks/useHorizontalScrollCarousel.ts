@@ -353,6 +353,7 @@ export function useHorizontalStepCarousel(
     goNext,
     canGoPrev,
     canGoNext,
+    scrollToIndex,
   };
 }
 

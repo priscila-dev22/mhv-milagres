@@ -1,39 +1,280 @@
-import { useId, useState } from "react";
+import { useId, useState, type ReactNode } from "react";
 import { useReveal } from "../hooks/useReveal";
 import { revealDelay } from "../utils/revealDelay";
 
 const CHAMPAGNE = "#E8D9B5";
 
-const hospitalityItems = [
+const SUPPORT_WHATSAPP_NUMBER = "5582988701957";
+const SUPPORT_WHATSAPP_MESSAGE =
+  "Olá! Estou hospedado pela MHV Milagres e preciso de ajuda.";
+const SUPPORT_WHATSAPP_HREF = `https://wa.me/${SUPPORT_WHATSAPP_NUMBER}?text=${encodeURIComponent(SUPPORT_WHATSAPP_MESSAGE)}`;
+
+const ROW_GRID =
+  "grid grid-cols-[2rem_minmax(0,1fr)_2.75rem] gap-x-3 sm:grid-cols-[2.25rem_minmax(0,1fr)_2.75rem] sm:gap-x-4";
+
+const numberClass =
+  "font-sans text-[0.625rem] font-medium tabular-nums tracking-[0.16em] text-sepia/80 sm:text-[0.6875rem]";
+
+const titleClass =
+  "min-w-0 font-serif text-[1.0625rem] font-normal leading-[1.25] tracking-[-0.015em] text-petroleum sm:text-[1.125rem]";
+
+const subtitleClass =
+  "font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-sepia sm:text-[0.75rem] sm:tracking-[0.16em]";
+
+const bodyClass =
+  "font-sans text-[0.9375rem] font-normal leading-[1.7] tracking-[0.006em] text-stone-600";
+
+function Em({ children }: { children: ReactNode }) {
+  return <strong className="font-medium text-petroleum/80">{children}</strong>;
+}
+
+function RuleFact({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="min-w-0">
+      <p className={subtitleClass}>{label}</p>
+      <div className={`${bodyClass} mt-1.5`}>{children}</div>
+    </div>
+  );
+}
+
+function RuleNote({ children }: { children: ReactNode }) {
+  return <p className={bodyClass}>{children}</p>;
+}
+
+function RuleStack({
+  air = "default",
+  children,
+}: {
+  air?: "default" | "roomy";
+  children: ReactNode;
+}) {
+  return (
+    <div className={air === "roomy" ? "flex flex-col gap-7 sm:gap-8" : "flex flex-col gap-6"}>
+      {children}
+    </div>
+  );
+}
+
+const hospitalityItems: { title: string; content: ReactNode }[] = [
   {
-    title: "Caução e garantia",
-    body: "Algumas reservas podem incluir caução, devolvida após a vistoria de saída, desde que o imóvel seja entregue nas condições acordadas.",
+    title: "Check-in",
+    content: (
+      <RuleStack>
+        <RuleFact label="Horário padrão">
+          A partir das <Em>14h00</Em>.
+        </RuleFact>
+        <RuleFact label="Early check-in">
+          A partir das <Em>10h00</Em>, mediante disponibilidade e desde que não
+          haja check-out da acomodação no mesmo dia.
+        </RuleFact>
+        <RuleFact label="Entrada antes das 10h00">
+          Será cobrado o equivalente a{" "}
+          <Em>50% do valor de uma nova diária</Em>.
+        </RuleFact>
+        <RuleFact label="Antes da meia-noite do dia anterior">
+          Se a entrada ocorrer antes da meia-noite do dia anterior ao início da
+          reserva, será cobrado o valor equivalente a{" "}
+          <Em>uma diária completa</Em>.
+        </RuleFact>
+        <RuleNote>
+          O early check-in depende da disponibilidade da acomodação.
+        </RuleNote>
+      </RuleStack>
+    ),
   },
   {
-    title: "Recebendo visitantes",
-    body: "Para preservar a tranquilidade e a segurança da hospedagem, visitantes devem ser previamente autorizados conforme a política de cada propriedade.",
+    title: "Check-out",
+    content: (
+      <RuleStack>
+        <RuleFact label="Horário padrão">
+          Até as <Em>10h00</Em>.
+        </RuleFact>
+        <RuleFact label="Late check-out">
+          Até as <Em>17h00</Em>, mediante disponibilidade e desde que não haja
+          check-in na acomodação no mesmo dia.
+        </RuleFact>
+        <RuleFact label="Após as 17h00 até meia-noite">
+          Será cobrado o equivalente a{" "}
+          <Em>50% do valor de uma nova diária</Em>.
+        </RuleFact>
+        <RuleFact label="Após meia-noite">
+          Será cobrado o equivalente a <Em>uma diária completa</Em>.
+        </RuleFact>
+        <RuleNote>
+          O late check-out depende da disponibilidade da acomodação.
+        </RuleNote>
+      </RuleStack>
+    ),
   },
   {
-    title: "Enxoval completo",
-    body: "Cada casa é recebida com enxoval impecável e utensílios essenciais, para que você se sinta em casa desde o primeiro momento.",
+    title: "Caução",
+    content: (
+      <RuleStack>
+        <RuleFact label="Valor">
+          O valor da caução varia de acordo com a acomodação reservada.
+        </RuleFact>
+        <RuleFact label="Reservas via Airbnb">
+          Não é exigida caução integral. É retido apenas o valor correspondente
+          à taxa de limpeza, devolvido integralmente após a vistoria, desde que
+          a acomodação seja entregue em boas condições, sem danos e sem
+          necessidade de limpeza extraordinária.
+        </RuleFact>
+        <RuleFact label="Site ou outras plataformas">
+          A caução correspondente à acomodação é cobrada e restituída em até 48
+          horas após o check-out, mediante vistoria e desde que não sejam
+          identificadas avarias ou situações que justifiquem retenção.
+        </RuleFact>
+      </RuleStack>
+    ),
   },
   {
-    title: "Concierge e suporte",
-    body: "Durante toda a estadia, nossa equipe de concierge permanece disponível para auxiliar sempre que necessário.",
+    title: "Visitantes",
+    content: (
+      <RuleStack>
+        <RuleFact label="Autorização">
+          Visitantes podem ser permitidos, mas a autorização e as regras
+          aplicáveis dependem da acomodação e/ou do condomínio.
+        </RuleFact>
+        <RuleNote>
+          Existem orientações gerais da MHV, porém determinadas acomodações e
+          condomínios possuem regras específicas. Consulte a MHV antes de
+          receber visitantes.
+        </RuleNote>
+      </RuleStack>
+    ),
   },
   {
-    title: "Assistência durante a estadia",
-    body: "Se surgir qualquer necessidade na casa, basta avisar — nossa equipe organizará o atendimento com agilidade e discrição.",
+    title: "Pets",
+    content: (
+      <RuleStack>
+        <RuleFact label="Hospedagem">
+          Pets são permitidos nas acomodações.
+        </RuleFact>
+        <RuleNote>
+          Caso existam regras particulares da acomodação ou do condomínio, elas
+          deverão ser observadas.
+        </RuleNote>
+      </RuleStack>
+    ),
+  },
+  {
+    title: "Fumo",
+    content: (
+      <RuleStack>
+        <RuleFact label="Áreas abertas">
+          É permitido fumar somente em áreas abertas.
+        </RuleFact>
+        <RuleFact label="Ambientes internos">
+          Não é permitido fumar em ambientes internos ou fechados, incluindo
+          quartos, salas, banheiros e demais ambientes internos da acomodação.
+        </RuleFact>
+      </RuleStack>
+    ),
+  },
+  {
+    title: "Estacionamento",
+    content: (
+      <RuleStack>
+        <RuleFact label="Vagas">
+          Todas as acomodações possuem pelo menos 1 vaga de garagem.
+        </RuleFact>
+        <RuleNote>
+          A quantidade exata e demais regras podem variar conforme a
+          acomodação.
+        </RuleNote>
+      </RuleStack>
+    ),
+  },
+  {
+    title: "Chaves",
+    content: (
+      <RuleStack>
+        <RuleFact label="Reposição">
+          Em caso de perda de chave, poderá haver cobrança para reposição.
+        </RuleFact>
+        <RuleFact label="Valor">
+          O custo pode variar entre R$ 15 e R$ 200, conforme o tipo de chave,
+          controle ou sistema utilizado na acomodação.
+        </RuleFact>
+      </RuleStack>
+    ),
+  },
+  {
+    title: "Regras da casa",
+    content: (
+      <RuleStack air="roomy">
+        <RuleFact label="Silêncio">
+          Horário de silêncio: das 20h00 às 08h00. Evite sons altos, festas ou
+          eventos sem autorização. Se o condomínio ou a acomodação possuir regra
+          mais restritiva, prevalecem as orientações específicas da propriedade.
+        </RuleFact>
+        <RuleFact label="Festas e eventos">
+          Não realize festas ou eventos sem informar e obter autorização prévia
+          da administração / MHV.
+        </RuleFact>
+        <RuleFact label="Lixo e áreas comuns">
+          As orientações para descarte de lixo e uso das áreas comuns variam de
+          acordo com a acomodação e/ou condomínio. Observe as instruções
+          específicas recebidas para a propriedade reservada.
+        </RuleFact>
+        <RuleFact label="Enxoval">
+          Cada casa é recebida com enxoval impecável e utensílios essenciais,
+          para que você se sinta em casa desde o primeiro momento.
+        </RuleFact>
+        <RuleFact label="Toalhas">
+          Ao remover maquiagem ou utilizar protetor solar, tenha cuidado com as
+          toalhas de banho — uma orientação simples para conservar a acomodação.
+        </RuleFact>
+        <RuleFact label="Energia">
+          Ao sair da acomodação, desligue a iluminação e o ar-condicionado.
+        </RuleFact>
+        <RuleNote>
+          Algumas regras podem variar conforme a acomodação ou condomínio
+          reservado. As orientações específicas da propriedade prevalecem sobre
+          as regras gerais apresentadas neste guia.
+        </RuleNote>
+      </RuleStack>
+    ),
+  },
+  {
+    title: "Suporte",
+    content: (
+      <RuleStack>
+        <RuleFact label="Concierge">
+          Durante toda a estadia, nossa equipe de concierge permanece disponível
+          para auxiliar sempre que necessário. Se surgir qualquer necessidade na
+          casa, basta avisar — organizamos o atendimento com agilidade e
+          discrição.
+        </RuleFact>
+        <RuleFact label="WhatsApp MHV">
+          <p>
+            Para dúvidas sobre a estadia, solicitação de serviços, passeios,
+            aluguel de itens ou suporte, fale diretamente com o Concierge MHV.
+          </p>
+          <a
+            href={SUPPORT_WHATSAPP_HREF}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Falar com o concierge MHV pelo WhatsApp"
+            className="editorial-link mt-3"
+          >
+            Falar com o concierge
+            <span aria-hidden> →</span>
+          </a>
+        </RuleFact>
+      </RuleStack>
+    ),
   },
 ];
 
 type AccordionItemProps = {
+  indexLabel: string;
   title: string;
-  body: string;
   isOpen: boolean;
   onToggle: () => void;
   triggerId: string;
   panelId: string;
+  children: ReactNode;
 };
 
 function ChevronIcon({ open }: { open: boolean }) {
@@ -52,9 +293,17 @@ function ChevronIcon({ open }: { open: boolean }) {
   );
 }
 
-function AccordionItem({ title, body, isOpen, onToggle, triggerId, panelId }: AccordionItemProps) {
+function AccordionItem({
+  indexLabel,
+  title,
+  isOpen,
+  onToggle,
+  triggerId,
+  panelId,
+  children,
+}: AccordionItemProps) {
   return (
-    <div className="border-b border-stone-200/35 last:border-b-0">
+    <div className="border-b border-stone-200/25 last:border-b-0">
       <h3>
         <button
           type="button"
@@ -62,14 +311,17 @@ function AccordionItem({ title, body, isOpen, onToggle, triggerId, panelId }: Ac
           aria-expanded={isOpen}
           aria-controls={panelId}
           onClick={onToggle}
-          className="flex w-full min-h-[44px] items-center justify-between gap-4 py-5 text-left transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-stone-100/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-petroleum/35 sm:py-[1.375rem]"
+          className={`${ROW_GRID} w-full min-h-11 items-center py-[1.125rem] text-left transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-stone-100/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-petroleum/35 sm:py-5`}
         >
-          <span className="editorial-title-card">{title}</span>
-          <span
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-stone-200/45 bg-[#FAF8F5]"
-            style={{ boxShadow: "0 1px 6px rgba(23, 52, 58, 0.04)" }}
-          >
-            <ChevronIcon open={isOpen} />
+          <span className={numberClass}>{indexLabel}</span>
+          <span className={titleClass}>{title}</span>
+          <span className="flex h-11 w-11 items-center justify-center justify-self-end">
+            <span
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-stone-200/40 bg-[#FAF8F5]"
+              style={{ boxShadow: "0 1px 6px rgba(69, 43, 49, 0.04)" }}
+            >
+              <ChevronIcon open={isOpen} />
+            </span>
           </span>
         </button>
       </h3>
@@ -81,7 +333,9 @@ function AccordionItem({ title, body, isOpen, onToggle, triggerId, panelId }: Ac
         className={`grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
       >
         <div className="overflow-hidden">
-          <p className="editorial-body pb-6 pr-2 sm:pb-7 sm:pr-4">{body}</p>
+          <div className={`${ROW_GRID} pb-7 sm:pb-8`}>
+            <div className="col-start-2 col-span-2 min-w-0">{children}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -101,28 +355,30 @@ export function AccommodationInfo() {
     >
       <div className="section-shell">
         <div className={`reveal-item mx-auto max-w-3xl ${revealDelay(1)}`}>
-            <header className="mb-6 sm:mb-7">
-              <p className="editorial-label">Informações da hospedagem</p>
-              <span
-                className="mt-4 block h-px w-9"
-                style={{ backgroundColor: CHAMPAGNE }}
-                aria-hidden
-              />
-            </header>
+          <header className="mb-6 sm:mb-7">
+            <p className="editorial-label">Informações da hospedagem</p>
+            <span
+              className="mt-4 block h-px w-9"
+              style={{ backgroundColor: CHAMPAGNE }}
+              aria-hidden
+            />
+          </header>
 
-            <div className="border-t border-stone-200/40">
-              {hospitalityItems.map((item, index) => (
-                <AccordionItem
-                  key={item.title}
-                  title={item.title}
-                  body={item.body}
-                  isOpen={openIndex === index}
-                  onToggle={() => setOpenIndex(openIndex === index ? null : index)}
-                  triggerId={`${baseId}-trigger-${index}`}
-                  panelId={`${baseId}-panel-${index}`}
-                />
-              ))}
-            </div>
+          <div className="border-t border-stone-200/25">
+            {hospitalityItems.map((item, index) => (
+              <AccordionItem
+                key={item.title}
+                indexLabel={String(index + 1).padStart(2, "0")}
+                title={item.title}
+                isOpen={openIndex === index}
+                onToggle={() => setOpenIndex(openIndex === index ? null : index)}
+                triggerId={`${baseId}-trigger-${index}`}
+                panelId={`${baseId}-panel-${index}`}
+              >
+                {item.content}
+              </AccordionItem>
+            ))}
+          </div>
         </div>
       </div>
     </section>
