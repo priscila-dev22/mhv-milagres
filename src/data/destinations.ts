@@ -151,6 +151,7 @@ export const destinations: Destination[] = [
       "Parte da experiência da Rota Ecológica dos Milagres, ao norte da costa.",
     highlights: ["Rota Ecológica dos Milagres"],
     mapsQuery: "Porto de Pedras, AL",
+    image: encodeURI("/media/images/Descubra Milagres/praiaporto.jpg"),
   },
 ];
 

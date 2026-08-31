@@ -63,7 +63,7 @@ function CatalogNav({
   const progress = current / total;
 
   return (
-    <div className="mx-auto w-full max-w-[16rem]">
+    <div className="w-full max-w-[16rem]">
       <div className="flex items-center justify-between gap-3">
         <button
           type="button"
@@ -94,7 +94,7 @@ function CatalogNav({
         </button>
       </div>
       <div
-        className="relative mx-auto mt-3 h-px w-full max-w-[10rem] overflow-hidden bg-petroleum/10"
+        className="relative mt-3 h-px w-full max-w-[10rem] overflow-hidden bg-petroleum/10"
         aria-hidden
       >
         <div
@@ -121,23 +121,23 @@ function EssentialCard({
   return (
     <article
       ref={(node) => setSlideRef(index, node)}
-      className="flex w-[min(78vw,16.5rem)] shrink-0 snap-start flex-col border-t border-stone-200/40 bg-sand pt-5 sm:w-[18rem]"
+      className="flex w-full shrink-0 snap-start flex-col border-t border-stone-200/40 bg-sand px-6 pb-7 pt-7 md:w-[20rem] lg:w-[21.5rem] xl:w-[22.5rem] sm:px-8 sm:pb-8 sm:pt-8 lg:px-9 lg:py-9"
     >
       {place.region ? (
         <p className="editorial-caption">{place.region}</p>
       ) : null}
-      <h3 className="editorial-title-card mt-2">{place.name}</h3>
+      <h3 className="editorial-title-card mt-3 text-balance">{place.name}</h3>
       {place.address ? (
-        <p className="mt-3 font-sans text-[0.8125rem] font-normal leading-[1.6] tracking-[0.01em] text-stone-600">
+        <p className="mt-4 font-sans text-[0.8125rem] font-normal leading-[1.7] tracking-[0.01em] text-stone-600">
           {place.address}
         </p>
       ) : null}
       {place.notes ? (
-        <p className="mt-2 font-sans text-[0.8125rem] font-normal leading-[1.6] tracking-[0.01em] text-stone-600">
+        <p className="mt-3 font-sans text-[0.8125rem] font-normal leading-[1.7] tracking-[0.01em] text-stone-600">
           {place.notes}
         </p>
       ) : null}
-      <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1">
+      <div className="mt-6 flex flex-wrap gap-x-8 gap-y-2">
         {mapsHref ? (
           <a
             href={mapsHref}
@@ -217,7 +217,7 @@ function EssentialsCarousel({
         {...trackProps}
         onKeyDown={onKeyDown}
         tabIndex={0}
-        className="gastro-carousel flex cursor-grab touch-pan-x snap-x snap-mandatory items-start gap-5 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] active:cursor-grabbing sm:gap-6 [&::-webkit-scrollbar]:hidden"
+        className="gastro-carousel flex cursor-grab touch-pan-x snap-x snap-mandatory items-start gap-6 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] active:cursor-grabbing sm:gap-7 lg:gap-8 xl:gap-9 [&::-webkit-scrollbar]:hidden"
         aria-label="Pontos de apoio da região"
       >
         {places.map((place, index) => (
@@ -229,7 +229,7 @@ function EssentialsCarousel({
           />
         ))}
       </div>
-      <div className="mt-6">
+      <div className="mt-8 sm:mt-10">
         <CatalogNav
           current={atEnd ? total : mapped}
           total={total}
@@ -255,11 +255,11 @@ export function RegionEssentials() {
     <section
       ref={ref}
       id="essenciais"
-      className={`section-band section-pad-tight scroll-mt-[4.5rem] overflow-x-hidden ${visible ? "section-visible" : ""}`}
+      className={`section-band scroll-mt-[4.5rem] overflow-x-hidden py-[clamp(3.75rem,8vh,6.25rem)] ${visible ? "section-visible" : ""}`}
     >
       <div className="section-shell">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-12 xl:gap-16">
-          <header className={`reveal-item shrink-0 lg:sticky lg:top-[5.5rem] lg:w-[min(100%,20rem)] ${revealDelay(1)}`}>
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-16 xl:gap-20">
+          <header className={`reveal-item shrink-0 lg:sticky lg:top-[5.5rem] lg:w-[min(100%,17.5rem)] ${revealDelay(1)}`}>
             <p className="editorial-label">Essenciais da região</p>
             <h2 className="section-title mt-5">Por perto</h2>
             <p className="section-lead measure-tight">
@@ -290,7 +290,7 @@ export function RegionEssentials() {
             </nav>
           </header>
 
-          <div className={`min-w-0 flex-1 lg:-mr-[max(1rem,calc((100vw-min(100vw,1180px))/2+1rem))] ${revealDelay(2)} reveal-item`}>
+          <div className={`min-w-0 flex-1 lg:-mr-[max(1.25rem,calc((100vw-min(100vw,1180px))/2+1.25rem))] ${revealDelay(2)} reveal-item`}>
             <EssentialsCarousel key={category} category={category} places={places} />
             {category === "saude" ? (
               <p className="mt-8 max-w-[46ch] font-sans text-[0.75rem] font-normal leading-[1.65] tracking-[0.01em] text-stone-500">

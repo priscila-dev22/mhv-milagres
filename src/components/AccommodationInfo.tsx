@@ -13,19 +13,19 @@ const ROW_GRID =
   "grid grid-cols-[2rem_minmax(0,1fr)_2.75rem] gap-x-3 sm:grid-cols-[2.25rem_minmax(0,1fr)_2.75rem] sm:gap-x-4";
 
 const numberClass =
-  "font-sans text-[0.625rem] font-medium tabular-nums tracking-[0.16em] text-sepia/80 sm:text-[0.6875rem]";
+  "font-sans text-[0.625rem] font-medium tabular-nums tracking-[0.16em] text-wine sm:text-[0.6875rem]";
 
 const titleClass =
   "min-w-0 font-serif text-[1.0625rem] font-normal leading-[1.25] tracking-[-0.015em] text-petroleum sm:text-[1.125rem]";
 
 const subtitleClass =
-  "font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-sepia sm:text-[0.75rem] sm:tracking-[0.16em]";
+  "font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-wine/80 sm:text-[0.75rem] sm:tracking-[0.16em]";
 
 const bodyClass =
-  "font-sans text-[0.9375rem] font-normal leading-[1.7] tracking-[0.006em] text-stone-600";
+  "font-sans text-[0.9375rem] font-normal leading-[1.75] tracking-[0.006em] text-stone-600";
 
 function Em({ children }: { children: ReactNode }) {
-  return <strong className="font-medium text-petroleum/80">{children}</strong>;
+  return <strong className="font-medium text-petroleum">{children}</strong>;
 }
 
 function RuleFact({ label, children }: { label: string; children: ReactNode }) {
@@ -38,7 +38,7 @@ function RuleFact({ label, children }: { label: string; children: ReactNode }) {
 }
 
 function RuleNote({ children }: { children: ReactNode }) {
-  return <p className={bodyClass}>{children}</p>;
+  return <p className={`${bodyClass} sm:col-span-2`}>{children}</p>;
 }
 
 function RuleStack({
@@ -49,7 +49,13 @@ function RuleStack({
   children: ReactNode;
 }) {
   return (
-    <div className={air === "roomy" ? "flex flex-col gap-7 sm:gap-8" : "flex flex-col gap-6"}>
+    <div
+      className={
+        air === "roomy"
+          ? "grid grid-cols-1 gap-7 sm:grid-cols-2 sm:gap-x-14 sm:gap-y-8"
+          : "grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-x-14 sm:gap-y-7"
+      }
+    >
       {children}
     </div>
   );
@@ -286,7 +292,7 @@ function ChevronIcon({ open }: { open: boolean }) {
       stroke="currentColor"
       strokeWidth="1.25"
       aria-hidden
-      className={`h-3 w-3 text-petroleum/70 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${open ? "rotate-180" : ""}`}
+      className={`h-3 w-3 text-wine/50 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${open ? "rotate-180" : ""}`}
     >
       <path d="M5 7.5 10 12.5 15 7.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
@@ -303,7 +309,7 @@ function AccordionItem({
   children,
 }: AccordionItemProps) {
   return (
-    <div className="border-b border-stone-200/25 last:border-b-0">
+    <div className="border-b border-wine/12 last:border-b-0">
       <h3>
         <button
           type="button"
@@ -311,17 +317,12 @@ function AccordionItem({
           aria-expanded={isOpen}
           aria-controls={panelId}
           onClick={onToggle}
-          className={`${ROW_GRID} w-full min-h-11 items-center py-[1.125rem] text-left transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-stone-100/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-petroleum/35 sm:py-5`}
+          className={`${ROW_GRID} w-full min-h-11 items-center py-5 text-left transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-wine/[0.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-wine/35 sm:py-6`}
         >
           <span className={numberClass}>{indexLabel}</span>
           <span className={titleClass}>{title}</span>
           <span className="flex h-11 w-11 items-center justify-center justify-self-end">
-            <span
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-stone-200/40 bg-[#FAF8F5]"
-              style={{ boxShadow: "0 1px 6px rgba(69, 43, 49, 0.04)" }}
-            >
-              <ChevronIcon open={isOpen} />
-            </span>
+            <ChevronIcon open={isOpen} />
           </span>
         </button>
       </h3>
@@ -333,7 +334,7 @@ function AccordionItem({
         className={`grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
       >
         <div className="overflow-hidden">
-          <div className={`${ROW_GRID} pb-7 sm:pb-8`}>
+          <div className={`${ROW_GRID} pb-8 sm:pb-10`}>
             <div className="col-start-2 col-span-2 min-w-0">{children}</div>
           </div>
         </div>
@@ -351,11 +352,11 @@ export function AccommodationInfo() {
     <section
       ref={ref}
       id="informacoes"
-      className={`section-band section-pad scroll-mt-[4.5rem] ${visible ? "section-visible" : ""}`}
+      className={`section-band scroll-mt-[4.5rem] py-[clamp(4.5rem,10vh,7.5rem)] ${visible ? "section-visible" : ""}`}
     >
       <div className="section-shell">
-        <div className={`reveal-item mx-auto max-w-3xl ${revealDelay(1)}`}>
-          <header className="mb-6 sm:mb-7">
+        <div className={`reveal-item mx-auto max-w-5xl ${revealDelay(1)}`}>
+          <header className="mb-10 sm:mb-12">
             <p className="editorial-label">Informações da hospedagem</p>
             <span
               className="mt-4 block h-px w-9"
@@ -364,7 +365,7 @@ export function AccommodationInfo() {
             />
           </header>
 
-          <div className="border-t border-stone-200/25">
+          <div className="border-t border-wine/15">
             {hospitalityItems.map((item, index) => (
               <AccordionItem
                 key={item.title}

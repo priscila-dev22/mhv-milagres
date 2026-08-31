@@ -525,7 +525,7 @@ function BabyItemsCarousel() {
         {...trackProps}
         onKeyDown={onKeyDown}
         tabIndex={0}
-        className="gastro-carousel flex cursor-grab touch-pan-x snap-x snap-mandatory items-stretch gap-4 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] active:cursor-grabbing sm:gap-5 [&::-webkit-scrollbar]:hidden"
+        className="gastro-carousel flex cursor-grab touch-pan-x snap-x snap-mandatory items-start gap-8 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] active:cursor-grabbing sm:gap-9 lg:gap-10 [&::-webkit-scrollbar]:hidden"
         aria-label="Itens infantis para locação"
       >
         {babyItems.map((item, index) => {
@@ -534,15 +534,15 @@ function BabyItemsCarousel() {
             <article
               key={item.id}
               ref={(node) => setSlideRef(index, node)}
-              className="flex w-[min(78vw,17.5rem)] shrink-0 snap-start flex-col border-t border-stone-200/40 bg-sand pt-6 sm:w-[18.5rem]"
+              className="flex w-full shrink-0 snap-start flex-col border-t border-stone-200/40 bg-sand pt-7 md:w-[20.5rem] lg:w-[21.5rem]"
             >
               <p className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-sepia">
                 {String(index + 1).padStart(2, "0")}
               </p>
-              <h3 className="mt-3 font-serif text-[1.25rem] font-medium leading-snug tracking-[-0.015em] text-petroleum sm:text-[1.375rem]">
+              <h3 className="mt-4 text-balance font-serif text-[1.25rem] font-medium leading-[1.28] tracking-[-0.015em] text-petroleum sm:text-[1.375rem]">
                 {item.name}
               </h3>
-              <p className="mt-4 font-sans text-[0.9375rem] font-medium text-petroleum">
+              <p className="mt-5 font-sans text-[0.9375rem] font-medium text-petroleum">
                 {item.price}
               </p>
               <a
@@ -550,7 +550,7 @@ function BabyItemsCarousel() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`Solicitar ${item.name} pelo WhatsApp`}
-                className="editorial-link mt-5"
+                className="editorial-link mt-6"
               >
                 Solicitar item
               </a>
@@ -558,7 +558,7 @@ function BabyItemsCarousel() {
           );
         })}
       </div>
-      <div className="mt-8">
+      <div className="mt-10 sm:mt-12">
         <CatalogNav
           current={current}
           total={babyItems.length}
@@ -659,7 +659,7 @@ export function ConciergeServices() {
               <li key={note}>{note}</li>
             ))}
           </ul>
-          <div className="mt-8 lg:-mr-[max(1.25rem,calc((100vw-min(100vw,1180px))/2+1.25rem))]">
+          <div className="mt-12 sm:mt-14">
             <BabyItemsCarousel />
           </div>
         </div>
