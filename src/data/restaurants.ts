@@ -61,6 +61,7 @@ export const restaurants: Restaurant[] = [
     isCommercialHub: true,
     description:
       "Centrinho comercial na Praia do Marceneiro — lojas, conveniências e diversas opções de restaurantes.",
+    phone: "++1-555-0018",
     instagram: "https://www.instagram.com/vilinha_marceneiro/",
     mapsQuery: "Vilinha Marceneiro Passo de Camaragibe AL",
     mapsUrl: mapsSearch("Vilinha Marceneiro Passo de Camaragibe AL"),
@@ -73,7 +74,7 @@ export const restaurants: Restaurant[] = [
     regionLabel: "Praia do Marceneiro",
     description:
       "Bistrô à beira da Praia do Marceneiro, integrante do Paru Boutique Hotel, com gastronomia baseada em ingredientes locais.",
-    phone: "++1-555-0021",
+    phone: "++1-555-0041",
     instagram: "https://www.instagram.com/paruboutiquehotel/",
     mapsQuery: "Parú Bistrô Praia do Marceneiro Passo de Camaragibe",
     mapsUrl: mapsSearch("Parú Bistrô Praia do Marceneiro Passo de Camaragibe"),
@@ -84,7 +85,7 @@ export const restaurants: Restaurant[] = [
     name: "Salsa",
     region: "marceneiro",
     regionLabel: "Praia do Marceneiro",
-    phone: "++1-555-0026",
+    phone: "++1-555-0004",
     instagram: "https://www.instagram.com/quadradopousada/",
     mapsQuery: "Salsa Restaurante Quadrado Pousada Praia do Marceneiro AL",
     mapsUrl: mapsSearch("Salsa Restaurante Quadrado Pousada Praia do Marceneiro AL"),
@@ -100,7 +101,6 @@ export const restaurants: Restaurant[] = [
       "Gastronomia inserida na Pousada Haya, na região da Praia do Riacho.",
     address:
       "Pousada Haya, Povoado do Riacho Antônio Dias, São Miguel dos Milagres - AL",
-    phone: "++1-555-0004",
     mapsQuery: "Banami Pousada Haya São Miguel dos Milagres",
     mapsUrl: mapsSearch("Banami Pousada Haya São Miguel dos Milagres"),
     instagram: "https://www.instagram.com/pousadahaya/",
@@ -112,6 +112,7 @@ export const restaurants: Restaurant[] = [
     name: "Tahafa Milagres",
     region: "riacho",
     regionLabel: "Praia do Riacho",
+    phone: "++1-555-0016",
     instagram: "https://www.instagram.com/tahafamilagres/",
     mapsQuery: "Tahafa Milagres Sao Miguel dos Milagres AL",
     mapsUrl: mapsSearch("Tahafa Milagres Sao Miguel dos Milagres AL"),
@@ -127,7 +128,7 @@ export const restaurants: Restaurant[] = [
       "Bistrô integrado à atmosfera tranquila do Riacho, com gastronomia em um ambiente acolhedor e cercado pela natureza.",
     address:
       "Estrada do Riacho Dourado, S/N, Riacho, São Miguel dos Milagres — AL",
-    phone: "++1-555-0039",
+    phone: "++1-555-0016",
     mapsQuery:
       "Villa da Mata Bistro Estrada do Riacho Dourado Sao Miguel dos Milagres AL",
     mapsUrl: mapsSearch(
@@ -145,7 +146,7 @@ export const restaurants: Restaurant[] = [
       "Restaurante à beira-mar na Praia do Riacho, ideal para aproveitar a gastronomia local em uma atmosfera descontraída e integrada à praia.",
     address:
       "Rua João Paulo I, lotes 15, 17 e 18, Praia do Riacho, São Miguel dos Milagres — AL",
-    phone: "++1-555-0035",
+    phone: "++1-555-0008",
     instagram: "https://www.instagram.com/micasapraia/",
     mapsQuery:
       "Mi Casa Praia do Riacho Rua Joao Paulo I Sao Miguel dos Milagres AL",
@@ -162,7 +163,7 @@ export const restaurants: Restaurant[] = [
     description:
       "Gastrobar de atmosfera descontraída, com gastronomia brasileira, frutos do mar, drinks e música ao vivo.",
     address: "Rua Santa Fé, São Miguel dos Milagres — AL, CEP 57940-000",
-    phone: "++1-555-0047",
+    phone: "++1-555-0017",
     instagram: "https://www.instagram.com/acquamilagres/",
     mapsQuery: "Acqua Gastrobar Sao Miguel dos Milagres AL",
     mapsUrl:
@@ -179,7 +180,7 @@ export const restaurants: Restaurant[] = [
       "Gastronomia brasileira com sabores locais, em um ambiente acolhedor próximo à praia, no coração de São Miguel dos Milagres.",
     address:
       "Rua Prefeito Augusto de Barros Falcão, S/N, São Miguel dos Milagres — AL, CEP 57940-000",
-    phone: "++1-555-0021",
+    phone: "++1-555-0023",
     instagram: "https://www.instagram.com/segredosdemilagres/",
     mapsQuery:
       "Segredos de Milagres Rua Prefeito Augusto de Barros Falcao Sao Miguel dos Milagres AL",
@@ -191,14 +192,14 @@ export const restaurants: Restaurant[] = [
   {
     id: "nacasa",
     name: "NACASA de boa",
-    region: "sao-miguel",
-    regionLabel: "Litoral norte, Alagoas",
+    region: "tatuamunha",
+    regionLabel: "Tatuamunha",
     image: "/media/images/gastronomy/nacasa.jpg",
     objectPosition: "50% 40%",
     mapsQuery: "NACASA de boa São Miguel dos Milagres",
     mapsUrl: mapsSearch("NACASA de boa São Miguel dos Milagres"),
     instagram: "https://www.instagram.com/nacasadeboa/",
-    phone: "++1-555-0004",
+    phone: "++1-555-0029",
   },
   {
     id: "o-beco",
@@ -209,7 +210,7 @@ export const restaurants: Restaurant[] = [
       "Culinária com sabores do mar e influência mediterrânea, em um ambiente rústico, acolhedor e descontraído em São Miguel dos Milagres.",
     address:
       "Rua Prefeito Augusto de Barros Falcão, 129, São Miguel dos Milagres — AL, CEP 57940-000",
-    phone: "++1-555-0036",
+    phone: "++1-555-0016",
     instagram: "https://www.instagram.com/restauranteobeco/",
     mapsQuery:
       "Restaurante O Beco Rua Prefeito Augusto de Barros Falcao 129 Sao Miguel dos Milagres AL",
@@ -221,8 +222,8 @@ export const restaurants: Restaurant[] = [
   {
     id: "sur",
     name: "Sur",
-    region: "sao-miguel",
-    regionLabel: "Milagres · costa",
+    region: "marceneiro",
+    regionLabel: "Praia do Marceneiro",
     image: "/media/images/gastronomy/sur.jpg",
     objectPosition: "50% 38%",
     mapsQuery: "Sur restaurante São Miguel dos Milagres",
@@ -237,7 +238,7 @@ export const restaurants: Restaurant[] = [
     description:
       "Gastronomia regional em um ambiente acolhedor e descontraído na Praia do Toque, em São Miguel dos Milagres.",
     address: "Praia do Toque, São Miguel dos Milagres — AL",
-    phone: "++1-555-0039",
+    phone: "++1-555-0020",
     instagram: "https://www.instagram.com/quintaldozemilagres/",
     mapsQuery: "Quintal do Ze Praia do Toque Sao Miguel dos Milagres AL",
     mapsUrl:
@@ -254,7 +255,7 @@ export const restaurants: Restaurant[] = [
       "Cozinha contemporânea inspirada nos sabores locais, valorizando ingredientes da região em uma atmosfera integrada à natureza de Milagres.",
     address:
       "Rua em Projeto, S/Nº, Povoado do Toque, São Miguel dos Milagres — AL, CEP 57940-000",
-    phone: "++1-555-0016",
+    phone: "++1-555-0041",
     instagram: "https://www.instagram.com/pousadazaya/",
     mapsQuery: "Pousada Zaya Povoado do Toque Sao Miguel dos Milagres AL",
     mapsUrl:
@@ -270,7 +271,6 @@ export const restaurants: Restaurant[] = [
     description:
       "Cozinha brasileira afetiva em ambiente integrado a jardim e horta.",
     address: "Rua do Campo, Praia do Toque, São Miguel dos Milagres - AL",
-    phone: "++1-555-0046",
     image: "/media/images/gastronomy/quintal.jpg",
     objectPosition: "50% 45%",
     mapsQuery: "No Quintal restaurante Praia do Toque São Miguel dos Milagres",
@@ -286,7 +286,7 @@ export const restaurants: Restaurant[] = [
       "Cozinha autoral que transforma ingredientes locais em novas experiências de sabor, valorizando a identidade gastronômica de Milagres.",
     address:
       "Rua Felisberto de Ataíde, 200, Povoado do Toque, São Miguel dos Milagres — AL, CEP 57940-000",
-    phone: "++1-555-0016",
+    phone: "++1-555-0036",
     instagram: "https://www.instagram.com/dadiva.cozinha/",
     mapsQuery:
       "Dadiva Cozinha Boutique Rua Felisberto de Ataide 200 Sao Miguel dos Milagres AL",
@@ -303,7 +303,7 @@ export const restaurants: Restaurant[] = [
     description:
       "Cozinha criativa brasileira com valorização de produtos locais.",
     address: "Rua Eurico Marinho Leão, 37, São Miguel dos Milagres - AL",
-    phone: "++1-555-0032",
+    phone: "++1-555-0045",
     image: "/media/images/gastronomy/bistro.jpg",
     objectPosition: "50% 42%",
     mapsQuery: "Patrícia Bistrô São Miguel dos Milagres",
@@ -319,7 +319,7 @@ export const restaurants: Restaurant[] = [
       "Cozinha contemporânea com destaque para sabores do mar, em uma experiência gastronômica acolhedora em São Miguel dos Milagres.",
     address:
       "Rua Aderbal da Costa Raposo, 585, São Miguel dos Milagres — AL, CEP 57940-000",
-    phone: "++1-555-0013",
+    phone: "++1-555-0006",
     instagram: "https://www.instagram.com/villamilagres/",
     mapsQuery:
       "Villa Milagres Rua Aderbal da Costa Raposo 585 Sao Miguel dos Milagres AL",
@@ -337,6 +337,7 @@ export const restaurants: Restaurant[] = [
     objectPosition: "50% 44%",
     mapsQuery: "Milagres do Toque Praia do Toque",
     mapsUrl: mapsSearch("Milagres do Toque Praia do Toque"),
+    phone: "+55 82 99329-7013",
     instagram: "https://www.instagram.com/milagresdotoque/",
   },
   {
@@ -348,7 +349,7 @@ export const restaurants: Restaurant[] = [
       "Café e empório de atmosfera acolhedora em Tatuamunha, com sabores artesanais e uma experiência cercada pelo charme e tranquilidade da Rota dos Milagres.",
     address:
       "Rua Luiz Ferreira Dorta, 645, Tatuamunha, Porto de Pedras — AL, CEP 57945-000",
-    phone: "++1-555-0039",
+    phone: "++1-555-0033",
     instagram: "https://www.instagram.com/jardimsecretomilagres/",
     mapsQuery:
       "Jardim Secreto Cafe Emporio Rua Luiz Ferreira Dorta 645 Tatuamunha Porto de Pedras AL",
@@ -381,7 +382,7 @@ export const restaurants: Restaurant[] = [
       "Vila gastronômica em Tatuamunha que reúne diferentes opções para comer, beber e aproveitar a noite em um ambiente charmoso e descontraído.",
     address:
       "Rua Luiz Ferreira Dorta, 629, Tatuamunha, Porto de Pedras — AL, CEP 57945-000",
-    phone: "++1-555-0012",
+    phone: "++1-555-0042",
     instagram: "https://www.instagram.com/guajavilagourmet/",
     mapsQuery: "Vila Guaja Rua Luiz Ferreira Dorta 629 Porto de Pedras AL",
     mapsUrl:

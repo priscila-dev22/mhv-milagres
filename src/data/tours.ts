@@ -236,7 +236,7 @@ export const tours: Tour[] = [
     name: "Quadriciclo",
     category: "Terra",
     image: "/media/images/passeios/quadriciclo.jpg",
-    objectPosition: "50% 50%",
+    objectPosition: "50% 42%",
     imageAlt: "Veículo na areia da praia, entre coqueirais",
     summary:
       "Passeio regular de 2 a 3 horas ou diária de 24 horas. É necessário possuir habilitação categoria B.",

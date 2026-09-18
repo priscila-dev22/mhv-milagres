@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type KeyboardEvent } from "react";
+import { Fragment, useEffect, useMemo, useState, type KeyboardEvent } from "react";
 import {
   filterRestaurantsByRegion,
   getRestaurantMapsUrl,
@@ -14,11 +14,64 @@ import { revealDelay } from "../utils/revealDelay";
 const actionLinkClass =
   "editorial-link !mt-0 inline-flex min-h-11 items-center !text-[0.6875rem] !tracking-[0.12em]";
 
-const actionIdleClass =
-  "inline-flex min-h-11 cursor-default items-center font-sans text-[0.6875rem] font-medium uppercase tracking-[0.12em] text-stone-400/70";
-
 const actionDotClass =
   "select-none px-2.5 font-sans text-[0.6875rem] font-medium text-stone-300";
+
+function isValidHref(href: string | undefined | null): href is string {
+  if (typeof href !== "string") return false;
+  const value = href.trim();
+  if (!value) return false;
+  if (value.startsWith("tel:")) {
+    return value.replace(/\D/g, "").length > 0;
+  }
+  return /^https?:\/\//i.test(value);
+}
+
+type RestaurantCardAction = {
+  href: string;
+  label: string;
+  ariaLabel: string;
+  external: boolean;
+};
+
+function getRestaurantCardActions(restaurant: Restaurant): RestaurantCardAction[] {
+  const actions: RestaurantCardAction[] = [];
+
+  const mapsHref = getRestaurantMapsUrl(restaurant);
+  if (isValidHref(mapsHref)) {
+    actions.push({
+      href: mapsHref,
+      label: "Ver no mapa",
+      ariaLabel: `Ver ${restaurant.name} no mapa`,
+      external: true,
+    });
+  }
+
+  const phone = restaurant.phone?.trim();
+  if (phone) {
+    const phoneHref = getRestaurantPhoneHref(phone);
+    if (isValidHref(phoneHref)) {
+      actions.push({
+        href: phoneHref,
+        label: "Contato",
+        ariaLabel: `Contato de ${restaurant.name}`,
+        external: false,
+      });
+    }
+  }
+
+  const instagramHref = restaurant.instagram?.trim().replace(/\?.*$/, "");
+  if (isValidHref(instagramHref)) {
+    actions.push({
+      href: instagramHref,
+      label: "Instagram",
+      ariaLabel: `Ver perfil de ${restaurant.name} no Instagram`,
+      external: true,
+    });
+  }
+
+  return actions;
+}
 
 function RestaurantAction({
   href,
@@ -26,29 +79,23 @@ function RestaurantAction({
   ariaLabel,
   external,
 }: {
-  href?: string;
+  href: string;
   label: string;
   ariaLabel: string;
   external?: boolean;
 }) {
-  if (href) {
-    return (
-      <a
-        href={href}
-        target={external ? "_blank" : undefined}
-        rel={external ? "noopener noreferrer" : undefined}
-        aria-label={ariaLabel}
-        className={actionLinkClass}
-      >
-        {label}
-      </a>
-    );
-  }
+  if (!href) return null;
 
   return (
-    <span className={actionIdleClass} aria-disabled="true">
+    <a
+      href={href}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
+      aria-label={ariaLabel}
+      className={actionLinkClass}
+    >
       {label}
-    </span>
+    </a>
   );
 }
 
@@ -195,15 +242,7 @@ function RestaurantCard({
   setSlideRef: (index: number, node: HTMLElement | null) => void;
   eagerImage?: boolean;
 }) {
-  const mapsHref = getRestaurantMapsUrl(restaurant);
-  const phoneHref = restaurant.phone
-    ? getRestaurantPhoneHref(restaurant.phone)
-    : undefined;
-  const showContact =
-    restaurant.id !== "vilinha-marceneiro" &&
-    restaurant.id !== "tahafa-milagres" &&
-    restaurant.id !== "frutos-de-goias";
-  const showInstagram = restaurant.id !== "vila-da-mata-bistro";
+  const actions = getRestaurantCardActions(restaurant);
 
   return (
     <article
@@ -231,37 +270,21 @@ function RestaurantCard({
         className="mt-4 flex flex-wrap items-center"
         aria-label={`Contatos de ${restaurant.name}`}
       >
-        <RestaurantAction
-          href={mapsHref}
-          label="Ver no mapa"
-          ariaLabel={`Ver ${restaurant.name} no mapa`}
-          external
-        />
-        {showContact ? (
-          <>
-            <span className={actionDotClass} aria-hidden>
-              ·
-            </span>
+        {actions.map((action, actionIndex) => (
+          <Fragment key={action.label}>
+            {actionIndex > 0 ? (
+              <span className={actionDotClass} aria-hidden>
+                ·
+              </span>
+            ) : null}
             <RestaurantAction
-              href={phoneHref}
-              label="Contato"
-              ariaLabel={`Contato de ${restaurant.name}`}
+              href={action.href}
+              label={action.label}
+              ariaLabel={action.ariaLabel}
+              external={action.external}
             />
-          </>
-        ) : null}
-        {showInstagram ? (
-          <>
-            <span className={actionDotClass} aria-hidden>
-              ·
-            </span>
-            <RestaurantAction
-              href={restaurant.instagram}
-              label="Instagram"
-              ariaLabel={`Ver perfil de ${restaurant.name} no Instagram`}
-              external
-            />
-          </>
-        ) : null}
+          </Fragment>
+        ))}
       </nav>
     </article>
   );

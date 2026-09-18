@@ -1,4 +1,5 @@
 import { AccommodationInfo } from "./components/AccommodationInfo";
+import { BeachClubs } from "./components/BeachClubs";
 import { ConciergeServices } from "./components/ConciergeServices";
 import { Footer } from "./components/Footer";
 import { Gastronomy } from "./components/Gastronomy";
@@ -26,6 +27,7 @@ export default function App() {
         <AccommodationInfo />
         <GastronomyChapterTransition />
         <Gastronomy />
+        <BeachClubs />
         <ToursMosaic />
         <ConciergeServices />
         <RegionEssentials />

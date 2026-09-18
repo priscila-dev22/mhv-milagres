@@ -1,8 +1,10 @@
-import type { CSSProperties } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import {
-  destinations,
+  destinationFilters,
+  filterDestinationsByCategory,
   getDestinationMapsUrl,
   type Destination,
+  type DestinationCategory,
 } from "../data/destinations";
 import {
   getSnapSlideVisualRole,
@@ -64,7 +66,7 @@ function DestinationsNav({
           onClick={onPrev}
           disabled={!canPrev}
           className={arrowButtonClass}
-          aria-label="Região anterior"
+          aria-label="Local anterior"
         >
           <ChevronIcon direction="left" />
         </button>
@@ -82,7 +84,7 @@ function DestinationsNav({
           onClick={onNext}
           disabled={!canNext}
           className={arrowButtonClass}
-          aria-label="Próxima região"
+          aria-label="Próximo local"
         >
           <ChevronIcon direction="right" />
         </button>
@@ -144,8 +146,7 @@ function DestinationMedia({
   );
 }
 
-export function GastronomyChapterTransition() {
-  const { ref, visible } = useReveal<HTMLElement>(0.08);
+function DestinationsGallery({ items }: { items: Destination[] }) {
   const {
     trackRef,
     trackProps,
@@ -155,30 +156,18 @@ export function GastronomyChapterTransition() {
     goNext,
     canGoPrev,
     canGoNext,
-  } = useHorizontalSnapCarousel(destinations.length, 0, {
+  } = useHorizontalSnapCarousel(items.length, 0, {
     thumbSelector: "[data-destination-thumb]",
   });
 
-  const active = destinations[activeIndex] ?? destinations[0]!;
-  const mapsHref = getDestinationMapsUrl(active);
+  const active = items[activeIndex] ?? items[0];
+  const mapsHref = active ? getDestinationMapsUrl(active) : undefined;
+
+  if (!active) return null;
 
   return (
-    <section
-      ref={ref}
-      id="rota-ecologica-pausa"
-      aria-labelledby="descubra-milagres-titulo"
-      className={`relative w-full overflow-hidden bg-toast pb-[clamp(2.75rem,6vh,4.5rem)] pt-[clamp(3.25rem,8vh,5.5rem)] ${visible ? "chapter-pause-visible" : ""}`}
-    >
-      <header className="section-shell mx-auto max-w-[40rem]">
-        <h2
-          id="descubra-milagres-titulo"
-          className="chapter-pause-item text-center font-serif text-[clamp(2.125rem,5.2vw,3.625rem)] font-medium leading-[1.1] tracking-[-0.02em] text-wine lg:text-left"
-        >
-          Descubra Milagres
-        </h2>
-      </header>
-
-      <div className="chapter-pause-item chapter-pause-delay-1 mt-[clamp(2.25rem,6vh,3.5rem)] w-full max-w-[100vw]">
+    <>
+      <div className="chapter-pause-item chapter-pause-delay-1 mt-[clamp(1.75rem,5vh,2.75rem)] w-full max-w-[100vw]">
         <div className="destination-gallery-stage">
           <div
             id="descubra-milagres-galeria"
@@ -187,10 +176,10 @@ export function GastronomyChapterTransition() {
             tabIndex={0}
             role="region"
             aria-roledescription="carrossel"
-            aria-label="Regiões da Rota Ecológica dos Milagres"
+            aria-label="Locais da Rota dos Milagres"
             className={trackClassName}
           >
-            {destinations.map((destination, index) => {
+            {items.map((destination, index) => {
               const visualRole = getSnapSlideVisualRole(index, activeIndex);
 
               return (
@@ -215,7 +204,7 @@ export function GastronomyChapterTransition() {
         <div className="section-shell mt-6 px-4 sm:mt-7 sm:px-5 md:px-6">
           <DestinationsNav
             current={activeIndex + 1}
-            total={destinations.length}
+            total={items.length}
             onPrev={goPrev}
             onNext={goNext}
             canPrev={canGoPrev}
@@ -229,22 +218,85 @@ export function GastronomyChapterTransition() {
         aria-live="polite"
         aria-atomic="true"
       >
-        <h3 className="font-serif text-[clamp(1.375rem,2.8vw,1.875rem)] font-medium leading-snug tracking-[-0.015em] text-wine">
+        <p className="font-sans text-[0.625rem] font-medium uppercase tracking-[0.16em] text-wine/65 sm:text-[0.6875rem]">
+          {active.location}
+        </p>
+        <h3 className="mt-2 font-serif text-[clamp(1.375rem,2.8vw,1.875rem)] font-medium leading-snug tracking-[-0.015em] text-wine">
           {active.name}
         </h3>
         <p className="mx-auto mt-3 max-w-[38ch] font-sans text-[clamp(0.875rem,1.25vw,0.9875rem)] font-normal leading-[1.7] tracking-[0.01em] text-stone-600 lg:mx-0">
           {active.description}
         </p>
-        <a
-          href={mapsHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="editorial-link mt-5"
-        >
-          Ver no mapa
-          <span aria-hidden> →</span>
-        </a>
+        {mapsHref ? (
+          <a
+            href={mapsHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="editorial-link mt-5"
+          >
+            Ver no mapa
+            <span aria-hidden> →</span>
+          </a>
+        ) : null}
       </div>
+    </>
+  );
+}
+
+export function GastronomyChapterTransition() {
+  const { ref, visible } = useReveal<HTMLElement>(0.08);
+  const [categoryFilter, setCategoryFilter] = useState<
+    DestinationCategory | "all"
+  >("all");
+
+  const filteredDestinations = useMemo(
+    () => filterDestinationsByCategory(categoryFilter),
+    [categoryFilter],
+  );
+
+  return (
+    <section
+      ref={ref}
+      id="rota-ecologica-pausa"
+      aria-labelledby="descubra-milagres-titulo"
+      className={`relative w-full overflow-hidden bg-toast pb-[clamp(2.75rem,6vh,4.5rem)] pt-[clamp(3.25rem,8vh,5.5rem)] ${visible ? "chapter-pause-visible" : ""}`}
+    >
+      <header className="section-shell mx-auto max-w-[40rem]">
+        <h2
+          id="descubra-milagres-titulo"
+          className="chapter-pause-item text-center font-serif text-[clamp(2.125rem,5.2vw,3.625rem)] font-medium leading-[1.1] tracking-[-0.02em] text-wine lg:text-left"
+        >
+          Descubra Milagres
+        </h2>
+      </header>
+
+      <nav
+        className="chapter-pause-item section-shell mt-8 flex gap-x-4 overflow-x-auto pb-1 pt-0.5 [-ms-overflow-style:none] [scrollbar-width:none] lg:mt-10 lg:flex-wrap lg:gap-x-5 lg:overflow-visible [&::-webkit-scrollbar]:hidden"
+        aria-label="Filtrar locais da Rota dos Milagres"
+      >
+        {destinationFilters.map((filter) => {
+          const isActive = categoryFilter === filter.id;
+          return (
+            <button
+              key={filter.id}
+              type="button"
+              onClick={() => setCategoryFilter(filter.id)}
+              className={`min-h-11 shrink-0 border-b pb-0.5 font-sans text-[0.625rem] font-medium uppercase tracking-[0.14em] transition-[color,border-color] duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wine/40 sm:text-[0.6875rem] ${
+                isActive
+                  ? "border-wine/50 text-wine"
+                  : "border-transparent text-stone-500 hover:text-wine"
+              }`}
+            >
+              {filter.label}
+            </button>
+          );
+        })}
+      </nav>
+
+      <DestinationsGallery
+        key={categoryFilter}
+        items={filteredDestinations}
+      />
     </section>
   );
 }

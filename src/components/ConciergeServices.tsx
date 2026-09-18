@@ -603,7 +603,10 @@ export function ConciergeServices() {
           </p>
         </header>
 
-        <div className={`mt-[clamp(3rem,6vh,5.5rem)] ${revealDelay(2)} reveal-item`}>
+        <div
+          id="servicos"
+          className={`mt-[clamp(3rem,6vh,5.5rem)] scroll-mt-[4.5rem] ${revealDelay(2)} reveal-item`}
+        >
           <p className={groupLabelClass}>01 — Serviços</p>
           <div className="mt-6 lg:-mr-[max(1.25rem,calc((100vw-min(100vw,1180px))/2+1.25rem))]">
             <ServicesCarousel />
@@ -646,10 +649,13 @@ export function ConciergeServices() {
           </div>
         </div>
 
-        <div className={`mt-[clamp(4rem,8vh,6.5rem)] ${revealDelay(5)} reveal-item`}>
+        <section
+          id="itens-infantis"
+          className={`mt-[clamp(4rem,8vh,6.5rem)] scroll-mt-[4.5rem] ${revealDelay(5)} reveal-item`}
+        >
           <p className={groupLabelClass}>03 — Itens infantis</p>
           <h3 className="mt-5 font-serif text-[clamp(1.5rem,2.4vw,2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-petroleum">
-            Para os pequenos
+            Itens infantis
           </h3>
           <p className="mt-3 max-w-[42ch] font-sans text-[0.9375rem] font-normal leading-[1.7] tracking-[0.01em] text-stone-600">
             Itens preparados antes da chegada, mediante disponibilidade.
@@ -662,7 +668,7 @@ export function ConciergeServices() {
           <div className="mt-12 sm:mt-14">
             <BabyItemsCarousel />
           </div>
-        </div>
+        </section>
       </div>
     </section>
   );

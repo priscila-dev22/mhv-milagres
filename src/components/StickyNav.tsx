@@ -1,10 +1,25 @@
 import { useEffect, useState } from "react";
 
-const links = [
+const desktopLinks = [
   { href: "#hero", label: "Início" },
+  { href: "#informacoes", label: "Regras e informações" },
   { href: "#gastronomia", label: "Gastronomia" },
   { href: "#passeios", label: "Passeios" },
   { href: "#concierge", label: "Concierge" },
+  { href: "#servicos", label: "Serviços" },
+  { href: "#itens-infantis", label: "Itens infantis" },
+  { href: "#mapa", label: "Mapa" },
+];
+
+const links = [
+  { href: "#hero", label: "Início" },
+  { href: "#informacoes", label: "Regras e informações" },
+  { href: "#gastronomia", label: "Gastronomia" },
+  { href: "#beach-clubs", label: "Beach Clubs" },
+  { href: "#passeios", label: "Passeios" },
+  { href: "#concierge", label: "Concierge" },
+  { href: "#servicos", label: "Serviços" },
+  { href: "#itens-infantis", label: "Itens infantis" },
   { href: "#mapa", label: "Mapa" },
 ];
 
@@ -134,7 +149,7 @@ export function StickyNav() {
         </button>
 
         <ul className="hidden md:flex md:flex-row md:flex-wrap md:justify-end md:gap-0.5">
-          {links.map(({ href, label }) => (
+          {desktopLinks.map(({ href, label }) => (
             <li key={href}>
               <a
                 href={href}
