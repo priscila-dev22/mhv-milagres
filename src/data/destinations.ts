@@ -15,6 +15,7 @@ export type Destination = {
   categories: DestinationCategory[];
   image?: string;
   imageAlt?: string;
+  imageFit?: "cover" | "contain";
   objectPosition?: string;
   objectPositionMd?: string;
   objectPositionLg?: string;
@@ -71,6 +72,14 @@ export const destinations: Destination[] = [
     highlights: ["Vista panorâmica", "Ponto para fotografar"],
     mapsQuery: "Mirante Alto do Cruzeiro São Miguel dos Milagres AL",
     categories: ["mirantes", "por-do-sol"],
+    image: encodeURI(
+      "/media/images/Descubra Milagres/mirantealtodocruzeiro.jpg",
+    ),
+    imageAlt: "Monumento do Mirante Alto do Cruzeiro com cruz no topo",
+    imageFit: "contain",
+    objectPosition: "50% 50%",
+    objectPositionMd: "50% 50%",
+    objectPositionLg: "50% 50%",
   },
   {
     id: "riacho",
@@ -94,13 +103,20 @@ export const destinations: Destination[] = [
   },
   {
     id: "igrejinha-sao-miguel",
-    name: "Igrejinha de São Miguel dos Milagres",
+    name: "Capela dos Milagres",
     location: "São Miguel dos Milagres / região da Praia do Riacho",
     description:
       "Um dos cartões-postais de São Miguel dos Milagres, próximo à Praia do Riacho e integrado à paisagem litorânea da região.",
     highlights: ["Cartão-postal", "Praia do Riacho"],
     mapsQuery: "Igrejinha de São Miguel dos Milagres AL",
     categories: ["historia-cultura"],
+    image: encodeURI(
+      "/media/images/Descubra Milagres/capeladosmilagres.jpg",
+    ),
+    imageAlt: "Capela dos Milagres com fachada branca, cruz e coqueiros",
+    objectPosition: "50% 50%",
+    objectPositionMd: "50% 22%",
+    objectPositionLg: "50% 10%",
   },
   {
     id: "sao-miguel",
@@ -135,6 +151,12 @@ export const destinations: Destination[] = [
     highlights: ["Referência histórica", "Memória do município"],
     mapsQuery: "Fonte dos Milagres São Miguel dos Milagres AL",
     categories: ["historia-cultura"],
+    image: encodeURI("/media/images/Descubra Milagres/fontemilagres.jpg"),
+    imageAlt: "Interior da Fonte dos Milagres com painel religioso e fonte",
+    imageFit: "contain",
+    objectPosition: "50% 50%",
+    objectPositionMd: "50% 50%",
+    objectPositionLg: "50% 50%",
   },
   {
     id: "toque",
@@ -187,6 +209,13 @@ export const destinations: Destination[] = [
     highlights: ["Rio Tatuamunha", "Conservação do peixe-boi"],
     mapsQuery: "Santuário Peixe Boi Tatuamunha Porto de Pedras AL",
     categories: ["natureza"],
+    image: encodeURI(
+      "/media/images/Descubra Milagres/santuariopeixeboi.jpg",
+    ),
+    imageAlt: "Passeio pelo Rio Tatuamunha a partir da embarcação no Santuário do Peixe-Boi",
+    objectPosition: "50% 50%",
+    objectPositionMd: "50% 50%",
+    objectPositionLg: "50% 50%",
   },
   {
     id: "ponte-rio-tatuamunha",
@@ -197,6 +226,13 @@ export const destinations: Destination[] = [
     highlights: ["Travessia de madeira", "Manguezais"],
     mapsQuery: "Ponte do Rio Tatuamunha Porto de Pedras AL",
     categories: ["natureza", "por-do-sol"],
+    image: encodeURI(
+      "/media/images/Descubra Milagres/pontetatuamunha.jpg",
+    ),
+    imageAlt: "Passarela de madeira sobre o Rio Tatuamunha entre manguezais",
+    objectPosition: "50% 50%",
+    objectPositionMd: "50% 50%",
+    objectPositionLg: "50% 50%",
   },
   {
     id: "tatuamunha-encontro-rio-mar",
@@ -207,6 +243,11 @@ export const destinations: Destination[] = [
     highlights: ["Foz do Rio Tatuamunha", "Riacho Tabatinga", "Entardecer"],
     mapsQuery: "Boca do Rio Tatuamunha Porto de Pedras AL",
     categories: ["natureza", "por-do-sol"],
+    image: encodeURI("/media/images/Descubra Milagres/rioemar.jpg"),
+    imageAlt: "Vista aérea do encontro do Rio Tatuamunha com o mar, com banco de areia, coqueiral e manguezal",
+    objectPosition: "50% 50%",
+    objectPositionMd: "50% 32%",
+    objectPositionLg: "50% 22%",
   },
   {
     id: "povoado-tatuamunha",
@@ -217,6 +258,13 @@ export const destinations: Destination[] = [
     highlights: ["Casarões", "Igrejas", "Artesanato"],
     mapsQuery: "Povoado de Tatuamunha Porto de Pedras AL",
     categories: ["historia-cultura"],
+    image: encodeURI("/media/images/Descubra Milagres/povoadotatuamunha.jpg"),
+    imageAlt:
+      "Igreja amarela, praça e casario tradicional no Povoado de Tatuamunha",
+    imageFit: "contain",
+    objectPosition: "50% 50%",
+    objectPositionMd: "50% 50%",
+    objectPositionLg: "50% 50%",
   },
   {
     id: "patacho",
@@ -248,6 +296,13 @@ export const destinations: Destination[] = [
     highlights: ["Coqueiros e jardins", "Cenário fotogênico"],
     mapsQuery: "Capela São João do Patacho Porto de Pedras AL",
     categories: ["historia-cultura"],
+    image: encodeURI("/media/images/Descubra Milagres/capelapatacho.jpg"),
+    imageAlt:
+      "Capela São João do Patacho entre coqueiros e jardim, com céu de entardecer",
+    imageFit: "contain",
+    objectPosition: "50% 50%",
+    objectPositionMd: "50% 50%",
+    objectPositionLg: "50% 50%",
   },
   {
     id: "porto-de-pedras",
@@ -259,16 +314,6 @@ export const destinations: Destination[] = [
     mapsQuery: "Porto de Pedras, AL",
     categories: ["praias"],
     image: encodeURI("/media/images/Descubra Milagres/praiaporto.jpg"),
-  },
-  {
-    id: "farol-porto-de-pedras",
-    name: "Farol de Porto de Pedras",
-    location: "Morro dos Coqueiros — Porto de Pedras",
-    description:
-      "Em uma das áreas mais altas de Porto de Pedras, o farol oferece uma vista privilegiada da cidade e da paisagem da Rota dos Milagres.",
-    highlights: ["Morro dos Coqueiros", "Vista privilegiada"],
-    mapsQuery: "Farol de Porto de Pedras AL",
-    categories: ["mirantes", "historia-cultura"],
   },
 ];
 

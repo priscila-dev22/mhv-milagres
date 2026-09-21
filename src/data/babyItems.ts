@@ -3,6 +3,9 @@ export type BabyItem = {
   name: string;
   price: string;
   ctaMessage: string;
+  image?: string;
+  imageFit?: "cover" | "contain";
+  imagePosition?: string;
 };
 
 export const babyItems: BabyItem[] = [
@@ -12,12 +15,18 @@ export const babyItems: BabyItem[] = [
     price: "Gratuito",
     ctaMessage:
       "Olá! Sou hóspede da MHV e gostaria de solicitar a banheira de bebê.",
+    image: "/media/images/itens-infantis/banheiradebebe.png",
+    imageFit: "contain",
+    imagePosition: "50% 50%",
   },
   {
     id: "berco",
     name: "Berço",
     price: "R$ 30,00 por dia",
     ctaMessage: "Olá! Sou hóspede da MHV e gostaria de solicitar o berço.",
+    image: "/media/images/itens-infantis/berco.png",
+    imageFit: "contain",
+    imagePosition: "50% 50%",
   },
   {
     id: "berco-cadeira",
@@ -25,6 +34,9 @@ export const babyItems: BabyItem[] = [
     price: "R$ 40,00 por dia",
     ctaMessage:
       "Olá! Sou hóspede da MHV e gostaria de solicitar o berço com cadeira alta de alimentação.",
+    image: "/media/images/itens-infantis/bercoecadeira.png",
+    imageFit: "contain",
+    imagePosition: "50% 50%",
   },
   {
     id: "kit-completo",
@@ -32,6 +44,9 @@ export const babyItems: BabyItem[] = [
     price: "R$ 80,00 por dia",
     ctaMessage:
       "Olá! Sou hóspede da MHV e gostaria de solicitar o kit berço, cadeira alta, carrinho de bebê e suporte para banheira.",
+    image: "/media/images/itens-infantis/bercocadeiracarrinhoesuporte.png",
+    imageFit: "contain",
+    imagePosition: "50% 50%",
   },
   {
     id: "berco-cadeira-suporte",
@@ -39,6 +54,9 @@ export const babyItems: BabyItem[] = [
     price: "R$ 50,00 por dia",
     ctaMessage:
       "Olá! Sou hóspede da MHV e gostaria de solicitar o berço com cadeira alta e suporte para banheira.",
+    image: "/media/images/itens-infantis/bercocadeiraesuporte.png",
+    imageFit: "contain",
+    imagePosition: "50% 50%",
   },
   {
     id: "cadeira-alta",
@@ -46,6 +64,9 @@ export const babyItems: BabyItem[] = [
     price: "R$ 20,00 por dia",
     ctaMessage:
       "Olá! Sou hóspede da MHV e gostaria de solicitar a cadeira alta de alimentação.",
+    image: "/media/images/itens-infantis/cadeiradebebe.png",
+    imageFit: "contain",
+    imagePosition: "50% 50%",
   },
   {
     id: "carrinho",
@@ -53,6 +74,9 @@ export const babyItems: BabyItem[] = [
     price: "R$ 40,00 por dia",
     ctaMessage:
       "Olá! Sou hóspede da MHV e gostaria de solicitar o carrinho de bebê.",
+    image: "/media/images/itens-infantis/carrinhodebebe.png",
+    imageFit: "contain",
+    imagePosition: "50% 50%",
   },
   {
     id: "suporte-banheira",
@@ -60,6 +84,9 @@ export const babyItems: BabyItem[] = [
     price: "R$ 15,00 por dia",
     ctaMessage:
       "Olá! Sou hóspede da MHV e gostaria de solicitar o suporte para banheira.",
+    image: "/media/images/itens-infantis/suportebanheira.png",
+    imageFit: "contain",
+    imagePosition: "50% 50%",
   },
 ];
 

@@ -329,18 +329,6 @@ export const restaurants: Restaurant[] = [
     objectPosition: "50% 50%",
   },
   {
-    id: "milagres-do-toque",
-    name: "Milagres do Toque",
-    region: "toque",
-    regionLabel: "Praia do Toque",
-    image: "/media/images/gastronomy/toque.jpg",
-    objectPosition: "50% 44%",
-    mapsQuery: "Milagres do Toque Praia do Toque",
-    mapsUrl: mapsSearch("Milagres do Toque Praia do Toque"),
-    phone: "+55 82 99329-7013",
-    instagram: "https://www.instagram.com/milagresdotoque/",
-  },
-  {
     id: "jardim-secreto",
     name: "Jardim Secreto",
     region: "tatuamunha",

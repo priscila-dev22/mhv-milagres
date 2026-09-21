@@ -127,6 +127,9 @@ function DestinationMedia({
       "50% 50%",
   } as CSSProperties;
 
+  const fitClass =
+    destination.imageFit === "contain" ? "object-contain" : "object-cover";
+
   return (
     <img
       src={destination.image}
@@ -140,7 +143,7 @@ function DestinationMedia({
       onError={(event) => {
         event.currentTarget.style.visibility = "hidden";
       }}
-      className="experience-slide-img pointer-events-none h-full w-full select-none object-cover"
+      className={`experience-slide-img pointer-events-none h-full w-full select-none ${fitClass}`}
       style={objectStyle}
     />
   );

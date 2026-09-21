@@ -1,5 +1,5 @@
 import { useRef, useState, type KeyboardEvent } from "react";
-import { babyItemNotes, babyItems } from "../data/babyItems";
+import { babyItemNotes, babyItems, type BabyItem } from "../data/babyItems";
 import {
   conciergeServiceRules,
   conciergeServices,
@@ -486,6 +486,39 @@ function MenuAndShopping() {
   );
 }
 
+function BabyItemMedia({ item }: { item: BabyItem }) {
+  if (item.image) {
+    return (
+      <img
+        src={item.image}
+        alt=""
+        width={1200}
+        height={900}
+        loading="lazy"
+        decoding="async"
+        draggable={false}
+        className={`h-full w-full ${item.imageFit === "contain" ? "object-contain" : "object-cover"}`}
+        style={
+          item.imagePosition
+            ? { objectPosition: item.imagePosition }
+            : undefined
+        }
+      />
+    );
+  }
+
+  return (
+    <div
+      className="flex h-full w-full items-center justify-center px-6 text-center"
+      aria-hidden
+    >
+      <span className="font-sans text-[0.625rem] font-medium uppercase tracking-[0.16em] text-sepia/60">
+        Imagem em breve
+      </span>
+    </div>
+  );
+}
+
 function BabyItemsCarousel() {
   const {
     trackRef,
@@ -534,9 +567,12 @@ function BabyItemsCarousel() {
             <article
               key={item.id}
               ref={(node) => setSlideRef(index, node)}
-              className="flex w-full shrink-0 snap-start flex-col border-t border-stone-200/40 bg-sand pt-7 md:w-[20.5rem] lg:w-[21.5rem]"
+              className="flex w-full shrink-0 snap-start flex-col bg-sand md:w-[20.5rem] lg:w-[21.5rem]"
             >
-              <p className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-sepia">
+              <div className="aspect-[4/3] overflow-hidden bg-stone-200/40">
+                <BabyItemMedia item={item} />
+              </div>
+              <p className="mt-7 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-sepia">
                 {String(index + 1).padStart(2, "0")}
               </p>
               <h3 className="mt-4 text-balance font-serif text-[1.25rem] font-medium leading-[1.28] tracking-[-0.015em] text-petroleum sm:text-[1.375rem]">

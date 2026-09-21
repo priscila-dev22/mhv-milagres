@@ -102,7 +102,7 @@ function ClubImage({ club }: { club: BeachClub }) {
         loading="lazy"
         decoding="async"
         draggable={false}
-        className="h-full w-full object-cover"
+        className={`h-full w-full ${club.imageFit === "contain" ? "object-contain" : "object-cover"}`}
         style={
           club.objectPosition
             ? { objectPosition: club.objectPosition }
@@ -183,7 +183,7 @@ export function BeachClubs() {
         </header>
 
         <div
-          className={`mt-12 grid grid-cols-1 gap-16 sm:mt-14 lg:mt-16 lg:grid-cols-3 lg:gap-x-12 lg:gap-y-16 xl:gap-x-14 ${revealDelay(2)} reveal-item`}
+          className={`mt-12 grid grid-cols-1 gap-16 sm:mt-14 md:grid-cols-2 md:gap-x-10 md:gap-y-16 lg:mt-16 lg:gap-x-12 xl:gap-x-14 ${revealDelay(2)} reveal-item`}
         >
           {beachClubs.map((club) => (
             <ClubCard key={club.id} club={club} />
