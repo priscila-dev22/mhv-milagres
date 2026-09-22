@@ -128,7 +128,7 @@ function DestinationMedia({
   } as CSSProperties;
 
   const fitClass =
-    destination.imageFit === "contain" ? "object-contain" : "object-cover";
+    destination.imageFit === "cover" ? "object-cover" : "object-contain";
 
   return (
     <img
