@@ -329,6 +329,102 @@ export const destinations: Destination[] = [
     objectPositionMd: "50% 50%",
     objectPositionLg: "50% 50%",
   },
+  {
+    id: "praia-de-lages",
+    name: "Praia de Lages",
+    location: "Porto de Pedras",
+    description:
+      "Vizinha à Praia do Patacho, reúne mar tranquilo, coqueirais e piscinas naturais que se formam na maré baixa, em um trecho mais reservado do litoral de Porto de Pedras.",
+    highlights: [
+      "Praia de Lages",
+      "Mar tranquilo",
+      "Piscinas naturais",
+      "Porto de Pedras",
+    ],
+    mapsQuery: "Praia de Lages, Porto de Pedras, AL",
+    categories: ["praias"],
+    image: encodeURI("/media/images/Descubra Milagres/praiadelages.jpg"),
+    imageAlt: "Praia de Lages com faixa de areia, coqueirais e mar",
+    imageFit: "contain",
+    objectPosition: "50% 50%",
+    objectPositionMd: "50% 50%",
+    objectPositionLg: "50% 50%",
+  },
+  {
+    id: "praia-dos-morros",
+    name: "Praia dos Morros",
+    location: "Passo de Camaragibe",
+    description:
+      "Trecho mais preservado e isolado da Rota Ecológica, conhecido pela paisagem marcada por falésias, extensa faixa de areia e natureza praticamente intocada.",
+    highlights: [
+      "Praia dos Morros",
+      "Falésias",
+      "Faixa de areia",
+      "Passo de Camaragibe",
+    ],
+    mapsQuery: "Praia dos Morros, Passo de Camaragibe, AL",
+    categories: ["praias"],
+    image: encodeURI("/media/images/Descubra Milagres/praiadosmorros.jpg"),
+    imageAlt: "Praia dos Morros com falésias, faixa de areia e vegetação",
+    imageFit: "contain",
+    objectPosition: "50% 50%",
+    objectPositionMd: "50% 50%",
+    objectPositionLg: "50% 50%",
+  },
+  {
+    id: "alto-do-casado",
+    name: "Alto do Casado",
+    location: "Porto de Pedras",
+    description:
+      "Um dos pontos indicados para conhecer além das praias e explorar outros cenários de Porto de Pedras e da Rota Ecológica.",
+    highlights: ["Alto do Casado", "Porto de Pedras"],
+    mapsQuery: "Alto do Casado, Porto de Pedras, AL",
+    categories: ["historia-cultura"],
+  },
+  {
+    id: "museu-cadeia-das-artes",
+    name: "Museu Cadeia das Artes",
+    location: "Porto de Pedras",
+    description:
+      "Um dos patrimônios históricos de Porto de Pedras, instalado no edifício da antiga Cadeia Pública e hoje dedicado à memória, à cultura e às artes da região.",
+    highlights: [
+      "Museu Cadeia das Artes",
+      "Patrimônio histórico",
+      "Porto de Pedras",
+    ],
+    mapsQuery: "Museu Cadeia das Artes, Porto de Pedras, AL",
+    categories: ["historia-cultura"],
+  },
+  {
+    id: "centro-historico-tatuamunha",
+    name: "Centro Histórico de Tatuamunha",
+    location: "Tatuamunha · Porto de Pedras",
+    description:
+      "Um passeio pelo lado histórico de Tatuamunha, entre casarios antigos, igrejas e ruas que preservam a atmosfera de um dos povoados mais charmosos da Rota Ecológica.",
+    highlights: [
+      "Centro histórico",
+      "Casarios",
+      "Igrejas",
+      "Tatuamunha",
+    ],
+    mapsQuery: "Centro Histórico de Tatuamunha, Porto de Pedras, AL",
+    categories: ["historia-cultura"],
+  },
+  {
+    id: "centro-historico-porto-de-pedras",
+    name: "Centro Histórico de Porto de Pedras",
+    location: "Porto de Pedras",
+    description:
+      "Casarios, igrejas e construções antigas ajudam a contar a história de Porto de Pedras e revelam um lado cultural da Rota Ecológica além das praias.",
+    highlights: [
+      "Centro histórico",
+      "Casarios",
+      "Igrejas",
+      "Porto de Pedras",
+    ],
+    mapsQuery: "Centro Histórico de Porto de Pedras, AL",
+    categories: ["historia-cultura"],
+  },
 ];
 
 export function getDestinationMapsUrl(destination: Destination): string {
