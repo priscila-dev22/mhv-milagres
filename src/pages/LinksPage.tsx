@@ -75,10 +75,16 @@ function BioLinkItem({ link }: { link: BioLink }) {
     );
   }
 
+  const isPdf = /\.pdf($|\?)/i.test(link.href);
+  const href = link.href.startsWith("/")
+    ? `${window.location.origin}${link.href}`
+    : link.href;
+
   return (
     <a
-      href={link.href}
+      href={href}
       className={className}
+      {...(isPdf ? { type: "application/pdf" } : {})}
       {...(link.external
         ? { target: "_blank", rel: "noopener noreferrer" }
         : {})}

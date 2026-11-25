@@ -1,4 +1,15 @@
 {
+  "headers": [
+    {
+      "source": "/media/pdfs/(.*)",
+      "headers": [
+        { "key": "Content-Type", "value": "application/pdf" },
+        { "key": "Content-Disposition", "value": "inline" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ],
   "rewrites": [
     { "source": "/links", "destination": "/index.html" },
     { "source": "/links/", "destination": "/index.html" }
