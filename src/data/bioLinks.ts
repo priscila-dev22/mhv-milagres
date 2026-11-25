@@ -58,7 +58,7 @@ export const bioLinks: BioLink[] = [
   {
     id: "airbnb",
     label: "Conheça nosso perfil no Airbnb",
-    href: null,
+    href: "https://www.airbnb.com.br/users/profile/1469907696937638911?previous_page_name=PdpHomeMarketplace",
     external: true,
   },
 ];
