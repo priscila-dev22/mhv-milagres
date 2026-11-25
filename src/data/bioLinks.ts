@@ -5,6 +5,7 @@ export type BioLink = {
   label: string;
   /** Deixe `null` até a URL definitiva ser definida. Não preencher com placeholders. */
   href: string | null;
+  description?: string;
   featured?: boolean;
   external?: boolean;
 };
@@ -12,30 +13,16 @@ export type BioLink = {
 export const bioPage = {
   title: "MHV Milagres",
   location: "São Miguel dos Milagres",
-  headline: "Milagres começa aqui.",
   tagline: "Você vive. A gente cuida.",
-  mosaic: [
-    {
-      id: "sunset",
-      src: "/media/images/links/sunset.jpg",
-      alt: "Pôr do sol sobre a propriedade MHV, com piscina e palmeiras",
+  editorial: {
+    background: {
+      src: "/media/images/bio-editorial/passaros.jpg",
     },
-    {
-      id: "beach",
-      src: "/media/images/links/beach.jpg",
-      alt: "Acesso à praia entre coqueiros na Rota Ecológica dos Milagres",
+    logo: {
+      src: "/media/images/bio-editorial/logo-mhv-marfim.png",
+      alt: "My Home Vacation Milagres",
     },
-    {
-      id: "table",
-      src: "/media/images/links/table.jpg",
-      alt: "Mesa posta com frutas tropicais na hospedagem MHV",
-    },
-    {
-      id: "interior",
-      src: "/media/images/links/interior.jpg",
-      alt: "Estar em linho e luz natural em uma casa MHV",
-    },
-  ],
+  },
 } as const;
 
 const contactHref = `https://wa.me/${CONCIERGE_WHATSAPP_NUMBER}?text=${encodeURIComponent(
@@ -46,6 +33,7 @@ export const bioLinks: BioLink[] = [
   {
     id: "reserva",
     label: "Faça sua reserva",
+    description: "Encontre seu próximo refúgio.",
     href: "https://www.mhvmilagres.com.br/pt/",
     featured: true,
     external: true,
