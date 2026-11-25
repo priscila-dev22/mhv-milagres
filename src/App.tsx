@@ -12,8 +12,13 @@ import { StayPlanning } from "./components/StayPlanning";
 import { StickyNav } from "./components/StickyNav";
 import { ToursMosaic } from "./components/ToursMosaic";
 import { WhatsAppConcierge } from "./components/WhatsAppConcierge";
+import { LinksPage } from "./pages/LinksPage";
 
-export default function App() {
+function isLinksRoute() {
+  return window.location.pathname.replace(/\/+$/, "") === "/links";
+}
+
+function GuestGuide() {
   return (
     <div className="min-h-screen bg-sand antialiased">
       <a href="#conteudo-principal" className="skip-link">
@@ -37,4 +42,12 @@ export default function App() {
       <WhatsAppConcierge />
     </div>
   );
+}
+
+export default function App() {
+  if (isLinksRoute()) {
+    return <LinksPage />;
+  }
+
+  return <GuestGuide />;
 }
