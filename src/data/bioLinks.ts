@@ -27,14 +27,15 @@ export const bioLinks: BioLink[] = [
   {
     id: "reserva",
     label: "Faça sua reserva",
-    href: "https://givalto.stays.net/pt/",
+    href: "https://www.mhvmilagres.com.br/pt/",
     featured: true,
     external: true,
   },
   {
     id: "guia",
-    label: "Guia de Milagres",
-    href: "/",
+    label: "Guia do hóspede",
+    href: "https://mhv-milagres.vercel.app",
+    external: true,
   },
   {
     id: "contato",
