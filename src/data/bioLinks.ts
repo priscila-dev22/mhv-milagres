@@ -12,11 +12,30 @@ export type BioLink = {
 export const bioPage = {
   title: "MHV Milagres",
   location: "São Miguel dos Milagres",
+  headline: "Milagres começa aqui.",
   tagline: "Você vive. A gente cuida.",
-  photo: {
-    src: "/media/images/experience/fim-de-tarde.jpg",
-    alt: "Propriedade MHV em São Miguel dos Milagres, com piscina ao entardecer",
-  },
+  mosaic: [
+    {
+      id: "sunset",
+      src: "/media/images/links/sunset.jpg",
+      alt: "Pôr do sol sobre a propriedade MHV, com piscina e palmeiras",
+    },
+    {
+      id: "beach",
+      src: "/media/images/links/beach.jpg",
+      alt: "Acesso à praia entre coqueiros na Rota Ecológica dos Milagres",
+    },
+    {
+      id: "table",
+      src: "/media/images/links/table.jpg",
+      alt: "Mesa posta com frutas tropicais na hospedagem MHV",
+    },
+    {
+      id: "interior",
+      src: "/media/images/links/interior.jpg",
+      alt: "Estar em linho e luz natural em uma casa MHV",
+    },
+  ],
 } as const;
 
 const contactHref = `https://wa.me/${CONCIERGE_WHATSAPP_NUMBER}?text=${encodeURIComponent(
