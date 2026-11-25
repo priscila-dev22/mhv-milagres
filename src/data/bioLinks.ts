@@ -10,13 +10,25 @@ export type BioLink = {
   external?: boolean;
 };
 
+/** Troque para `"amber"` ou `"birds"` para restaurar o fundo anterior. */
+const LINKS_BACKGROUND = "tropical" as "tropical" | "amber" | "birds";
+
+const LINKS_BACKGROUNDS = {
+  tropical: "/media/images/bio-editorial/tropical.jpg",
+  amber: "/media/images/bio-editorial/agua-ambar.jpg",
+  birds: "/media/images/bio-editorial/passaros.jpg",
+} as const;
+
 export const bioPage = {
   title: "MHV Milagres",
   location: "São Miguel dos Milagres",
   tagline: "Você vive. A gente cuida.",
   editorial: {
     background: {
-      src: "/media/images/bio-editorial/passaros.jpg",
+      src: LINKS_BACKGROUNDS[LINKS_BACKGROUND],
+    },
+    previousBackground: {
+      src: LINKS_BACKGROUNDS.amber,
     },
     logo: {
       src: "/media/images/bio-editorial/logo-mhv-marfim.png",
