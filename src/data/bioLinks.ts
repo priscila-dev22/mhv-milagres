@@ -45,7 +45,7 @@ export const bioLinks: BioLink[] = [
   {
     id: "proprietarios",
     label: "Apresentação para proprietários",
-    href: null,
+    href: "/media/pdfs/apresentacao-proprietarios.pdf",
     external: true,
   },
   {
