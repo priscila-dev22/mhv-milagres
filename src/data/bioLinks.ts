@@ -51,7 +51,8 @@ export const bioLinks: BioLink[] = [
   {
     id: "orientacoes",
     label: "Check-in, check-out e orientações",
-    href: "/#informacoes",
+    href: "/media/pdfs/guia-hospedagem.pdf",
+    external: true,
   },
   {
     id: "airbnb",
