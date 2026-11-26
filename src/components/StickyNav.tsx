@@ -20,6 +20,7 @@ const links = [
   { href: "#passeios", label: "Passeios" },
   { href: "#concierge", label: "Concierge" },
   { href: "#servicos", label: "Serviços" },
+  { href: "#transfer", label: "Transfer" },
   { href: "#itens-infantis", label: "Itens infantis" },
   { href: "#mapa", label: "Mapa" },
 ];

@@ -11,6 +11,7 @@ import { RouteMap } from "./components/RouteMap";
 import { StayPlanning } from "./components/StayPlanning";
 import { StickyNav } from "./components/StickyNav";
 import { ToursMosaic } from "./components/ToursMosaic";
+import { Transfer } from "./components/Transfer";
 import { WhatsAppConcierge } from "./components/WhatsAppConcierge";
 import { LinksPage } from "./pages/LinksPage";
 
@@ -35,6 +36,7 @@ function GuestGuide() {
         <BeachClubs />
         <ToursMosaic />
         <ConciergeServices />
+        <Transfer />
         <RegionEssentials />
         <RouteMap />
       </main>
